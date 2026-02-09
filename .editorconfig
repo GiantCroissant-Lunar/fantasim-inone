@@ -1,0 +1,43 @@
+# EditorConfig is awesome: https://EditorConfig.org
+root = true
+
+# All files
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# GDScript files (Godot)
+[*.gd]
+indent_style = tab
+indent_size = 4
+
+# C# files
+[*.cs]
+indent_style = space
+indent_size = 4
+
+# JSON, TOML, YAML files
+[*.{json,toml,yaml,yml}]
+indent_style = space
+indent_size = 2
+
+# XML files
+[*.xml]
+indent_style = space
+indent_size = 2
+
+# Markdown files
+[*.md]
+trim_trailing_whitespace = false
+
+# Godot project files
+[*.godot]
+indent_style = tab
+indent_size = 4
+
+# Tscn, Tres files (Godot scenes/resources)
+[*.{tscn,tres}]
+indent_style = space
+indent_size = 4
