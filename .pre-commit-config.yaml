@@ -1,0 +1,41 @@
+default_language_version:
+  python: python3
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^(.*\.tscn$|.*\.tres$)
+      - id: end-of-file-fixer
+        exclude: ^(.*\.tscn$|.*\.tres$)
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+        exclude: ^(.*\.tscn$|.*\.tres$|project\.godot$)
+
+  - repo: https://github.com/godotengine/godot-gdscript-toolkit
+    rev: 4.2.0
+    hooks:
+      - id: gdformat
+        args: [--check-only]
+        files: \.gd$
+
+  - repo: https://github.com/dotnet/format
+    rev: v7.0.407
+    hooks:
+      - id: dotnet-format
+        args: [--check, --verbosity, minimal]
+        files: \.cs$
