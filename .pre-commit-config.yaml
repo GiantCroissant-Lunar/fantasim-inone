@@ -32,10 +32,3 @@ repos:
       - id: gdformat
         args: [--check-only]
         files: \.gd$
-
-  - repo: https://github.com/pre-commit/mirrors-dotnet-format
-    rev: v6.0.1
-    hooks:
-      - id: dotnet-format
-        args: [--check, --verbosity, minimal]
-        files: \.cs$
