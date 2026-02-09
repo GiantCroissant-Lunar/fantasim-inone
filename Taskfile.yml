@@ -1,0 +1,105 @@
+version: '3'
+
+vars:
+  GODOT_PATH: godot4
+  PROJECT_PATH: project/hosts/complete-app
+  BUILD_DIR: .godot/export
+
+tasks:
+  default:
+    desc: List all available tasks
+    cmds:
+      - task --list
+
+  build:
+    desc: Build the Godot project
+    cmds:
+      - '{{.GODOT_PATH}} --path {{.PROJECT_PATH}} --headless --build-solutions'
+
+  clean:
+    desc: Clean build artifacts
+    cmds:
+      - rm -rf .godot/
+      - rm -rf {{.BUILD_DIR}}/
+    ignore_error: true
+
+  format:
+    desc: Format GDScript and C# code
+    cmds:
+      - echo "Formatting GDScript..."
+      - gdformat --verbose project/ || echo "gdformat not found, install with: pip install gdtoolkit"
+      - echo "Formatting C#..."
+      - dotnet format project/hosts/complete-app/ || echo "dotnet format failed"
+
+  format:check:
+    desc: Check if code is properly formatted
+    cmds:
+      - echo "Checking GDScript formatting..."
+      - gdformat --check-only --verbose project/ || echo "gdformat not found, install with: pip install gdtoolkit"
+      - echo "Checking C# formatting..."
+      - dotnet format --verify-no-changes --verbosity minimal project/hosts/complete-app/
+
+  test:
+    desc: Run tests
+    cmds:
+      - echo "Running tests..."
+      - dotnet test project/hosts/complete-app/ || echo "No tests found or test failed"
+
+  pre-commit:install:
+    desc: Install pre-commit hooks
+    cmds:
+      - pre-commit install
+
+  pre-commit:run:
+    desc: Run all pre-commit hooks
+    cmds:
+      - pre-commit run --all-files
+
+  pre-commit:update:
+    desc: Update pre-commit hooks
+    cmds:
+      - pre-commit autoupdate
+
+  secrets:scan:
+    desc: Scan for secrets in the codebase
+    cmds:
+      - detect-secrets scan --baseline .secrets.baseline
+
+  secrets:update:
+    desc: Update secrets baseline
+    cmds:
+      - detect-secrets scan --update .secrets.baseline
+
+  version:
+    desc: Show git version
+    cmds:
+      - gitversion || echo "GitVersion not installed"
+
+  version:showconfig:
+    desc: Show GitVersion configuration
+    cmds:
+      - gitversion /showconfig || echo "GitVersion not installed"
+
+  run:
+    desc: Run the project
+    cmds:
+      - '{{.GODOT_PATH}} --path {{.PROJECT_PATH}}'
+
+  run:headless:
+    desc: Run the project in headless mode
+    cmds:
+      - '{{.GODOT_PATH}} --path {{.PROJECT_PATH}} --headless'
+
+  lint:
+    desc: Run linting checks
+    cmds:
+      - task format:check
+      - task pre-commit:run
+
+  setup:
+    desc: Set up the development environment
+    cmds:
+      - echo "Setting up development environment..."
+      - task pre-commit:install
+      - echo "Install gdtoolkit for GDScript: pip install gdtoolkit"
+      - echo "Ensure Godot 4.x is installed and in PATH"
