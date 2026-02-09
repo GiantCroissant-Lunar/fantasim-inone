@@ -33,8 +33,8 @@ repos:
         args: [--check-only]
         files: \.gd$
 
-  - repo: https://github.com/dotnet/format
-    rev: v7.0.407
+  - repo: https://github.com/pre-commit/mirrors-dotnet-format
+    rev: v6.0.1
     hooks:
       - id: dotnet-format
         args: [--check, --verbosity, minimal]
