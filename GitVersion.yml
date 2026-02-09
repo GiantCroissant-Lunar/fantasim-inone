@@ -1,0 +1,109 @@
+mode: ContinuousDelivery
+branches:
+  main:
+    regex: ^main$|^master$
+    mode: ContinuousDelivery
+    tag: ''
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    source-branches: []
+    is-source-branch-for: ['feature', 'pull-request']
+  develop:
+    regex: ^develop$
+    mode: ContinuousDeployment
+    tag: 'alpha'
+    increment: Minor
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: true
+    source-branches: ['main']
+    is-source-branch-for: ['feature', 'pull-request']
+  feature:
+    regex: ^features?[/-]
+    mode: ContinuousDelivery
+    tag: 'feature'
+    increment: Inherit
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: false
+    source-branches: ['develop', 'main', 'release', 'hotfix', 'support']
+    is-source-branch-for: []
+  pull-request:
+    regex: ^(pull|pull\-requests|pr)[/-]
+    mode: ContinuousDelivery
+    tag: 'PullRequest'
+    increment: Inherit
+    prevent-increment-of-merged-branch-version: false
+    tag-number-pattern: '[/-](?<number>\d+)'
+    source-branches: ['develop', 'main', 'feature', 'release', 'hotfix', 'support']
+    is-source-branch-for: []
+  hotfix:
+    regex: ^hotfix[/-]
+    mode: ContinuousDelivery
+    tag: 'beta'
+    increment: Patch
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: false
+    source-branches: ['main', 'develop', 'support']
+    is-source-branch-for: []
+  release:
+    regex: ^releases?[/-]
+    mode: ContinuousDelivery
+    tag: 'rc'
+    increment: None
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    source-branches: ['main', 'develop', 'support']
+    is-source-branch-for: []
+  support:
+    regex: ^support[/-]
+    mode: ContinuousDelivery
+    tag: ''
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    source-branches: ['main']
+    is-source-branch-for: ['hotfix', 'release']
+
+ignore:
+  sha: []
+  commits-before: ''
+
+commit-message-incrementing:
+  enabled: true
+  mode: Mainline
+
+major-version-bump-message: '\+semver:\s?(breaking|major)'
+minor-version-bump-message: '\+semver:\s?(feature|minor)'
+patch-version-bump-message: '\+semver:\s?(fix|patch)'
+
+merge-message-formats: {}
+
+version-in-branch-name:
+  enabled: false
+  regex: ''
+
+ignore:
+  commits-before: ''
+  commits-after: ''
+
+assembly-versioning-scheme: MajorMinorPatch
+assembly-file-versioning-scheme: MajorMinorPatch
+assembly-informational-format: '{InformationalVersion}'
+assembly-versioning-format: '{Major}.{Minor}.{Patch}.{BuildNumber}'
+
+tag-prefix: '[vV]?'
+version-strategy: MergeMessage
+continuous-delivery-fallback-tag: 'ci'
+next-version: ''
+legacy-semver-padding: 4
+build-metadata-padding: 4
+commit-date-format: 'yyyy-MM-dd'
+tagged-branches:
+  - 'release[/-]'
+
+mode: ContinuousDelivery
+increment: Patch
+prevent-increment-of-merged-branch-version: true
+track-merge-target: false
+track-merge-message: false
+commit-date-format: yyyy-MM-dd
