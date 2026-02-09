@@ -82,10 +82,6 @@ version-in-branch-name:
   enabled: false
   regex: ''
 
-ignore:
-  commits-before: ''
-  commits-after: ''
-
 assembly-versioning-scheme: MajorMinorPatch
 assembly-file-versioning-scheme: MajorMinorPatch
 assembly-informational-format: '{InformationalVersion}'
@@ -100,10 +96,3 @@ build-metadata-padding: 4
 commit-date-format: 'yyyy-MM-dd'
 tagged-branches:
   - 'release[/-]'
-
-mode: ContinuousDelivery
-increment: Patch
-prevent-increment-of-merged-branch-version: true
-track-merge-target: false
-track-merge-message: false
-commit-date-format: yyyy-MM-dd
