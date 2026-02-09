@@ -26,7 +26,7 @@ repos:
         args: ['--baseline', '.secrets.baseline']
         exclude: ^(.*\.tscn$|.*\.tres$|project\.godot$)
 
-  - repo: https://github.com/godotengine/godot-gdscript-toolkit
+  - repo: https://github.com/Scony/godot-gdscript-toolkit
     rev: 4.2.0
     hooks:
       - id: gdformat
