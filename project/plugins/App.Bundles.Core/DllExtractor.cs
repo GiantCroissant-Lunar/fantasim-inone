@@ -1,6 +1,6 @@
-using Fantasim.App.Bundles.Contracts;
+using FantaSim.App.Bundles.Contracts;
 
-namespace Fantasim.App.Bundles.Core;
+namespace FantaSim.App.Bundles.Core;
 
 /// <summary>
 /// Extracts DLLs from mounted PCK VFS to a temp directory.

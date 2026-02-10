@@ -1,8 +1,8 @@
-using Fantasim.App.Bundles.Contracts;
-using Fantasim.App.Bundles.Core;
+using FantaSim.App.Bundles.Contracts;
+using FantaSim.App.Bundles.Core;
 using Godot;
 
-namespace Fantasim.App;
+namespace FantaSim.App;
 
 /// <summary>
 /// Godot autoload node. Creates BundleHost + services in _Ready(),

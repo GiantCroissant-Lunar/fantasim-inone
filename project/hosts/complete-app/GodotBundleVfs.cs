@@ -1,8 +1,8 @@
-using Fantasim.App.Bundles.Contracts;
+using FantaSim.App.Bundles.Contracts;
 using Godot;
 using GdFileAccess = Godot.FileAccess;
 
-namespace Fantasim.App;
+namespace FantaSim.App;
 
 /// <summary>
 /// Thin adapter wrapping Godot's VFS for PCK bundle operations.

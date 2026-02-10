@@ -1,4 +1,4 @@
-namespace Fantasim.App.Bundles.Contracts;
+namespace FantaSim.App.Bundles.Contracts;
 
 /// <summary>
 /// Extracts DLLs from mounted PCK to a temp directory for ALC loading.

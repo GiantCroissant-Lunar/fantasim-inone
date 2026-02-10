@@ -1,6 +1,6 @@
-using Fantasim.World.Plates.Contracts;
+using FantaSim.World.Plates.Contracts;
 
-namespace Fantasim.World.Plates.Topology;
+namespace FantaSim.World.Plates.Topology;
 
 /// <summary>
 /// Replays events from the store to produce a materialized state view.

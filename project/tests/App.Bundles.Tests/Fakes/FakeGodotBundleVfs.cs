@@ -1,6 +1,6 @@
-using Fantasim.App.Bundles.Contracts;
+using FantaSim.App.Bundles.Contracts;
 
-namespace Fantasim.App.Bundles.Tests.Fakes;
+namespace FantaSim.App.Bundles.Tests.Fakes;
 
 /// <summary>
 /// In-memory VFS for testing. No Godot engine needed.

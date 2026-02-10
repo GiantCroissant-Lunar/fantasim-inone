@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Runtime.Loader;
 
-namespace Fantasim.App.Bundles.Core;
+namespace FantaSim.App.Bundles.Core;
 
 /// <summary>
 /// Collectible AssemblyLoadContext for plugin bundles.

@@ -1,4 +1,4 @@
-namespace Fantasim.App.Bundles.Contracts;
+namespace FantaSim.App.Bundles.Contracts;
 
 /// <summary>
 /// Manages Godot scene tree nodes for loaded bundles.

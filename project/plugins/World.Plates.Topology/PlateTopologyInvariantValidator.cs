@@ -1,6 +1,6 @@
-using Fantasim.World.Plates.Contracts;
+using FantaSim.World.Plates.Contracts;
 
-namespace Fantasim.World.Plates.Topology;
+namespace FantaSim.World.Plates.Topology;
 
 /// <summary>
 /// Validates plate topology invariants per RFC-V2-0001 §5.

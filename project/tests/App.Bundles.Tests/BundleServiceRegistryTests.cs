@@ -1,8 +1,8 @@
-using Fantasim.App.Bundles.Core;
+using FantaSim.App.Bundles.Core;
 using FluentAssertions;
 using Xunit;
 
-namespace Fantasim.App.Bundles.Tests;
+namespace FantaSim.App.Bundles.Tests;
 
 public class BundleServiceRegistryTests
 {

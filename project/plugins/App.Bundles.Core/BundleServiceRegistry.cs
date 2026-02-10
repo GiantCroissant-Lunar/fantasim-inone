@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
-using Fantasim.App.Bundles.Contracts;
+using FantaSim.App.Bundles.Contracts;
 
-namespace Fantasim.App.Bundles.Core;
+namespace FantaSim.App.Bundles.Core;
 
 /// <summary>
 /// Thread-safe typed service registry backed by ConcurrentDictionary.

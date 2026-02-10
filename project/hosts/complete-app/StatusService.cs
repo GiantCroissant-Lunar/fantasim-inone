@@ -1,6 +1,6 @@
 using Godot;
 
-namespace Fantasim.App;
+namespace FantaSim.App;
 
 /// <summary>
 /// Thin wrapper for the status label and shared file dialog.

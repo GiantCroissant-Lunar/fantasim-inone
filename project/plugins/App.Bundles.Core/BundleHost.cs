@@ -1,9 +1,9 @@
 using System.Reflection;
 using System.Runtime.Loader;
 using System.Text.Json;
-using Fantasim.App.Bundles.Contracts;
+using FantaSim.App.Bundles.Contracts;
 
-namespace Fantasim.App.Bundles.Core;
+namespace FantaSim.App.Bundles.Core;
 
 /// <summary>
 /// THE single lifecycle manager for bundles.
@@ -39,8 +39,8 @@ public sealed class BundleHost : IBundleHost
         // Host assemblies whose types must match between host and plugins
         _hostAssemblyNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
-            "Fantasim.App.Bundles.Contracts",
-            "Fantasim.World.Plates.Contracts",
+            "FantaSim.App.Bundles.Contracts",
+            "FantaSim.World.Plates.Contracts",
             "System.Runtime",
             "System.Private.CoreLib",
             "netstandard"

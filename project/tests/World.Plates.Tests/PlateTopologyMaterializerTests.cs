@@ -1,12 +1,12 @@
 using System.Collections.Immutable;
-using Fantasim.World.Plates.Contracts.Entities;
-using Fantasim.World.Plates.Contracts.Events;
-using Fantasim.World.Plates.Contracts.Identity;
-using Fantasim.World.Plates.Topology;
+using FantaSim.World.Plates.Contracts.Entities;
+using FantaSim.World.Plates.Contracts.Events;
+using FantaSim.World.Plates.Contracts.Identity;
+using FantaSim.World.Plates.Topology;
 using FluentAssertions;
 using Xunit;
 
-namespace Fantasim.World.Plates.Tests;
+namespace FantaSim.World.Plates.Tests;
 
 public class PlateTopologyMaterializerTests
 {

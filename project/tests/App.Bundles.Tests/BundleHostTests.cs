@@ -1,11 +1,11 @@
 using System.Text.Json;
-using Fantasim.App.Bundles.Contracts;
-using Fantasim.App.Bundles.Core;
-using Fantasim.App.Bundles.Tests.Fakes;
+using FantaSim.App.Bundles.Contracts;
+using FantaSim.App.Bundles.Core;
+using FantaSim.App.Bundles.Tests.Fakes;
 using FluentAssertions;
 using Xunit;
 
-namespace Fantasim.App.Bundles.Tests;
+namespace FantaSim.App.Bundles.Tests;
 
 public class BundleHostTests
 {

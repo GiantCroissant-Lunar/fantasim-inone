@@ -1,6 +1,6 @@
-using Fantasim.World.Plates.Contracts.Identity;
+using FantaSim.World.Plates.Contracts.Identity;
 
-namespace Fantasim.World.Plates.Contracts.Events;
+namespace FantaSim.World.Plates.Contracts.Events;
 
 public readonly record struct BoundaryRetiredEvent(
     Guid EventId,

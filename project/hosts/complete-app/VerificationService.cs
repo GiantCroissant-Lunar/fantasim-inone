@@ -2,7 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Godot;
 
-namespace Fantasim.App;
+namespace FantaSim.App;
 
 /// <summary>
 /// Captures screenshot, scene tree, and bundle snapshot after all bundles load.

@@ -1,6 +1,6 @@
 using Godot;
 
-namespace Fantasim.App;
+namespace FantaSim.App;
 
 /// <summary>
 /// Wraps the host MenuBar. Bundles call this to add/remove menus and items.

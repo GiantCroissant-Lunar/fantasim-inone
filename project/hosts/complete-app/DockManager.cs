@@ -1,6 +1,6 @@
 using Godot;
 
-namespace Fantasim.App;
+namespace FantaSim.App;
 
 /// <summary>
 /// Manages named dock slots backed by TabContainers.

@@ -1,4 +1,4 @@
-namespace Fantasim.App.Bundles.Contracts;
+namespace FantaSim.App.Bundles.Contracts;
 
 /// <summary>
 /// Abstraction over Godot's VFS for PCK mounting and file access.

@@ -1,4 +1,4 @@
-namespace Fantasim.App.Bundles.Contracts;
+namespace FantaSim.App.Bundles.Contracts;
 
 /// <summary>
 /// THE single lifecycle manager for bundles.

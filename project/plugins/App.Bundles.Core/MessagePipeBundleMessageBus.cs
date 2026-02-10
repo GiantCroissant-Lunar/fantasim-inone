@@ -1,9 +1,9 @@
 using System.Collections.Concurrent;
-using Fantasim.App.Bundles.Contracts;
+using FantaSim.App.Bundles.Contracts;
 using MessagePipe;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fantasim.App.Bundles.Core;
+namespace FantaSim.App.Bundles.Core;
 
 /// <summary>
 /// Cross-bundle message bus backed by MessagePipe.

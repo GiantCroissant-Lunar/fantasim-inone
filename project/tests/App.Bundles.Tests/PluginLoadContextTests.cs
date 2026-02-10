@@ -1,8 +1,8 @@
-using Fantasim.App.Bundles.Core;
+using FantaSim.App.Bundles.Core;
 using FluentAssertions;
 using Xunit;
 
-namespace Fantasim.App.Bundles.Tests;
+namespace FantaSim.App.Bundles.Tests;
 
 public class PluginLoadContextTests
 {
@@ -10,7 +10,7 @@ public class PluginLoadContextTests
     public void Host_assembly_names_delegate_to_default_ALC()
     {
         // PluginLoadContext with host assembly names should be collectible
-        var hostAssemblyNames = new[] { "Fantasim.App.Bundles.Contracts", "System.Runtime" };
+        var hostAssemblyNames = new[] { "FantaSim.App.Bundles.Contracts", "System.Runtime" };
         var tempDll = typeof(PluginLoadContext).Assembly.Location;
 
         var alc = new PluginLoadContext(tempDll, hostAssemblyNames);

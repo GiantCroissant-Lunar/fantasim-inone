@@ -1,6 +1,6 @@
-using Fantasim.App.Bundles.Contracts;
+using FantaSim.App.Bundles.Contracts;
 
-namespace Fantasim.Bundles.PlateViewer;
+namespace FantaSim.Bundles.PlateViewer;
 
 /// <summary>
 /// Minimal service module proving the bundle pipeline:

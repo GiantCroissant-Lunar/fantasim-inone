@@ -1,4 +1,4 @@
-namespace Fantasim.App.Bundles.Contracts;
+namespace FantaSim.App.Bundles.Contracts;
 
 /// <summary>
 /// Cross-bundle publish/subscribe message bus.

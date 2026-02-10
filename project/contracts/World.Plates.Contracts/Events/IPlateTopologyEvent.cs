@@ -1,4 +1,4 @@
-namespace Fantasim.World.Plates.Contracts.Events;
+namespace FantaSim.World.Plates.Contracts.Events;
 
 /// <summary>
 /// Event envelope for plate topology events per RFC-V2-0002.

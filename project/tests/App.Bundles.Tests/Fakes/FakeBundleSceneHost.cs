@@ -1,6 +1,6 @@
-using Fantasim.App.Bundles.Contracts;
+using FantaSim.App.Bundles.Contracts;
 
-namespace Fantasim.App.Bundles.Tests.Fakes;
+namespace FantaSim.App.Bundles.Tests.Fakes;
 
 /// <summary>
 /// Records calls to OnBundleLoaded / OnBundleUnloading for test assertions.

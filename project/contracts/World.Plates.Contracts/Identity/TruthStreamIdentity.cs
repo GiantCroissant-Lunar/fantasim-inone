@@ -1,4 +1,4 @@
-namespace Fantasim.World.Plates.Contracts.Identity;
+namespace FantaSim.World.Plates.Contracts.Identity;
 
 /// <summary>
 /// Identifies an authoritative event stream: (Variant, Branch, L, Domain, M).

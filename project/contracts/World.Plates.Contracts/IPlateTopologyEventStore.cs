@@ -1,6 +1,6 @@
-using Fantasim.World.Plates.Contracts.Events;
+using FantaSim.World.Plates.Contracts.Events;
 
-namespace Fantasim.World.Plates.Contracts;
+namespace FantaSim.World.Plates.Contracts;
 
 /// <summary>
 /// Append-only event store for plate topology events.

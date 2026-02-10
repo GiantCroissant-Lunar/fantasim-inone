@@ -1,4 +1,4 @@
-namespace Fantasim.World.Plates.Contracts.Identity;
+namespace FantaSim.World.Plates.Contracts.Identity;
 
 /// <summary>
 /// Strongly-typed identifier for a tectonic plate.

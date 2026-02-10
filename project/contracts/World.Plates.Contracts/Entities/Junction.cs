@@ -1,7 +1,7 @@
 using System.Collections.Immutable;
-using Fantasim.World.Plates.Contracts.Identity;
+using FantaSim.World.Plates.Contracts.Identity;
 
-namespace Fantasim.World.Plates.Contracts.Entities;
+namespace FantaSim.World.Plates.Contracts.Entities;
 
 /// <summary>
 /// A meeting point where three or more boundaries converge.

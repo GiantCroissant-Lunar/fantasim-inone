@@ -1,10 +1,10 @@
 using System.Collections.Immutable;
-using Fantasim.World.Plates.Contracts;
-using Fantasim.World.Plates.Contracts.Entities;
-using Fantasim.World.Plates.Contracts.Events;
-using Fantasim.World.Plates.Contracts.Identity;
+using FantaSim.World.Plates.Contracts;
+using FantaSim.World.Plates.Contracts.Entities;
+using FantaSim.World.Plates.Contracts.Events;
+using FantaSim.World.Plates.Contracts.Identity;
 
-namespace Fantasim.World.Plates.Topology;
+namespace FantaSim.World.Plates.Topology;
 
 /// <summary>
 /// Internal mutable state that applies events. Exposes IPlateTopologyStateView.
