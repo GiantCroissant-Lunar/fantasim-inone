@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://HudRoot.cs" id="1_hud"]
 
-[node name="HudRoot" type="HSplitContainer"]
+[node name="HudRoot" type="VBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -10,50 +10,40 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_hud")
 
-[node name="ViewportPanel" type="PanelContainer" parent="."]
+[node name="EditorMenuBar" type="MenuBar" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MainBody" type="HSplitContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ViewportPanel" type="PanelContainer" parent="MainBody"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 3.0
 
-[node name="InspectorPanel" type="VBoxContainer" parent="."]
+[node name="RightPanel" type="VSplitContainer" parent="MainBody"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.0
 
-[node name="Toolbar" type="HBoxContainer" parent="InspectorPanel"]
-layout_mode = 2
-
-[node name="LoadBtn" type="Button" parent="InspectorPanel/Toolbar"]
+[node name="InspectorSlot" type="TabContainer" parent="MainBody/RightPanel"]
 unique_name_in_owner = true
-layout_mode = 2
-text = "Load PCK"
-
-[node name="UnloadBtn" type="Button" parent="InspectorPanel/Toolbar"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Unload"
-
-[node name="ReloadBtn" type="Button" parent="InspectorPanel/Toolbar"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Reload"
-
-[node name="SnapshotBtn" type="Button" parent="InspectorPanel/Toolbar"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Snapshot"
-
-[node name="ScrollContainer" type="ScrollContainer" parent="InspectorPanel"]
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
 
-[node name="SnapshotTree" type="Tree" parent="InspectorPanel/ScrollContainer"]
+[node name="BottomSlot" type="TabContainer" parent="MainBody/RightPanel"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
 size_flags_vertical = 3
+size_flags_stretch_ratio = 1.0
 
-[node name="StatusLabel" type="Label" parent="InspectorPanel"]
+[node name="StatusBar" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="StatusLabel" type="Label" parent="StatusBar"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Ready"
