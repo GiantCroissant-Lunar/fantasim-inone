@@ -1,3 +1,7 @@
-[gd_scene format=3]
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/HudRoot.tscn" id="1_hud"]
 
 [node name="Main" type="Node"]
+
+[node name="HudRoot" parent="." instance=ExtResource("1_hud")]
