@@ -44,6 +44,10 @@ public sealed class DllExtractor : IDllExtractor
             {
                 // Best-effort cleanup — OS may still hold handles briefly after ALC unload
             }
+            catch (UnauthorizedAccessException)
+            {
+                // Windows may deny access briefly after ALC unload
+            }
         }
     }
 }
