@@ -6,7 +6,7 @@ namespace Fantasim.App;
 
 /// <summary>
 /// Captures screenshot, scene tree, and bundle snapshot after all bundles load.
-/// Activated by --verify command-line flag. Outputs to build/_verify/.
+/// Activated by --verify command-line flag. Outputs to _verify/ next to the executable.
 /// </summary>
 public sealed class VerificationService
 {
@@ -20,8 +20,8 @@ public sealed class VerificationService
     public VerificationService(BootstrapShim bootstrap)
     {
         _bootstrap = bootstrap;
-        _outputDir = System.IO.Path.Combine(
-            System.IO.Directory.GetCurrentDirectory(), "build", "_verify");
+        var exeDir = System.IO.Path.GetDirectoryName(OS.GetExecutablePath()) ?? ".";
+        _outputDir = System.IO.Path.Combine(exeDir, "_verify");
     }
 
     public void Start()
