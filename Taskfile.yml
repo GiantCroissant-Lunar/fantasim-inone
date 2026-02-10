@@ -5,6 +5,7 @@ vars:
   PROJECT_PATH: project/hosts/complete-app
   SLN_PATH: fantasim-inone.sln
   EXPORT_PATH: project/hosts/complete-app/exports/complete-app.exe
+  UNIFY: dotnet tool run unify-build --
 
 tasks:
   default:
@@ -12,26 +13,55 @@ tasks:
     cmds:
       - task --list
 
-  build:
-    desc: Build the entire solution
+  setup:
+    desc: Restore dotnet tools (unify-build, gitversion)
     cmds:
-      - dotnet build {{.SLN_PATH}}
+      - dotnet tool restore
+
+  build:
+    desc: Build the entire solution via unify-build
+    deps: [setup]
+    cmds:
+      - '{{.UNIFY}} Compile --configuration Debug'
+
+  pack:
+    desc: Pack contracts as NuGet packages
+    deps: [setup]
+    vars:
+      CONFIGURATION: '{{default "Release" .CONFIGURATION}}'
+    cmds:
+      - '{{.UNIFY}} PackProjects --configuration {{.CONFIGURATION}}'
+    env:
+      GITVERSION_MAJORMINORPATCH:
+        sh: 'dotnet-gitversion /output json 2>nul | python -c "import sys,json;print(json.load(sys.stdin)[''MajorMinorPatch''])"'
+
+  publish:
+    desc: Publish plugins and bundles
+    deps: [setup]
+    vars:
+      CONFIGURATION: '{{default "Release" .CONFIGURATION}}'
+    cmds:
+      - '{{.UNIFY}} PublishProjects --configuration {{.CONFIGURATION}}'
+    env:
+      GITVERSION_MAJORMINORPATCH:
+        sh: 'dotnet-gitversion /output json 2>nul | python -c "import sys,json;print(json.load(sys.stdin)[''MajorMinorPatch''])"'
 
   test:
     desc: Run all xunit tests
     cmds:
-      - dotnet test {{.SLN_PATH}} --no-build
+      - dotnet test {{.SLN_PATH}}
 
   verify:
     desc: Run Godot headless to verify bootstrap
     cmds:
-      - '{{.GODOT_PATH}} --path {{.PROJECT_PATH}} --headless --quit-after 3000'
+      - '"{{.GODOT_PATH}}" --path {{.PROJECT_PATH}} --headless --quit-after 3000'
 
   clean:
     desc: Clean build artifacts
     cmds:
       - dotnet clean {{.SLN_PATH}}
       - rm -rf .bundle-temp/
+      - rm -rf build/_artifacts/
     ignore_error: true
 
   format:
@@ -56,12 +86,12 @@ tasks:
   run:
     desc: Run the Godot project
     cmds:
-      - '{{.GODOT_PATH}} --path {{.PROJECT_PATH}}'
+      - '"{{.GODOT_PATH}}" --path {{.PROJECT_PATH}}'
 
   run:headless:
     desc: Run the project in headless mode
     cmds:
-      - '{{.GODOT_PATH}} --path {{.PROJECT_PATH}} --headless'
+      - '"{{.GODOT_PATH}}" --path {{.PROJECT_PATH}} --headless'
 
   export:
     desc: Export debug build for Windows
@@ -75,6 +105,12 @@ tasks:
     cmds:
       - 'timeout 8 "{{.EXPORT_PATH}}" -- --verbose || true'
 
+  version:
+    desc: Show computed version via GitVersion
+    deps: [setup]
+    cmds:
+      - 'dotnet-gitversion /output json 2>nul | python -c "import sys,json;print(json.load(sys.stdin)[''FullSemVer''])"'
+
   pre-commit:install:
     desc: Install pre-commit hooks
     cmds:
@@ -84,8 +120,3 @@ tasks:
     desc: Run all pre-commit hooks
     cmds:
       - pre-commit run --all-files
-
-  version:
-    desc: Show git version
-    cmds:
-      - gitversion || echo "GitVersion not installed"

@@ -1,0 +1,19 @@
+{
+  "$schema": "../../plate-projects/unify-build/build/build.config.schema.json",
+  "solution": "fantasim-inone.sln",
+  "versionEnv": "GITVERSION_MAJORMINORPATCH",
+  "projectGroups": {
+    "contracts": {
+      "sourceDir": "project/contracts",
+      "action": "pack"
+    },
+    "plugins": {
+      "sourceDir": "project/plugins",
+      "action": "publish"
+    },
+    "bundles": {
+      "sourceDir": "project/bundles",
+      "action": "publish"
+    }
+  }
+}

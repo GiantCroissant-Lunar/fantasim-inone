@@ -23,6 +23,10 @@ obj/
 # Bundle artifacts
 .bundle-temp/
 
+# Build artifacts (unify-build)
+build/_artifacts/
+.nuke/temp/
+
 # OS
 Thumbs.db
 .DS_Store
