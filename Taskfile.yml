@@ -62,6 +62,7 @@ tasks:
       - dotnet clean {{.SLN_PATH}}
       - rm -rf .bundle-temp/
       - rm -rf build/_artifacts/
+      - rm -rf build/_gen/
     ignore_error: true
 
   format:
@@ -158,21 +159,22 @@ tasks:
         "res://bundles/com.fantasim.hud_inspector/scripts/inspector.gd"
 
   bundle:pack:
-    desc: Pack GDScript bundles into PCK files
+    desc: Pack GDScript bundles into versioned PCK files
     deps: [bundle:gen]
+    vars:
+      VERSION:
+        sh: '{{.GITVERSION_CMD}}'
+      BUNDLE_DIR: 'build/_artifacts/{{.VERSION}}/bundles'
     cmds:
-      - mkdir -p build/_bundles
+      - mkdir -p {{.BUNDLE_DIR}}
       # Shell bundle first (loaded before control bundles)
-      - '"{{.GODOT_PATH}}" --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_shell build/_bundles/com.fantasim.hud_shell.pck'
-      - '"{{.GODOT_PATH}}" --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_filemenu build/_bundles/com.fantasim.hud_filemenu.pck'
-      - '"{{.GODOT_PATH}}" --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_toolbar build/_bundles/com.fantasim.hud_toolbar.pck'
-      - '"{{.GODOT_PATH}}" --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_inspector build/_bundles/com.fantasim.hud_inspector.pck'
-      # Copy system bundles to host project for auto-load
+      - '"{{.GODOT_PATH}}" --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_shell {{.BUNDLE_DIR}}/com.fantasim.hud_shell.pck'
+      - '"{{.GODOT_PATH}}" --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_filemenu {{.BUNDLE_DIR}}/com.fantasim.hud_filemenu.pck'
+      - '"{{.GODOT_PATH}}" --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_toolbar {{.BUNDLE_DIR}}/com.fantasim.hud_toolbar.pck'
+      - '"{{.GODOT_PATH}}" --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_inspector {{.BUNDLE_DIR}}/com.fantasim.hud_inspector.pck'
+      # Copy system bundles to host project for export inclusion
       - mkdir -p {{.PROJECT_PATH}}/system_bundles
-      - cp build/_bundles/com.fantasim.hud_shell.pck {{.PROJECT_PATH}}/system_bundles/
-      - cp build/_bundles/com.fantasim.hud_filemenu.pck {{.PROJECT_PATH}}/system_bundles/
-      - cp build/_bundles/com.fantasim.hud_inspector.pck {{.PROJECT_PATH}}/system_bundles/
-      - cp build/_bundles/com.fantasim.hud_toolbar.pck {{.PROJECT_PATH}}/system_bundles/
+      - cp {{.BUNDLE_DIR}}/*.pck {{.PROJECT_PATH}}/system_bundles/
 
   pre-commit:install:
     desc: Install pre-commit hooks
