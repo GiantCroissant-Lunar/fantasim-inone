@@ -1,8 +1,9 @@
 {
   "id": "com.fantasim.hud_toolbar",
-  "version": "0.1.0",
-  "displayName": "HUD Toolbar",
+  "version": "0.2.0",
+  "displayName": "Toolbar",
   "entryAssembly": null,
   "rootScene": "res://bundles/com.fantasim.hud_toolbar/scenes/toolbar.tscn",
-  "dependencies": []
+  "dependencies": [],
+  "dockTarget": "inspector"
 }
