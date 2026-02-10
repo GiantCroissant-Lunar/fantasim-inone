@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://bootstrap"]
+
+[node name="Bootstrap" type="Node"]
+script = ExtResource("res://BootstrapShim.cs")
