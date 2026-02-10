@@ -12,7 +12,7 @@ public sealed class GodotBundleVfs : IGodotBundleVfs
 {
     public bool MountPck(string pckPath)
     {
-        return ProjectSettings.LoadResourcePack(pckPath);
+        return ProjectSettings.LoadResourcePack(pckPath, replaceFiles: true);
     }
 
     public byte[] ReadFile(string resPath)

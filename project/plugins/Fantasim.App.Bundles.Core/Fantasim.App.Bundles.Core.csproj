@@ -4,6 +4,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MessagePipe" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\contracts\Fantasim.App.Bundles.Contracts\Fantasim.App.Bundles.Contracts.csproj" />
   </ItemGroup>
 </Project>

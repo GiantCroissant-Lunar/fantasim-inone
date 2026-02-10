@@ -15,17 +15,23 @@ public sealed class BundleHost : IBundleHost
     private readonly IGodotBundleVfs _vfs;
     private readonly IDllExtractor _extractor;
     private readonly IBundleServiceRegistry _registry;
+    private readonly IBundleSceneHost? _sceneHost;
     private readonly Dictionary<string, LoadedBundle> _bundles = new();
     private readonly HashSet<string> _hostAssemblyNames;
 
     public IReadOnlyDictionary<string, BundleInfo> LoadedBundles =>
         _bundles.ToDictionary(kv => kv.Key, kv => kv.Value.Info);
 
-    public BundleHost(IGodotBundleVfs vfs, IDllExtractor extractor, IBundleServiceRegistry registry)
+    public BundleHost(
+        IGodotBundleVfs vfs,
+        IDllExtractor extractor,
+        IBundleServiceRegistry registry,
+        IBundleSceneHost? sceneHost = null)
     {
         _vfs = vfs;
         _extractor = extractor;
         _registry = registry;
+        _sceneHost = sceneHost;
 
         // Host assemblies whose types must match between host and plugins
         _hostAssemblyNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
@@ -53,22 +59,33 @@ public sealed class BundleHost : IBundleHost
             throw new InvalidOperationException($"Bundle '{manifest.Id}' is already loaded.");
         }
 
-        // 3. Extract DLLs
-        var dllPaths = DiscoverDlls(manifest);
-        var extractDir = _extractor.ExtractDlls(manifest.Id, dllPaths, _vfs);
+        PluginLoadContext? alc = null;
+        Assembly? assembly = null;
 
-        // 4. Create collectible ALC and load entry assembly
-        var entryDllPath = Path.Combine(extractDir, manifest.EntryAssembly);
-        var alc = new PluginLoadContext(entryDllPath, _hostAssemblyNames);
-        var assembly = alc.LoadFromAssemblyPath(entryDllPath);
+        // 3. Extract DLLs + load ALC only if bundle has an entry assembly
+        if (manifest.EntryAssembly is not null)
+        {
+            var dllPaths = DiscoverDlls(manifest);
+            var extractDir = _extractor.ExtractDlls(manifest.Id, dllPaths, _vfs);
 
-        // 5. Register in bundles dictionary
+            var entryDllPath = Path.Combine(extractDir, manifest.EntryAssembly);
+            alc = new PluginLoadContext(entryDllPath, _hostAssemblyNames);
+            assembly = alc.LoadFromAssemblyPath(entryDllPath);
+        }
+
+        // 4. Register in bundles dictionary
         var info = new BundleInfo(manifest.Id, manifest, BundleStatus.Loaded, DateTimeOffset.UtcNow);
         var loaded = new LoadedBundle(info, alc, assembly, pckPath);
         _bundles[manifest.Id] = loaded;
 
-        // 6. Invoke service modules
-        InvokeServiceModules(assembly, register: true);
+        // 5. Invoke service modules (only if assembly exists)
+        if (assembly is not null)
+        {
+            InvokeServiceModules(assembly, register: true);
+        }
+
+        // 6. Notify scene host
+        _sceneHost?.OnBundleLoaded(manifest.Id, manifest);
 
         await Task.CompletedTask;
         return info;
@@ -81,19 +98,21 @@ public sealed class BundleHost : IBundleHost
             throw new InvalidOperationException($"Bundle '{bundleId}' is not loaded.");
         }
 
-        // 1. Deregister service modules
-        InvokeServiceModules(loaded.Assembly, register: false);
+        // 1. Notify scene host before teardown
+        _sceneHost?.OnBundleUnloading(bundleId);
 
-        // 2. Unload ALC
-        loaded.LoadContext.Unload();
+        // 2. Deregister service modules + unload ALC (only if assembly exists)
+        if (loaded.Assembly is not null)
+        {
+            InvokeServiceModules(loaded.Assembly, register: false);
+            loaded.LoadContext!.Unload();
 
-        // 3. Force GC to collect the unloaded ALC
-        GC.Collect();
-        GC.WaitForPendingFinalizers();
-        GC.Collect();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
 
-        // 4. Cleanup temp DLLs
-        _extractor.Cleanup(bundleId);
+            _extractor.Cleanup(bundleId);
+        }
 
         await Task.CompletedTask;
     }
@@ -107,25 +126,31 @@ public sealed class BundleHost : IBundleHost
 
         var pckPath = loaded.PckPath;
 
-        // 1. Capture state if reload-aware
+        // 1. Capture state if reload-aware (only if assembly exists)
         object? state = null;
-        var reloadAware = FindReloadAware(loaded.Assembly);
-        if (reloadAware is not null)
+        if (loaded.Assembly is not null)
         {
-            state = reloadAware.CaptureState();
+            var reloadAware = FindReloadAware(loaded.Assembly);
+            if (reloadAware is not null)
+            {
+                state = reloadAware.CaptureState();
+            }
         }
 
         // 2. Unload
         await UnloadAsync(bundleId, cancellationToken);
 
-        // 3. Wait for OS file handle release
-        await Task.Delay(100, cancellationToken);
+        // 3. Wait for OS file handle release (only needed for DLL bundles)
+        if (loaded.Assembly is not null)
+        {
+            await Task.Delay(100, cancellationToken);
+        }
 
         // 4. Reload
         var info = await LoadAsync(pckPath, cancellationToken);
 
         // 5. Restore state if reload-aware
-        if (state is not null && _bundles.TryGetValue(bundleId, out var reloaded))
+        if (state is not null && _bundles.TryGetValue(bundleId, out var reloaded) && reloaded.Assembly is not null)
         {
             var newReloadAware = FindReloadAware(reloaded.Assembly);
             newReloadAware?.RestoreState(state);
@@ -166,6 +191,11 @@ public sealed class BundleHost : IBundleHost
 
     private IReadOnlyList<string> DiscoverDlls(BundleManifest manifest)
     {
+        if (manifest.EntryAssembly is null)
+        {
+            return [];
+        }
+
         // Convention: DLLs are at res://bundles/{bundleId}/bin/{dllName}
         var basePath = $"res://bundles/{manifest.Id}/bin/";
         var entryPath = basePath + manifest.EntryAssembly;
@@ -205,8 +235,8 @@ public sealed class BundleHost : IBundleHost
 
     private sealed record LoadedBundle(
         BundleInfo Info,
-        AssemblyLoadContext LoadContext,
-        Assembly Assembly,
+        AssemblyLoadContext? LoadContext,
+        Assembly? Assembly,
         string PckPath
     );
 }

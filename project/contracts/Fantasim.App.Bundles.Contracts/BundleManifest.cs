@@ -7,6 +7,7 @@ public sealed record BundleManifest(
     string Id,
     string Version,
     string DisplayName,
-    string EntryAssembly,
+    string? EntryAssembly,
+    string? RootScene,
     IReadOnlyList<string> Dependencies
 );
