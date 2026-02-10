@@ -10,5 +10,6 @@ public sealed record BundleManifest(
     string? EntryAssembly,
     string? RootScene,
     IReadOnlyList<string> Dependencies,
-    string? DockTarget = null
+    string? DockTarget = null,
+    string? Role = null
 );
