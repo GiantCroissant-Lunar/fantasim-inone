@@ -4,7 +4,7 @@ vars:
   GODOT_PATH: C:/lunar-horse/tools/Godot_v4.6-stable_mono_win64/Godot_v4.6-stable_mono_win64_console.exe
   PROJECT_PATH: project/hosts/complete-app
   SLN_PATH: fantasim-inone.sln
-  EXPORT_PATH: project/hosts/complete-app/exports/complete-app.exe
+  GITVERSION_CMD: 'dotnet-gitversion /output json 2>nul | python -c "import sys,json;print(json.load(sys.stdin)[''MajorMinorPatch''])"'
   UNIFY: dotnet tool run unify-build --
 
 tasks:
@@ -33,7 +33,7 @@ tasks:
       - '{{.UNIFY}} PackProjects --configuration {{.CONFIGURATION}}'
     env:
       GITVERSION_MAJORMINORPATCH:
-        sh: 'dotnet-gitversion /output json 2>nul | python -c "import sys,json;print(json.load(sys.stdin)[''MajorMinorPatch''])"'
+        sh: '{{.GITVERSION_CMD}}'
 
   publish:
     desc: Publish plugins and bundles
@@ -44,7 +44,7 @@ tasks:
       - '{{.UNIFY}} PublishProjects --configuration {{.CONFIGURATION}}'
     env:
       GITVERSION_MAJORMINORPATCH:
-        sh: 'dotnet-gitversion /output json 2>nul | python -c "import sys,json;print(json.load(sys.stdin)[''MajorMinorPatch''])"'
+        sh: '{{.GITVERSION_CMD}}'
 
   test:
     desc: Run all xunit tests
@@ -94,22 +94,29 @@ tasks:
       - '"{{.GODOT_PATH}}" --path {{.PROJECT_PATH}} --headless'
 
   export:
-    desc: Export debug build for Windows
+    desc: Export debug build for Windows to build/_artifacts/{version}
     deps: [build]
+    vars:
+      VERSION:
+        sh: '{{.GITVERSION_CMD}}'
     cmds:
-      - '"{{.GODOT_PATH}}" --path {{.PROJECT_PATH}} --headless --export-debug "Windows Desktop"'
+      - mkdir -p build/_artifacts/{{.VERSION}}
+      - '"{{.GODOT_PATH}}" --path {{.PROJECT_PATH}} --headless --export-debug "Windows Desktop" ../../../build/_artifacts/{{.VERSION}}/complete-app.exe'
 
   export:run:
     desc: Export and run the app with 8s timeout for smoke testing
     deps: [export]
+    vars:
+      VERSION:
+        sh: '{{.GITVERSION_CMD}}'
     cmds:
-      - 'timeout 8 "{{.EXPORT_PATH}}" -- --verbose || true'
+      - 'timeout 8 "build/_artifacts/{{.VERSION}}/complete-app.exe" -- --verbose || true'
 
   version:
     desc: Show computed version via GitVersion
     deps: [setup]
     cmds:
-      - 'dotnet-gitversion /output json 2>nul | python -c "import sys,json;print(json.load(sys.stdin)[''FullSemVer''])"'
+      - 'dotnet-gitversion /output json 2>nul | python -c "import sys,json;d=json.load(sys.stdin);print(d[''FullSemVer''])"'
 
   pre-commit:install:
     desc: Install pre-commit hooks
