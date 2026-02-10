@@ -151,8 +151,14 @@ tasks:
     deps: [bundle:gen]
     cmds:
       - mkdir -p build/_bundles
+      - '"{{.GODOT_PATH}}" --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_filemenu build/_bundles/com.fantasim.hud_filemenu.pck'
       - '"{{.GODOT_PATH}}" --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_toolbar build/_bundles/com.fantasim.hud_toolbar.pck'
       - '"{{.GODOT_PATH}}" --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_inspector build/_bundles/com.fantasim.hud_inspector.pck'
+      # Copy system bundles to host project for auto-load
+      - mkdir -p {{.PROJECT_PATH}}/system_bundles
+      - cp build/_bundles/com.fantasim.hud_filemenu.pck {{.PROJECT_PATH}}/system_bundles/
+      - cp build/_bundles/com.fantasim.hud_inspector.pck {{.PROJECT_PATH}}/system_bundles/
+      - cp build/_bundles/com.fantasim.hud_toolbar.pck {{.PROJECT_PATH}}/system_bundles/
 
   pre-commit:install:
     desc: Install pre-commit hooks
