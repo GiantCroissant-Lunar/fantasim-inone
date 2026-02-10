@@ -9,5 +9,6 @@ public sealed record BundleManifest(
     string DisplayName,
     string? EntryAssembly,
     string? RootScene,
-    IReadOnlyList<string> Dependencies
+    IReadOnlyList<string> Dependencies,
+    string? DockTarget = null
 );
