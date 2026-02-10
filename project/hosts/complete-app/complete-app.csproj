@@ -2,6 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Fantasim.App</RootNamespace>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
