@@ -33,7 +33,7 @@ func _refresh_snapshot():
 	if bootstrap == null:
 		return
 
-	var snapshot: Dictionary = bootstrap.call("capture_snapshot_dict")
+	var snapshot: Dictionary = bootstrap.call("CaptureSnapshotDict")
 	if snapshot.is_empty():
 		return
 
@@ -85,7 +85,7 @@ func _refresh_snapshot():
 	bus_root.set_text(0, "MessageBus (channels: %d)" % channels)
 
 	bootstrap.call(
-		"show_status",
+		"ShowStatus",
 		"Snapshot at %s" % snapshot.get("capturedAt", "?"),
 	)
 

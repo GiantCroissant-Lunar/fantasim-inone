@@ -5,7 +5,7 @@ func _ready():
 	var bootstrap = get_node("/root/Bootstrap")
 
 	# File menu
-	var file_menu: PopupMenu = bootstrap.call("get_or_add_menu", "File")
+	var file_menu: PopupMenu = bootstrap.call("GetOrAddMenu", "File")
 	file_menu.add_item("Load PCK...", 0)
 	file_menu.add_item("Unload Bundle", 1)
 	file_menu.add_item("Reload Bundle", 2)
@@ -14,7 +14,7 @@ func _ready():
 	file_menu.id_pressed.connect(_on_file_menu)
 
 	# View menu
-	var view_menu: PopupMenu = bootstrap.call("get_or_add_menu", "View")
+	var view_menu: PopupMenu = bootstrap.call("GetOrAddMenu", "View")
 	view_menu.add_check_item("Inspector", 0)
 	view_menu.add_check_item("Timeline", 1)
 	view_menu.set_item_checked(0, true)
@@ -22,7 +22,7 @@ func _ready():
 	view_menu.id_pressed.connect(_on_view_menu)
 
 	# Help menu
-	var help_menu: PopupMenu = bootstrap.call("get_or_add_menu", "Help")
+	var help_menu: PopupMenu = bootstrap.call("GetOrAddMenu", "Help")
 	help_menu.add_item("About Fantasim", 0)
 	help_menu.id_pressed.connect(_on_help_menu)
 
@@ -34,7 +34,7 @@ func _on_file_menu(id: int):
 	match id:
 		0:
 			bootstrap.call(
-				"show_file_dialog", Callable(self, "_on_file_selected")
+				"ShowFileDialog", Callable(self, "_on_file_selected")
 			)
 		1:
 			pass  # TODO: unload selected bundle
@@ -46,7 +46,7 @@ func _on_file_menu(id: int):
 
 func _on_file_selected(path: String):
 	var bootstrap = get_node("/root/Bootstrap")
-	bootstrap.call("load_bundle", path)
+	bootstrap.call("LoadBundle", path)
 
 
 func _on_view_menu(id: int):
