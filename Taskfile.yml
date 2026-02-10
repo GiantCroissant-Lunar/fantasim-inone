@@ -122,8 +122,8 @@ tasks:
     desc: Pack GDScript bundles into PCK files
     cmds:
       - mkdir -p build/_bundles
-      - '"{{.GODOT_PATH}}" --path {{.PROJECT_PATH}} --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_toolbar build/_bundles/com.fantasim.hud_toolbar.pck'
-      - '"{{.GODOT_PATH}}" --path {{.PROJECT_PATH}} --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_inspector build/_bundles/com.fantasim.hud_inspector.pck'
+      - '"{{.GODOT_PATH}}" --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_toolbar build/_bundles/com.fantasim.hud_toolbar.pck'
+      - '"{{.GODOT_PATH}}" --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_inspector build/_bundles/com.fantasim.hud_inspector.pck'
 
   pre-commit:install:
     desc: Install pre-commit hooks
