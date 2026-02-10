@@ -112,6 +112,17 @@ tasks:
     cmds:
       - 'timeout 8 "build/_artifacts/{{.VERSION}}/complete-app.exe" -- --verbose || true'
 
+  verify:visual:
+    desc: Build, pack, export, and run visual verification
+    deps: [bundle:pack, export]
+    vars:
+      VERSION:
+        sh: '{{.GITVERSION_CMD}}'
+    cmds:
+      - mkdir -p build/_verify
+      - 'timeout 15 "build/_artifacts/{{.VERSION}}/complete-app.exe" -- --verify || true'
+      - python tools/check_verify.py build/_verify
+
   version:
     desc: Show computed version via GitVersion
     deps: [setup]
