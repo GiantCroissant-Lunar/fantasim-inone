@@ -1,18 +1,26 @@
 [gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://bundles/com.fantasim.hud_toolbar/scripts/toolbar.gd" id="1_toolbar"]
+[ext_resource type="Script" path="res://bundles/com.fantasim.hud_toolbar/scripts/toolbar.gd" id="1_script"]
 
-[node name="BundleToolbar" type="HBoxContainer"]
-script = ExtResource("1_toolbar")
+[node name="ToolbarView" type="HBoxContainer"]
+script = ExtResource("1_script")
 
-[node name="LoadBtn" type="Button" parent="."]
+[node name="loadPck" type="Button" parent="."]
+
+[node name="loadPckLabel" type="Label" parent="loadPck"]
 text = "Load PCK"
 
-[node name="UnloadBtn" type="Button" parent="."]
+[node name="unload" type="Button" parent="."]
+
+[node name="unloadLabel" type="Label" parent="unload"]
 text = "Unload"
 
-[node name="ReloadBtn" type="Button" parent="."]
+[node name="reload" type="Button" parent="."]
+
+[node name="reloadLabel" type="Label" parent="reload"]
 text = "Reload"
 
-[node name="SnapshotBtn" type="Button" parent="."]
+[node name="snapshot" type="Button" parent="."]
+
+[node name="snapshotLabel" type="Label" parent="snapshot"]
 text = "Snapshot"

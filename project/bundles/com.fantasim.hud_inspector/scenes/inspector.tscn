@@ -1,13 +1,11 @@
 [gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://bundles/com.fantasim.hud_inspector/scripts/inspector.gd" id="1_inspector"]
+[ext_resource type="Script" path="res://bundles/com.fantasim.hud_inspector/scripts/inspector.gd" id="1_script"]
 
-[node name="BundleInspector" type="VBoxContainer"]
-size_flags_vertical = 3
-script = ExtResource("1_inspector")
+[node name="InspectorView" type="VBoxContainer"]
+script = ExtResource("1_script")
 
-[node name="Title" type="Label" parent="."]
+[node name="title" type="Label" parent="."]
 text = "Inspector Bundle"
 
-[node name="Tree" type="Tree" parent="."]
-size_flags_vertical = 3
+[node name="treeContainer" type="VBoxContainer" parent="."]
