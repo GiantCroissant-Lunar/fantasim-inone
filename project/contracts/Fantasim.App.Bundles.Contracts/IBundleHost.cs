@@ -12,4 +12,6 @@ public interface IBundleHost
     Task UnloadAsync(string bundleId, CancellationToken cancellationToken = default);
     Task<BundleInfo> ReloadAsync(string bundleId, CancellationToken cancellationToken = default);
     Task UnloadAllAsync(CancellationToken cancellationToken = default);
+
+    BundleSystemSnapshot CaptureSnapshot();
 }

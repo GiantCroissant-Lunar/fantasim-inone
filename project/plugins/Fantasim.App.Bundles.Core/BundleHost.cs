@@ -16,6 +16,7 @@ public sealed class BundleHost : IBundleHost
     private readonly IDllExtractor _extractor;
     private readonly IBundleServiceRegistry _registry;
     private readonly IBundleSceneHost? _sceneHost;
+    private readonly IBundleMessageBus? _messageBus;
     private readonly Dictionary<string, LoadedBundle> _bundles = new();
     private readonly HashSet<string> _hostAssemblyNames;
 
@@ -26,12 +27,14 @@ public sealed class BundleHost : IBundleHost
         IGodotBundleVfs vfs,
         IDllExtractor extractor,
         IBundleServiceRegistry registry,
-        IBundleSceneHost? sceneHost = null)
+        IBundleSceneHost? sceneHost = null,
+        IBundleMessageBus? messageBus = null)
     {
         _vfs = vfs;
         _extractor = extractor;
         _registry = registry;
         _sceneHost = sceneHost;
+        _messageBus = messageBus;
 
         // Host assemblies whose types must match between host and plugins
         _hostAssemblyNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
@@ -166,6 +169,29 @@ public sealed class BundleHost : IBundleHost
         {
             await UnloadAsync(id, cancellationToken);
         }
+    }
+
+    public BundleSystemSnapshot CaptureSnapshot()
+    {
+        var bundles = _bundles.Values.Select(b => new BundleSnapshot(
+            b.Info.Id,
+            b.Info.Manifest,
+            b.Info.Status,
+            b.Info.LoadedAt,
+            b.LoadContext is not null,
+            _sceneHost?.GetTrackedNodes(b.Info.Id) ?? []
+        )).ToList();
+
+        var messageBusSnapshot = _messageBus is not null
+            ? new MessageBusSnapshot(_messageBus.ActiveChannelCount)
+            : null;
+
+        return new BundleSystemSnapshot(
+            DateTimeOffset.UtcNow,
+            bundles,
+            _registry.RegisteredTypeNames,
+            messageBusSnapshot
+        );
     }
 
     private BundleManifest ParseManifest(string pckPath)

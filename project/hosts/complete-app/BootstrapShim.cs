@@ -23,7 +23,7 @@ public partial class BootstrapShim : Node
         var sceneHost = new GodotBundleSceneHost(this);
         _messageBus = new MessagePipeBundleMessageBus();
 
-        _bundleHost = new BundleHost(vfs, extractor, registry, sceneHost);
+        _bundleHost = new BundleHost(vfs, extractor, registry, sceneHost, _messageBus);
         Registry = registry;
 
         registry.Register<IBundleMessageBus>(_messageBus);

@@ -46,6 +46,8 @@ public sealed class MessagePipeBundleMessageBus : IBundleMessageBus, IDisposable
         return subscriber.Subscribe(new AsyncHandlerAdapter<T>(handler));
     }
 
+    public int ActiveChannelCount => _subscribers.Count;
+
     public void Dispose()
     {
         _provider.Dispose();

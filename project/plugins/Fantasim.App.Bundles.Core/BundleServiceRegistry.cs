@@ -28,4 +28,7 @@ public sealed class BundleServiceRegistry : IBundleServiceRegistry
     {
         return _services.TryGetValue(typeof(T), out var service) ? (T)service : null;
     }
+
+    public IReadOnlyList<string> RegisteredTypeNames =>
+        _services.Keys.Select(t => t.FullName ?? t.Name).ToList();
 }
