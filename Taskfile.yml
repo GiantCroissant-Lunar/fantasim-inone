@@ -1,9 +1,10 @@
 version: '3'
 
 vars:
-  GODOT_PATH: godot4
+  GODOT_PATH: C:/lunar-horse/tools/Godot_v4.6-stable_mono_win64/Godot_v4.6-stable_mono_win64_console.exe
   PROJECT_PATH: project/hosts/complete-app
   SLN_PATH: fantasim-inone.sln
+  EXPORT_PATH: project/hosts/complete-app/exports/complete-app.exe
 
 tasks:
   default:
@@ -61,6 +62,18 @@ tasks:
     desc: Run the project in headless mode
     cmds:
       - '{{.GODOT_PATH}} --path {{.PROJECT_PATH}} --headless'
+
+  export:
+    desc: Export debug build for Windows
+    deps: [build]
+    cmds:
+      - '"{{.GODOT_PATH}}" --path {{.PROJECT_PATH}} --headless --export-debug "Windows Desktop"'
+
+  export:run:
+    desc: Export and run the app with 8s timeout for smoke testing
+    deps: [export]
+    cmds:
+      - 'timeout 8 "{{.EXPORT_PATH}}" -- --verbose || true'
 
   pre-commit:install:
     desc: Install pre-commit hooks
