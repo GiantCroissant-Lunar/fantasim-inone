@@ -118,8 +118,37 @@ tasks:
     cmds:
       - 'dotnet-gitversion /output json 2>nul | python -c "import sys,json;d=json.load(sys.stdin);print(d[''FullSemVer''])"'
 
+  bundle:gen:
+    desc: Generate bundle .tscn from Figma design files via boom-hud
+    vars:
+      BOOMHUD_CLI: C:/lunar-horse/plate-projects/boom-hud/dotnet/src/BoomHud.Cli/BoomHud.Cli.csproj
+    cmds:
+      - mkdir -p build/_gen/toolbar build/_gen/inspector
+      # Generate toolbar .tscn
+      - >-
+        dotnet run --project {{.BOOMHUD_CLI}} -c Release -- generate
+        project/bundles/com.fantasim.hud_toolbar/design/toolbar.figma.json
+        --annotations project/bundles/com.fantasim.hud_toolbar/design/toolbar.annotations.json
+        --target godot --tscn-no-script --output build/_gen/toolbar
+      - cp build/_gen/toolbar/ToolbarView.tscn project/bundles/com.fantasim.hud_toolbar/scenes/toolbar.tscn
+      - >-
+        python tools/attach_gdscript.py
+        project/bundles/com.fantasim.hud_toolbar/scenes/toolbar.tscn
+        "res://bundles/com.fantasim.hud_toolbar/scripts/toolbar.gd"
+      # Generate inspector .tscn
+      - >-
+        dotnet run --project {{.BOOMHUD_CLI}} -c Release -- generate
+        project/bundles/com.fantasim.hud_inspector/design/inspector.figma.json
+        --target godot --tscn-no-script --output build/_gen/inspector
+      - cp build/_gen/inspector/InspectorView.tscn project/bundles/com.fantasim.hud_inspector/scenes/inspector.tscn
+      - >-
+        python tools/attach_gdscript.py
+        project/bundles/com.fantasim.hud_inspector/scenes/inspector.tscn
+        "res://bundles/com.fantasim.hud_inspector/scripts/inspector.gd"
+
   bundle:pack:
     desc: Pack GDScript bundles into PCK files
+    deps: [bundle:gen]
     cmds:
       - mkdir -p build/_bundles
       - '"{{.GODOT_PATH}}" --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_toolbar build/_bundles/com.fantasim.hud_toolbar.pck'
