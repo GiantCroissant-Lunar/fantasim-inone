@@ -1,1 +1,28 @@
+# IDE
 .vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# .NET build artifacts
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+*.dll
+*.exe
+*.pdb
+*.nupkg
+
+# Godot
+.godot/
+*.import
+
+# Bundle artifacts
+.bundle-temp/
+
+# OS
+Thumbs.db
+.DS_Store

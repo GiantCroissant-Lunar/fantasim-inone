@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Fantasim.App.Bundles.Tests</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="FluentAssertions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\contracts\Fantasim.App.Bundles.Contracts\Fantasim.App.Bundles.Contracts.csproj" />
+    <ProjectReference Include="..\..\plugins\Fantasim.App.Bundles.Core\Fantasim.App.Bundles.Core.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,98 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+
+# Solution Folders
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "contracts", "contracts", "{A1B2C3D4-0001-0001-0001-000000000001}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plugins", "plugins", "{A1B2C3D4-0001-0001-0001-000000000002}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "hosts", "hosts", "{A1B2C3D4-0001-0001-0001-000000000003}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{A1B2C3D4-0001-0001-0001-000000000004}"
+EndProject
+
+# Contracts
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fantasim.App.Bundles.Contracts", "project\contracts\Fantasim.App.Bundles.Contracts\Fantasim.App.Bundles.Contracts.csproj", "{B1000001-0001-0001-0001-000000000001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fantasim.World.Plates.Contracts", "project\contracts\Fantasim.World.Plates.Contracts\Fantasim.World.Plates.Contracts.csproj", "{B1000001-0001-0001-0001-000000000002}"
+EndProject
+
+# Plugins
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fantasim.App.Bundles.Core", "project\plugins\Fantasim.App.Bundles.Core\Fantasim.App.Bundles.Core.csproj", "{B2000001-0001-0001-0001-000000000001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fantasim.World.Plates.Topology", "project\plugins\Fantasim.World.Plates.Topology\Fantasim.World.Plates.Topology.csproj", "{B2000001-0001-0001-0001-000000000002}"
+EndProject
+
+# Hosts
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "complete-app", "project\hosts\complete-app\complete-app.csproj", "{B3000001-0001-0001-0001-000000000001}"
+EndProject
+
+# Tests
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fantasim.App.Bundles.Tests", "project\tests\Fantasim.App.Bundles.Tests\Fantasim.App.Bundles.Tests.csproj", "{B4000001-0001-0001-0001-000000000001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fantasim.World.Plates.Tests", "project\tests\Fantasim.World.Plates.Tests\Fantasim.World.Plates.Tests.csproj", "{B4000001-0001-0001-0001-000000000002}"
+EndProject
+
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		ExportDebug|Any CPU = ExportDebug|Any CPU
+		ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B1000001-0001-0001-0001-000000000001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1000001-0001-0001-0001-000000000001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1000001-0001-0001-0001-000000000001}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1000001-0001-0001-0001-000000000001}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{B1000001-0001-0001-0001-000000000001}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1000001-0001-0001-0001-000000000001}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{B1000001-0001-0001-0001-000000000002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1000001-0001-0001-0001-000000000002}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1000001-0001-0001-0001-000000000002}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1000001-0001-0001-0001-000000000002}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{B1000001-0001-0001-0001-000000000002}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1000001-0001-0001-0001-000000000002}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{B2000001-0001-0001-0001-000000000001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2000001-0001-0001-0001-000000000001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2000001-0001-0001-0001-000000000001}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2000001-0001-0001-0001-000000000001}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{B2000001-0001-0001-0001-000000000001}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2000001-0001-0001-0001-000000000001}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{B2000001-0001-0001-0001-000000000002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2000001-0001-0001-0001-000000000002}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2000001-0001-0001-0001-000000000002}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2000001-0001-0001-0001-000000000002}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{B2000001-0001-0001-0001-000000000002}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2000001-0001-0001-0001-000000000002}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{B3000001-0001-0001-0001-000000000001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3000001-0001-0001-0001-000000000001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3000001-0001-0001-0001-000000000001}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{B3000001-0001-0001-0001-000000000001}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{B3000001-0001-0001-0001-000000000001}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{B3000001-0001-0001-0001-000000000001}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{B4000001-0001-0001-0001-000000000001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4000001-0001-0001-0001-000000000001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4000001-0001-0001-0001-000000000001}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4000001-0001-0001-0001-000000000001}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{B4000001-0001-0001-0001-000000000001}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4000001-0001-0001-0001-000000000001}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{B4000001-0001-0001-0001-000000000002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4000001-0001-0001-0001-000000000002}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4000001-0001-0001-0001-000000000002}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4000001-0001-0001-0001-000000000002}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{B4000001-0001-0001-0001-000000000002}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4000001-0001-0001-0001-000000000002}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B1000001-0001-0001-0001-000000000001} = {A1B2C3D4-0001-0001-0001-000000000001}
+		{B1000001-0001-0001-0001-000000000002} = {A1B2C3D4-0001-0001-0001-000000000001}
+		{B2000001-0001-0001-0001-000000000001} = {A1B2C3D4-0001-0001-0001-000000000002}
+		{B2000001-0001-0001-0001-000000000002} = {A1B2C3D4-0001-0001-0001-000000000002}
+		{B3000001-0001-0001-0001-000000000001} = {A1B2C3D4-0001-0001-0001-000000000003}
+		{B4000001-0001-0001-0001-000000000001} = {A1B2C3D4-0001-0001-0001-000000000004}
+		{B4000001-0001-0001-0001-000000000002} = {A1B2C3D4-0001-0001-0001-000000000004}
+	EndGlobalSection
+EndGlobal
