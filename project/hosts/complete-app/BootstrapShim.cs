@@ -16,6 +16,7 @@ public partial class BootstrapShim : Node
     private DockManager? _dockManager;
     private MenuService? _menuService;
     private StatusService? _statusService;
+    private VerificationService? _verificationService;
 
     public IBundleHost? BundleHost => _bundleHost;
     public IBundleServiceRegistry? Registry { get; private set; }
@@ -51,8 +52,21 @@ public partial class BootstrapShim : Node
 
         GD.Print("[Bootstrap] BundleHost created");
 
+        // Start verification service if --verify flag is present
+        var args = OS.GetCmdlineUserArgs();
+        if (args.Contains("--verify"))
+        {
+            _verificationService = new VerificationService(this);
+            _verificationService.Start();
+        }
+
         // Defer autoload to ensure Main scene is fully ready
         CallDeferred(MethodName.AutoLoadSystemBundles);
+    }
+
+    public override void _Process(double delta)
+    {
+        _verificationService?.ProcessFrame();
     }
 
     public override void _ExitTree()
