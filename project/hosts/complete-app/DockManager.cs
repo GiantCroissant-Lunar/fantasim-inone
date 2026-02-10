@@ -1,3 +1,4 @@
+using FantaSim.App.Bundles.Contracts;
 using Godot;
 
 namespace FantaSim.App;
@@ -6,7 +7,7 @@ namespace FantaSim.App;
 /// Manages named dock slots backed by TabContainers.
 /// Bundles dock panels into slots by name; undocking removes them.
 /// </summary>
-public sealed class DockManager
+public sealed class DockManager : IDockService
 {
     public static class Slots
     {
@@ -16,6 +17,8 @@ public sealed class DockManager
 
     private readonly Dictionary<string, TabContainer> _slots = new();
     private readonly Dictionary<string, List<(string SlotName, Control Panel)>> _dockedPanels = new();
+
+    public bool HasSlot(string name) => _slots.ContainsKey(name);
 
     public void RegisterSlot(string name, TabContainer container)
     {

@@ -1,3 +1,4 @@
+using FantaSim.App.Bundles.Contracts;
 using Godot;
 
 namespace FantaSim.App;
@@ -6,7 +7,7 @@ namespace FantaSim.App;
 /// Thin wrapper for the status label and shared file dialog.
 /// Bundles call this to show status text or trigger the PCK file picker.
 /// </summary>
-public sealed class StatusService
+public sealed class StatusService : IStatusService
 {
     private Label? _statusLabel;
     private FileDialog? _fileDialog;

@@ -1,3 +1,4 @@
+using FantaSim.App.Bundles.Contracts;
 using Godot;
 
 namespace FantaSim.App;
@@ -5,7 +6,7 @@ namespace FantaSim.App;
 /// <summary>
 /// Wraps the host MenuBar. Bundles call this to add/remove menus and items.
 /// </summary>
-public sealed class MenuService
+public sealed class MenuService : IMenuService
 {
     private MenuBar? _menuBar;
     private readonly Dictionary<string, PopupMenu> _menus = new();

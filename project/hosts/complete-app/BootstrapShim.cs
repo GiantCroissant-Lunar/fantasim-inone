@@ -49,6 +49,9 @@ public partial class BootstrapShim : Node
         Registry = registry;
 
         registry.Register<IBundleMessageBus>(_messageBus);
+        registry.Register<IStatusService>(_statusService);
+        registry.Register<IDockService>(_dockManager);
+        registry.Register<IMenuService>(_menuService);
 
         GD.Print("[Bootstrap] BundleHost created");
 
