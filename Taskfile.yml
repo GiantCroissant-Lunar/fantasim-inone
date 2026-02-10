@@ -4,7 +4,7 @@ vars:
   GODOT_PATH: C:/lunar-horse/tools/Godot_v4.6-stable_mono_win64/Godot_v4.6-stable_mono_win64_console.exe
   PROJECT_PATH: project/hosts/complete-app
   SLN_PATH: fantasim-inone.sln
-  GITVERSION_CMD: 'dotnet-gitversion /output json 2>nul | python -c "import sys,json;print(json.load(sys.stdin)[''MajorMinorPatch''])"'
+  GITVERSION_CMD: 'dotnet-gitversion /output json 2>nul | python -c "import sys,json;print(json.load(sys.stdin)[''SemVer''])"'
   UNIFY: dotnet tool run unify-build --
 
 tasks:
@@ -33,7 +33,7 @@ tasks:
       - '{{.UNIFY}} PackProjects --configuration {{.CONFIGURATION}}'
     env:
       GITVERSION_MAJORMINORPATCH:
-        sh: '{{.GITVERSION_CMD}}'
+        sh: 'dotnet-gitversion /output json 2>nul | python -c "import sys,json;print(json.load(sys.stdin)[''MajorMinorPatch''])"'
 
   publish:
     desc: Publish plugins and bundles
@@ -44,7 +44,7 @@ tasks:
       - '{{.UNIFY}} PublishProjects --configuration {{.CONFIGURATION}}'
     env:
       GITVERSION_MAJORMINORPATCH:
-        sh: '{{.GITVERSION_CMD}}'
+        sh: 'dotnet-gitversion /output json 2>nul | python -c "import sys,json;print(json.load(sys.stdin)[''MajorMinorPatch''])"'
 
   test:
     desc: Run all xunit tests
