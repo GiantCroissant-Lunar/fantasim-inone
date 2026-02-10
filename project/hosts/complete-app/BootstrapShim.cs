@@ -34,7 +34,8 @@ public partial class BootstrapShim : Node
         _menuService = new MenuService();
         _statusService = new StatusService();
 
-        var sceneHost = new GodotBundleSceneHost(this, _dockManager);
+        var mainNode = GetTree().Root.GetNode("Main");
+        var sceneHost = new GodotBundleSceneHost(this, _dockManager, shellTarget: mainNode);
 
         _bundleHost = new BundleHost(vfs, extractor, registry, sceneHost, _messageBus);
         Registry = registry;

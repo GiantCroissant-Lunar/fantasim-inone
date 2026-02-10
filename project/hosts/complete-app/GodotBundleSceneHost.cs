@@ -12,12 +12,14 @@ public sealed class GodotBundleSceneHost : IBundleSceneHost
 {
     private readonly Node _container;
     private readonly DockManager? _dockManager;
+    private readonly Node? _shellTarget;
     private readonly Dictionary<string, List<Node>> _tracked = new();
 
-    public GodotBundleSceneHost(Node container, DockManager? dockManager = null)
+    public GodotBundleSceneHost(Node container, DockManager? dockManager = null, Node? shellTarget = null)
     {
         _container = container;
         _dockManager = dockManager;
+        _shellTarget = shellTarget;
     }
 
     public void OnBundleLoaded(string bundleId, BundleManifest manifest)
@@ -39,10 +41,15 @@ public sealed class GodotBundleSceneHost : IBundleSceneHost
 
         var instance = scene.Instantiate();
 
-        // Route: if bundle declares a dock target, dock it; otherwise add as child
-        if (manifest.DockTarget is not null && _dockManager is not null && instance is Control control)
+        // Route: shell → shellTarget, dock → dockManager, fallback → container
+        if (manifest.Role == "shell" && _shellTarget is not null && instance is Control shellControl)
         {
-            _dockManager.DockPanel(bundleId, manifest.DockTarget, control, manifest.DisplayName);
+            shellControl.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
+            _shellTarget.AddChild(shellControl);
+        }
+        else if (manifest.DockTarget is not null && _dockManager is not null && instance is Control dockControl)
+        {
+            _dockManager.DockPanel(bundleId, manifest.DockTarget, dockControl, manifest.DisplayName);
         }
         else
         {
