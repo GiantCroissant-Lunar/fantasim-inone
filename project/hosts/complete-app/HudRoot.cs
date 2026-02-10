@@ -125,6 +125,9 @@ public partial class HudRoot : HSplitContainer
     {
         if (_bundleHost is null) return;
 
+        // Preserve selection across refresh
+        var previousSelection = GetSelectedBundleId();
+
         var snapshot = _bundleHost.CaptureSnapshot();
         _snapshotTree.Clear();
 
@@ -155,6 +158,12 @@ public partial class HudRoot : HSplitContainer
                 {
                     AddDetail(nodesItem, node);
                 }
+            }
+
+            // Restore selection
+            if (bundle.Id == previousSelection)
+            {
+                bundleItem.Select(0);
             }
         }
 
