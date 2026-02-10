@@ -7,6 +7,7 @@ namespace Fantasim.App;
 /// <summary>
 /// Godot autoload node. Creates BundleHost + services in _Ready(),
 /// exposes methods callable from GDScript bundles.
+/// Shell bundle wires dock slots via RegisterDockSlot/SetMenuBar/etc.
 /// </summary>
 public partial class BootstrapShim : Node
 {
@@ -21,6 +22,12 @@ public partial class BootstrapShim : Node
     public DockManager? DockManager => _dockManager;
     public MenuService? MenuService => _menuService;
     public StatusService? StatusService => _statusService;
+
+    [Signal]
+    public delegate void ShellReadyEventHandler();
+
+    [Signal]
+    public delegate void AllBundlesLoadedEventHandler();
 
     public override void _Ready()
     {
@@ -42,7 +49,10 @@ public partial class BootstrapShim : Node
 
         registry.Register<IBundleMessageBus>(_messageBus);
 
-        GD.Print("[Bootstrap] BundleHost created (scene host + message bus wired)");
+        GD.Print("[Bootstrap] BundleHost created");
+
+        // Defer autoload to ensure Main scene is fully ready
+        CallDeferred(MethodName.AutoLoadSystemBundles);
     }
 
     public override void _ExitTree()
@@ -54,6 +64,29 @@ public partial class BootstrapShim : Node
         }
 
         _messageBus?.Dispose();
+    }
+
+    // -- GDScript-callable service wiring (called by shell bundle) --
+
+    public void RegisterDockSlot(string name, TabContainer container)
+    {
+        _dockManager?.RegisterSlot(name, container);
+        GD.Print($"[Bootstrap] Dock slot registered: {name}");
+    }
+
+    public void SetMenuBar(MenuBar menuBar)
+    {
+        _menuService?.SetMenuBar(menuBar);
+    }
+
+    public void SetStatusLabel(Label label)
+    {
+        _statusService?.SetStatusLabel(label);
+    }
+
+    public void SetFileDialog(FileDialog dialog)
+    {
+        _statusService?.SetFileDialog(dialog);
     }
 
     // -- GDScript-callable methods --
@@ -168,5 +201,74 @@ public partial class BootstrapShim : Node
         result["messageBusChannels"] = snapshot.MessageBus?.ActiveChannelCount ?? 0;
 
         return result;
+    }
+
+    // -- Two-phase autoload --
+
+    public async void AutoLoadSystemBundles()
+    {
+        if (_bundleHost is null) return;
+
+        const string directory = "res://system_bundles";
+        var dir = DirAccess.Open(directory);
+        if (dir is null)
+        {
+            GD.Print($"[Bootstrap] No system bundles directory at {directory}");
+            return;
+        }
+
+        // Discover all .pck files, separating shell from control bundles
+        var shellPcks = new System.Collections.Generic.List<string>();
+        var controlPcks = new System.Collections.Generic.List<string>();
+
+        dir.ListDirBegin();
+        var fileName = dir.GetNext();
+        while (!string.IsNullOrEmpty(fileName))
+        {
+            if (fileName.EndsWith(".pck"))
+            {
+                var path = $"{directory}/{fileName}";
+                if (fileName.Contains("shell"))
+                    shellPcks.Add(path);
+                else
+                    controlPcks.Add(path);
+            }
+            fileName = dir.GetNext();
+        }
+
+        // Phase 1: Load shell bundle(s) first
+        foreach (var pck in shellPcks)
+        {
+            try
+            {
+                await _bundleHost.LoadAsync(pck);
+                GD.Print($"[Bootstrap] Shell loaded: {pck.GetFile()}");
+            }
+            catch (System.Exception ex)
+            {
+                GD.PrintErr($"[Bootstrap] Failed to load shell {pck.GetFile()}: {ex.Message}");
+            }
+        }
+
+        // Wait one frame for shell's _ready() to wire dock slots
+        await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+        EmitSignal(SignalName.ShellReady);
+
+        // Phase 2: Load remaining control bundles
+        foreach (var pck in controlPcks)
+        {
+            try
+            {
+                await _bundleHost.LoadAsync(pck);
+                GD.Print($"[Bootstrap] Auto-loaded: {pck.GetFile()}");
+            }
+            catch (System.Exception ex)
+            {
+                GD.PrintErr($"[Bootstrap] Failed to auto-load {pck.GetFile()}: {ex.Message}");
+            }
+        }
+
+        GD.Print("[Bootstrap] All bundles loaded");
+        EmitSignal(SignalName.AllBundlesLoaded);
     }
 }
