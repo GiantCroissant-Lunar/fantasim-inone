@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <RootNamespace>Fantasim.World.Plates.Topology</RootNamespace>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\contracts\Fantasim.World.Plates.Contracts\Fantasim.World.Plates.Contracts.csproj" />
-  </ItemGroup>
-</Project>

@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <RootNamespace>Fantasim.App.Bundles.Core</RootNamespace>
+    <AssemblyName>FantaSim.App.Bundles.Core</AssemblyName>
+    <RootNamespace>FantaSim.App.Bundles.Core</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,6 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\contracts\Fantasim.App.Bundles.Contracts\Fantasim.App.Bundles.Contracts.csproj" />
+    <ProjectReference Include="..\..\contracts\App.Bundles.Contracts\App.Bundles.Contracts.csproj" />
   </ItemGroup>
 </Project>
