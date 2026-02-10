@@ -2,7 +2,7 @@
   "id": "com.fantasim.plate_viewer",
   "version": "0.1.0",
   "displayName": "Plate Viewer",
-  "entryAssembly": "Fantasim.Bundles.PlateViewer.dll",
+  "entryAssembly": "FantaSim.Bundles.PlateViewer.dll",
   "rootScene": null,
   "dependencies": []
 }
