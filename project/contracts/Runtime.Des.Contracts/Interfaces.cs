@@ -1,3 +1,10 @@
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using FantaSim.Geosphere.Plate.Topology.Contracts.Events;
+using Plate.TimeDete.Determinism.Abstractions;
+using Plate.TimeDete.Time.Primitives;
+
 namespace FantaSim.Geosphere.Plate.Runtime.Des.Contracts;
 
 /// <summary>
@@ -11,11 +18,27 @@ public interface IDriver;
 public interface ITrigger;
 
 /// <summary>
-/// A driver that can be executed within the DES loop.
+/// A driver that can be executed synchronously within the DES loop.
 /// </summary>
 public interface IExecutableDriver : IDriver
 {
     DriverOutput Execute(DesContext context);
+}
+
+/// <summary>
+/// A driver that evaluates asynchronously within the DES loop.
+/// </summary>
+public interface IAsyncDriver : IDriver
+{
+    Task<DriverOutput> EvaluateAsync(DesContext context, CancellationToken ct = default);
+}
+
+/// <summary>
+/// A trigger that emits truth event drafts from a driver's output.
+/// </summary>
+public interface IExecutableTrigger : ITrigger
+{
+    IReadOnlyList<ITruthEventDraft> EmitDrafts(DriverOutput output, CanonicalTick tick, ISeededRng rng);
 }
 
 /// <summary>
