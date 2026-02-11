@@ -1,5 +1,6 @@
 using System.Text.Json;
 using FantaSim.App.Bundles.Contracts;
+using FantaSim.App.Bundles.Contracts.Interaction.Events;
 using FantaSim.App.Bundles.Core;
 using FantaSim.App.Bundles.Tests.Fakes;
 using FluentAssertions;
@@ -13,13 +14,14 @@ public class BundleHostTests
     private readonly BundleServiceRegistry _registry = new();
     private readonly DllExtractor _extractor;
     private readonly FakeBundleSceneHost _sceneHost = new();
+    private readonly MessagePipeBundleMessageBus _bus = new();
     private readonly BundleHost _host;
 
     public BundleHostTests()
     {
         var tempDir = Path.Combine(Path.GetTempPath(), $"bundle-test-{Guid.NewGuid():N}");
         _extractor = new DllExtractor(tempDir);
-        _host = new BundleHost(_vfs, _extractor, _registry, _sceneHost);
+        _host = new BundleHost(_vfs, _extractor, _registry, _sceneHost, _bus);
     }
 
     [Fact]
@@ -126,6 +128,52 @@ public class BundleHostTests
 
         _sceneHost.UnloadingCalls.Should().ContainSingle()
             .Which.Should().Be("test.bundle");
+    }
+
+    [Fact]
+    public async Task LoadAsync_publishes_BundleLoadedEvent()
+    {
+        SetupFakeBundleNoDll("test.bundle");
+        BundleLoadedEvent? received = null;
+        using var sub = _bus.Subscribe<BundleLoadedEvent>(e => received = e);
+
+        await _host.LoadAsync("test.bundle.pck");
+
+        received.Should().NotBeNull();
+        received!.BundleId.Should().Be("test.bundle");
+        received.Manifest.Id.Should().Be("test.bundle");
+    }
+
+    [Fact]
+    public async Task UnloadAsync_publishes_BundleUnloadedEvent()
+    {
+        SetupFakeBundleNoDll("test.bundle");
+        await _host.LoadAsync("test.bundle.pck");
+
+        BundleUnloadedEvent? received = null;
+        using var sub = _bus.Subscribe<BundleUnloadedEvent>(e => received = e);
+
+        await _host.UnloadAsync("test.bundle");
+
+        received.Should().NotBeNull();
+        received!.BundleId.Should().Be("test.bundle");
+    }
+
+    [Fact]
+    public async Task UnloadAllAsync_publishes_event_for_each_bundle()
+    {
+        SetupFakeBundleNoDll("bundle.a");
+        SetupFakeBundleNoDll("bundle.b");
+        await _host.LoadAsync("bundle.a.pck");
+        await _host.LoadAsync("bundle.b.pck");
+
+        var received = new List<BundleUnloadedEvent>();
+        using var sub = _bus.Subscribe<BundleUnloadedEvent>(e => received.Add(e));
+
+        await _host.UnloadAllAsync();
+
+        received.Should().HaveCount(2);
+        received.Select(e => e.BundleId).Should().BeEquivalentTo(["bundle.a", "bundle.b"]);
     }
 
     private void SetupFakeBundle(string bundleId, string entryAssembly)

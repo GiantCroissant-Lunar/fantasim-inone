@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Runtime.Loader;
 using System.Text.Json;
 using FantaSim.App.Bundles.Contracts;
+using FantaSim.App.Bundles.Contracts.Interaction.Events;
 
 namespace FantaSim.App.Bundles.Core;
 
@@ -90,6 +91,9 @@ public sealed class BundleHost : IBundleHost
         // 6. Notify scene host
         _sceneHost?.OnBundleLoaded(manifest.Id, manifest);
 
+        // 7. Publish lifecycle event (after scene host — listeners see a fully ready bundle)
+        _messageBus?.Publish(new BundleLoadedEvent(manifest.Id, manifest));
+
         await Task.CompletedTask;
         return info;
     }
@@ -104,7 +108,10 @@ public sealed class BundleHost : IBundleHost
         // 1. Notify scene host before teardown
         _sceneHost?.OnBundleUnloading(bundleId);
 
-        // 2. Deregister service modules + unload ALC (only if assembly exists)
+        // 2. Publish lifecycle event (before deregistration — listeners can still resolve services)
+        _messageBus?.Publish(new BundleUnloadedEvent(bundleId));
+
+        // 3. Deregister service modules + unload ALC (only if assembly exists)
         if (loaded.Assembly is not null)
         {
             InvokeServiceModules(loaded.Assembly, register: false);

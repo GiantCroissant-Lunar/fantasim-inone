@@ -1,5 +1,6 @@
 using FantaSim.App.Bundles.Contracts;
 using FantaSim.App.Bundles.Contracts.Interaction.Commands;
+using FantaSim.App.Bundles.Contracts.Interaction.Events;
 using FantaSim.App.Bundles.Contracts.Interaction.Selection;
 using FantaSim.App.Bundles.Core;
 using Godot;
@@ -22,6 +23,8 @@ public partial class BootstrapShim : Node
     private SelectionService? _selectionService;
     private CommandHistory? _commandHistory;
     private GdScriptCommandRouter? _commandRouter;
+    private IDisposable? _bundleLoadedSub;
+    private IDisposable? _bundleUnloadedSub;
 
     public IBundleHost? BundleHost => _bundleHost;
     public IBundleServiceRegistry? Registry { get; private set; }
@@ -34,6 +37,9 @@ public partial class BootstrapShim : Node
 
     [Signal]
     public delegate void AllBundlesLoadedEventHandler();
+
+    [Signal]
+    public delegate void BundleChangedEventHandler(string bundleId);
 
     public override void _Ready()
     {
@@ -67,6 +73,12 @@ public partial class BootstrapShim : Node
         // Command router (subscribes to GdScriptCommand on the bus)
         _commandRouter = new GdScriptCommandRouter(_messageBus, _selectionService, _bundleHost);
 
+        // Bridge bundle lifecycle events to Godot signals for GDScript consumers
+        _bundleLoadedSub = _messageBus.Subscribe<BundleLoadedEvent>(e =>
+            CallDeferred("emit_signal", SignalName.BundleChanged, e.BundleId));
+        _bundleUnloadedSub = _messageBus.Subscribe<BundleUnloadedEvent>(e =>
+            CallDeferred("emit_signal", SignalName.BundleChanged, e.BundleId));
+
         GD.Print("[Bootstrap] BundleHost created");
 
         // Start verification service if --verify flag is present
@@ -88,6 +100,8 @@ public partial class BootstrapShim : Node
 
     public override void _ExitTree()
     {
+        _bundleLoadedSub?.Dispose();
+        _bundleUnloadedSub?.Dispose();
         _commandRouter?.Dispose();
 
         if (_bundleHost is not null)

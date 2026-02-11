@@ -1,7 +1,6 @@
 extends VBoxContainer
 
 var _tree: Tree
-var _timer: Timer
 var _previous_selection: String = ""
 
 
@@ -17,12 +16,9 @@ func _ready():
 	var container = $treeContainer
 	container.add_child(_tree)
 
-	# Auto-refresh every 2 seconds
-	_timer = Timer.new()
-	_timer.wait_time = 2.0
-	_timer.autostart = true
-	_timer.timeout.connect(_refresh_snapshot)
-	add_child(_timer)
+	# Refresh on bundle lifecycle changes instead of polling
+	var bootstrap = get_node("/root/Bootstrap")
+	bootstrap.connect("BundleChanged", _on_bundle_changed)
 
 	_refresh_snapshot()
 	print("[Inspector Bundle] ready")
@@ -84,10 +80,9 @@ func _refresh_snapshot():
 	var bus_root = _tree.create_item(root_item)
 	bus_root.set_text(0, "MessageBus (channels: %d)" % channels)
 
-	bootstrap.call(
-		"ShowStatus",
-		"Snapshot at %s" % snapshot.get("capturedAt", "?"),
-	)
+
+func _on_bundle_changed(_bundle_id: String):
+	_refresh_snapshot()
 
 
 func _add_detail(parent_item: TreeItem, text: String):
