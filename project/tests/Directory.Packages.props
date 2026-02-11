@@ -12,6 +12,10 @@
     <!-- Assertions -->
     <PackageVersion Include="FluentAssertions" Version="8.2.0" />
 
+    <!-- Messaging & DI (needed by App.Bundles.Tests) -->
+    <PackageVersion Include="MessagePipe" Version="1.8.1" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+
     <!-- Mocking -->
     <PackageVersion Include="NSubstitute" Version="5.3.0" />
 

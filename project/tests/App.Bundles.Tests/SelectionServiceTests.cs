@@ -1,6 +1,7 @@
 using FantaSim.App.Bundles.Contracts.Interaction.Selection;
 using FantaSim.App.Bundles.Core;
 using FluentAssertions;
+using Xunit;
 
 namespace FantaSim.App.Bundles.Tests;
 
