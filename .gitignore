@@ -19,6 +19,7 @@ obj/
 # Godot
 .godot/
 *.import
+*.uid
 
 # Bundle artifacts
 .bundle-temp/
