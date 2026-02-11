@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;netstandard2.1</TargetFrameworks>
+    <LangVersion>12.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>FantaSim.World.Contracts</RootNamespace>
+    <PackageId>GiantCroissant.FantaSim.World.Shared.Contracts</PackageId>
+    <AssemblyName>World.Shared.Contracts</AssemblyName>
+    <Version>$(Version)</Version>
+    <Authors>Lunar Horse</Authors>
+    <Description>Cross-domain shared contracts for FantaSim world simulation</Description>
+    <PackageTags>fantasim;contracts;world;shared</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TimeDete.Time.Primitives" />
+    <PackageReference Include="GiantCroissant.Plate.SCG.General.AutoToString.Attributes" />
+  </ItemGroup>
+
+</Project>
