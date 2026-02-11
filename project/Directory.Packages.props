@@ -17,6 +17,15 @@
     <PackageVersion Include="MessagePipe" Version="1.8.1" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
 
+    <!-- ServiceArchi -->
+    <PackageVersion Include="GiantCroissant.Plate.ServiceArchi.Contracts" Version="0.1.0" />
+    <PackageVersion Include="GiantCroissant.Plate.ServiceArchi.Core" Version="0.1.0" />
+    <PackageVersion Include="GiantCroissant.Plate.ServiceArchi.SourceGen" Version="0.1.0" />
+
+    <!-- Crosscut Messaging -->
+    <PackageVersion Include="GiantCroissant.Crosscut.Messaging.Contracts" Version="0.1.0" />
+    <PackageVersion Include="GiantCroissant.Crosscut.Messaging.MessagePipe" Version="0.1.0" />
+
     <!-- Godot -->
     <PackageVersion Include="Godot.NET.Sdk" Version="4.6.0" />
 
