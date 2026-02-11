@@ -23,6 +23,7 @@
     <!-- Infrastructure (transitive from Geosphere.Plate.Testing.Storage) -->
     <PackageVersion Include="UnifyStorage.Abstractions" Version="0.1.0" />
     <PackageVersion Include="TimeDete.Time.Primitives" Version="0.1.0" />
+    <PackageVersion Include="UnifyGeometry.Primitives" Version="0.1.0" />
 
     <!-- Mocking -->
     <PackageVersion Include="NSubstitute" Version="5.3.0" />
