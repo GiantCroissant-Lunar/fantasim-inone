@@ -45,7 +45,7 @@ public sealed class BundleHost : IBundleHost
         _hostAssemblyNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             "FantaSim.App.Bundles.Contracts",
-            "FantaSim.Geosphere.Plates.Contracts",
+            "Geosphere.Plate.Topology.Contracts",
             "ServiceArchi.Contracts",
             "System.Runtime",
             "System.Private.CoreLib",

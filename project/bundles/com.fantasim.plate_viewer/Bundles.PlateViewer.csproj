@@ -6,6 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\contracts\App.Bundles.Contracts\App.Bundles.Contracts.csproj" />
-    <ProjectReference Include="..\..\contracts\Geosphere.Plates.Contracts\Geosphere.Plates.Contracts.csproj" />
+    <ProjectReference Include="..\..\contracts\Geosphere.Plate.Topology.Contracts\Geosphere.Plate.Topology.Contracts.csproj" />
   </ItemGroup>
 </Project>
