@@ -1,30 +1,7 @@
 <Project>
-  <PropertyGroup>
-    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-  </PropertyGroup>
+  <Import Project="..\Directory.Packages.props" />
 
   <ItemGroup>
-    <!-- Test Framework -->
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
-    <PackageVersion Include="xunit" Version="2.9.3" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.2" />
-
-    <!-- Assertions -->
-    <PackageVersion Include="FluentAssertions" Version="8.2.0" />
-
-    <!-- Messaging & DI (needed by App.Bundles.Tests) -->
-    <PackageVersion Include="MessagePipe" Version="1.8.1" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
-
-    <!-- ServiceArchi (needed by App.Bundles.Tests) -->
-    <PackageVersion Include="GiantCroissant.Plate.ServiceArchi.Contracts" Version="0.1.0" />
-    <PackageVersion Include="GiantCroissant.Plate.ServiceArchi.Core" Version="0.1.0" />
-
-    <!-- Infrastructure (transitive from Geosphere.Plate.Testing.Storage) -->
-    <PackageVersion Include="UnifyStorage.Abstractions" Version="0.1.0" />
-    <PackageVersion Include="TimeDete.Time.Primitives" Version="0.1.0" />
-    <PackageVersion Include="UnifyGeometry.Primitives" Version="0.1.0" />
-
     <!-- Mocking -->
     <PackageVersion Include="NSubstitute" Version="5.3.0" />
 
