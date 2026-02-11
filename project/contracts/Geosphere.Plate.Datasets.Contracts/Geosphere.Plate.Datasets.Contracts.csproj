@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;netstandard2.1</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>FantaSim.Geosphere.Plate.Datasets.Contracts</RootNamespace>
+    <PackageId>GiantCroissant.FantaSim.Geosphere.Plate.Datasets.Contracts</PackageId>
+    <AssemblyName>Geosphere.Plate.Datasets.Contracts</AssemblyName>
+    <UnifySerializationTargets>MessagePack</UnifySerializationTargets>
+    <Version>$(Version)</Version>
+    <Authors>Lunar Horse</Authors>
+    <Description>Datasets contracts for FantaSim plate geosphere</Description>
+    <PackageTags>fantasim;contracts;plate;datasets;geosphere</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <CompilerVisibleProperty Include="UnifySerializationTargets" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Geosphere.Plate.Topology.Contracts\Geosphere.Plate.Topology.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MessagePack" />
+    <PackageReference Include="Riok.Mapperly" />
+    <PackageReference Include="TimeDete.Time.Primitives" />
+    <PackageReference Include="UnifySerialization.Abstractions" />
+    <PackageReference Include="UnifySerialization.Generators" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+    <PackageReference Include="System.Text.Json" />
+  </ItemGroup>
+
+</Project>

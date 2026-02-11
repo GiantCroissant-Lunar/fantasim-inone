@@ -67,6 +67,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geosphere.Plate.Reconstruct
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geosphere.Plate.Reconstruction.Solver", "plugins\Geosphere.Plate.Reconstruction.Solver\Geosphere.Plate.Reconstruction.Solver.csproj", "{B0FF2393-12AD-49EE-9FA5-C05749BA2FE2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geosphere.Plate.Datasets.Contracts", "contracts\Geosphere.Plate.Datasets.Contracts\Geosphere.Plate.Datasets.Contracts.csproj", "{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -731,6 +733,30 @@ Global
 		{B0FF2393-12AD-49EE-9FA5-C05749BA2FE2}.Release|x64.Build.0 = Release|Any CPU
 		{B0FF2393-12AD-49EE-9FA5-C05749BA2FE2}.Release|x86.ActiveCfg = Release|Any CPU
 		{B0FF2393-12AD-49EE-9FA5-C05749BA2FE2}.Release|x86.Build.0 = Release|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.Debug|x64.Build.0 = Debug|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.Debug|x86.Build.0 = Debug|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.ExportDebug|x64.ActiveCfg = Debug|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.ExportDebug|x64.Build.0 = Debug|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.ExportDebug|x86.ActiveCfg = Debug|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.ExportDebug|x86.Build.0 = Debug|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.ExportRelease|x64.ActiveCfg = Debug|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.ExportRelease|x64.Build.0 = Debug|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.ExportRelease|x86.ActiveCfg = Debug|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.ExportRelease|x86.Build.0 = Debug|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.Release|x64.ActiveCfg = Release|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.Release|x64.Build.0 = Release|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.Release|x86.ActiveCfg = Release|Any CPU
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -763,5 +789,6 @@ Global
 		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024} = {A1B2C3D4-0001-0001-0001-000000000001}
 		{FC426F51-9EAE-4C10-B94C-1633B3489152} = {A1B2C3D4-0001-0001-0001-000000000001}
 		{B0FF2393-12AD-49EE-9FA5-C05749BA2FE2} = {A1B2C3D4-0001-0001-0001-000000000002}
+		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480} = {A1B2C3D4-0001-0001-0001-000000000001}
 	EndGlobalSection
 EndGlobal
