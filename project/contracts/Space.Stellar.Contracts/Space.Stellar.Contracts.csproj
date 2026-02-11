@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;netstandard2.1</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>FantaSim.Space.Stellar.Contracts</RootNamespace>
+    <PackageId>GiantCroissant.FantaSim.Space.Stellar.Contracts</PackageId>
+    <AssemblyName>Space.Stellar.Contracts</AssemblyName>
+    <UnifySerializationTargets>MessagePack</UnifySerializationTargets>
+    <Version>$(Version)</Version>
+    <Authors>Lunar Horse</Authors>
+    <Description>Space stellar contracts for FantaSim</Description>
+    <PackageTags>fantasim;contracts;space;stellar</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <CompilerVisibleProperty Include="UnifySerializationTargets" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="UnifySerialization.Abstractions" />
+    <ProjectReference Include="..\..\..\..\..\plate-projects\unify-serialization\dotnet\src\UnifySerialization.Generators\UnifySerialization.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <PackageReference Include="MessagePack" />
+    <PackageReference Include="System.Collections.Immutable" />
+  </ItemGroup>
+
+</Project>
