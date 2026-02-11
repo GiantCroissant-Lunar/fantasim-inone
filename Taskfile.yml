@@ -3,6 +3,7 @@ version: '3'
 vars:
   GODOT_PATH: C:/lunar-horse/tools/Godot_v4.6-stable_mono_win64/Godot_v4.6-stable_mono_win64_console.exe
   PROJECT_PATH: project/hosts/complete-app
+  CONTENT_PATH: project/hosts/content-authoring
   SLN_PATH: fantasim-inone.sln
   GITVERSION_CMD: 'dotnet-gitversion /output json 2>nul | python -c "import sys,json;print(json.load(sys.stdin)[''SemVer''])"'
   UNIFY: dotnet tool run unify-build --
@@ -168,10 +169,10 @@ tasks:
     cmds:
       - mkdir -p {{.BUNDLE_DIR}}
       # Shell bundle first (loaded before control bundles)
-      - '"{{.GODOT_PATH}}" --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_shell {{.BUNDLE_DIR}}/com.fantasim.hud_shell.pck'
-      - '"{{.GODOT_PATH}}" --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_filemenu {{.BUNDLE_DIR}}/com.fantasim.hud_filemenu.pck'
-      - '"{{.GODOT_PATH}}" --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_toolbar {{.BUNDLE_DIR}}/com.fantasim.hud_toolbar.pck'
-      - '"{{.GODOT_PATH}}" --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_inspector {{.BUNDLE_DIR}}/com.fantasim.hud_inspector.pck'
+      - '"{{.GODOT_PATH}}" --path {{.CONTENT_PATH}} --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_shell {{.BUNDLE_DIR}}/com.fantasim.hud_shell.pck'
+      - '"{{.GODOT_PATH}}" --path {{.CONTENT_PATH}} --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_filemenu {{.BUNDLE_DIR}}/com.fantasim.hud_filemenu.pck'
+      - '"{{.GODOT_PATH}}" --path {{.CONTENT_PATH}} --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_toolbar {{.BUNDLE_DIR}}/com.fantasim.hud_toolbar.pck'
+      - '"{{.GODOT_PATH}}" --path {{.CONTENT_PATH}} --headless --script tools/pack_bundle.gd -- project/bundles/com.fantasim.hud_inspector {{.BUNDLE_DIR}}/com.fantasim.hud_inspector.pck'
       # Copy system bundles to host project for export inclusion
       - mkdir -p {{.PROJECT_PATH}}/system_bundles
       - cp {{.BUNDLE_DIR}}/*.pck {{.PROJECT_PATH}}/system_bundles/
