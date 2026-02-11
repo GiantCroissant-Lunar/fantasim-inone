@@ -28,6 +28,9 @@ obj/
 build/_artifacts/
 .nuke/temp/
 
+# Logs
+*.log
+
 # OS
 Thumbs.db
 .DS_Store
