@@ -1,7 +1,7 @@
-using FantaSim.World.Plates.Contracts.Entities;
-using FantaSim.World.Plates.Contracts.Identity;
+using FantaSim.Geosphere.Plates.Contracts.Entities;
+using FantaSim.Geosphere.Plates.Contracts.Identity;
 
-namespace FantaSim.World.Plates.Contracts;
+namespace FantaSim.Geosphere.Plates.Contracts;
 
 /// <summary>
 /// Read-only materialized view of plate topology.

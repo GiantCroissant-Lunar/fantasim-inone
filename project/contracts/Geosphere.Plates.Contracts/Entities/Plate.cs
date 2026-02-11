@@ -1,6 +1,6 @@
-using FantaSim.World.Plates.Contracts.Identity;
+using FantaSim.Geosphere.Plates.Contracts.Identity;
 
-namespace FantaSim.World.Plates.Contracts.Entities;
+namespace FantaSim.Geosphere.Plates.Contracts.Entities;
 
 /// <summary>
 /// A tectonic plate entity.

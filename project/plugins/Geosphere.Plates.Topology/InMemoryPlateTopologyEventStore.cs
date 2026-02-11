@@ -1,7 +1,7 @@
-using FantaSim.World.Plates.Contracts;
-using FantaSim.World.Plates.Contracts.Events;
+using FantaSim.Geosphere.Plates.Contracts;
+using FantaSim.Geosphere.Plates.Contracts.Events;
 
-namespace FantaSim.World.Plates.Topology;
+namespace FantaSim.Geosphere.Plates.Topology;
 
 /// <summary>
 /// In-memory event store with sequence monotonicity validation.

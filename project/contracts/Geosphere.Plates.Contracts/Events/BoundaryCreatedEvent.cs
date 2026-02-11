@@ -1,7 +1,7 @@
-using FantaSim.World.Plates.Contracts.Entities;
-using FantaSim.World.Plates.Contracts.Identity;
+using FantaSim.Geosphere.Plates.Contracts.Entities;
+using FantaSim.Geosphere.Plates.Contracts.Identity;
 
-namespace FantaSim.World.Plates.Contracts.Events;
+namespace FantaSim.Geosphere.Plates.Contracts.Events;
 
 public readonly record struct BoundaryCreatedEvent(
     Guid EventId,

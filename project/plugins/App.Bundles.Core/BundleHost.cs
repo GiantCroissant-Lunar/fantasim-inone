@@ -40,7 +40,7 @@ public sealed class BundleHost : IBundleHost
         _hostAssemblyNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             "FantaSim.App.Bundles.Contracts",
-            "FantaSim.World.Plates.Contracts",
+            "FantaSim.Geosphere.Plates.Contracts",
             "System.Runtime",
             "System.Private.CoreLib",
             "netstandard"

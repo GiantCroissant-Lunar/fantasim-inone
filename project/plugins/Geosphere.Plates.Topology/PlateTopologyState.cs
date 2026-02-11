@@ -1,10 +1,10 @@
 using System.Collections.Immutable;
-using FantaSim.World.Plates.Contracts;
-using FantaSim.World.Plates.Contracts.Entities;
-using FantaSim.World.Plates.Contracts.Events;
-using FantaSim.World.Plates.Contracts.Identity;
+using FantaSim.Geosphere.Plates.Contracts;
+using FantaSim.Geosphere.Plates.Contracts.Entities;
+using FantaSim.Geosphere.Plates.Contracts.Events;
+using FantaSim.Geosphere.Plates.Contracts.Identity;
 
-namespace FantaSim.World.Plates.Topology;
+namespace FantaSim.Geosphere.Plates.Topology;
 
 /// <summary>
 /// Internal mutable state that applies events. Exposes IPlateTopologyStateView.

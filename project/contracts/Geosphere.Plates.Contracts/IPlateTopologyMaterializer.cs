@@ -1,4 +1,4 @@
-namespace FantaSim.World.Plates.Contracts;
+namespace FantaSim.Geosphere.Plates.Contracts;
 
 /// <summary>
 /// Materializes plate topology events into a read model.

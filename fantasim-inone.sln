@@ -19,13 +19,13 @@ EndProject
 # Contracts
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Bundles.Contracts", "project\contracts\App.Bundles.Contracts\App.Bundles.Contracts.csproj", "{B1000001-0001-0001-0001-000000000001}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "World.Plates.Contracts", "project\contracts\World.Plates.Contracts\World.Plates.Contracts.csproj", "{B1000001-0001-0001-0001-000000000002}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geosphere.Plates.Contracts", "project\contracts\Geosphere.Plates.Contracts\Geosphere.Plates.Contracts.csproj", "{B1000001-0001-0001-0001-000000000002}"
 EndProject
 
 # Plugins
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Bundles.Core", "project\plugins\App.Bundles.Core\App.Bundles.Core.csproj", "{B2000001-0001-0001-0001-000000000001}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "World.Plates.Topology", "project\plugins\World.Plates.Topology\World.Plates.Topology.csproj", "{B2000001-0001-0001-0001-000000000002}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geosphere.Plates.Topology", "project\plugins\Geosphere.Plates.Topology\Geosphere.Plates.Topology.csproj", "{B2000001-0001-0001-0001-000000000002}"
 EndProject
 
 # Hosts

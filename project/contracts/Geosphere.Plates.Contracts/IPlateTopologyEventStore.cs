@@ -1,6 +1,6 @@
-using FantaSim.World.Plates.Contracts.Events;
+using FantaSim.Geosphere.Plates.Contracts.Events;
 
-namespace FantaSim.World.Plates.Contracts;
+namespace FantaSim.Geosphere.Plates.Contracts;
 
 /// <summary>
 /// Append-only event store for plate topology events.

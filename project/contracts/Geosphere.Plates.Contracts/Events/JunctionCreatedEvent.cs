@@ -1,7 +1,7 @@
 using System.Collections.Immutable;
-using FantaSim.World.Plates.Contracts.Identity;
+using FantaSim.Geosphere.Plates.Contracts.Identity;
 
-namespace FantaSim.World.Plates.Contracts.Events;
+namespace FantaSim.Geosphere.Plates.Contracts.Events;
 
 public readonly record struct JunctionCreatedEvent(
     Guid EventId,

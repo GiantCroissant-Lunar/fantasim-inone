@@ -1,6 +1,6 @@
-using FantaSim.World.Plates.Contracts;
+using FantaSim.Geosphere.Plates.Contracts;
 
-namespace FantaSim.World.Plates.Topology;
+namespace FantaSim.Geosphere.Plates.Topology;
 
 /// <summary>
 /// Validates plate topology invariants per RFC-V2-0001 §5.
@@ -32,7 +32,7 @@ public static class PlateTopologyInvariantValidator
             }
         }
 
-        // No orphan junctions — all referenced boundaries must exist
+        // No orphan junctions ??all referenced boundaries must exist
         foreach (var (id, junction) in state.Junctions)
         {
             if (junction.IsRetired) continue;

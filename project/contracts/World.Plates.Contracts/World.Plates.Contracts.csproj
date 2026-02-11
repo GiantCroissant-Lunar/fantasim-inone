@@ -1,6 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <AssemblyName>FantaSim.World.Plates.Contracts</AssemblyName>
-    <RootNamespace>FantaSim.World.Plates.Contracts</RootNamespace>
-  </PropertyGroup>
-</Project>

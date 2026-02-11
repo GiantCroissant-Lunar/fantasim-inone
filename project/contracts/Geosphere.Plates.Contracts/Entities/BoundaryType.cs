@@ -1,4 +1,4 @@
-namespace FantaSim.World.Plates.Contracts.Entities;
+namespace FantaSim.Geosphere.Plates.Contracts.Entities;
 
 public enum BoundaryType
 {

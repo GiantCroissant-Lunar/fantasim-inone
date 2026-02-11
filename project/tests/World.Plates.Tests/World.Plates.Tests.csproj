@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\contracts\World.Plates.Contracts\World.Plates.Contracts.csproj" />
-    <ProjectReference Include="..\..\plugins\World.Plates.Topology\World.Plates.Topology.csproj" />
+    <ProjectReference Include="..\..\contracts\Geosphere.Plates.Contracts\Geosphere.Plates.Contracts.csproj" />
+    <ProjectReference Include="..\..\plugins\Geosphere.Plates.Topology\Geosphere.Plates.Topology.csproj" />
   </ItemGroup>
 </Project>

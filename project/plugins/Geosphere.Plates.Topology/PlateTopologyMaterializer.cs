@@ -1,10 +1,10 @@
-using FantaSim.World.Plates.Contracts;
+using FantaSim.Geosphere.Plates.Contracts;
 
-namespace FantaSim.World.Plates.Topology;
+namespace FantaSim.Geosphere.Plates.Topology;
 
 /// <summary>
 /// Replays events from the store to produce a materialized state view.
-/// Deterministic: same events → identical state.
+/// Deterministic: same events ??identical state.
 /// </summary>
 public sealed class PlateTopologyMaterializer : IPlateTopologyMaterializer
 {
