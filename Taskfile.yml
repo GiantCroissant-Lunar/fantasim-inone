@@ -174,9 +174,8 @@ tasks:
       - '"{{.GODOT_PATH}}" --path {{.CONTENT_PATH}} --headless --script "{{.ROOT_DIR}}/tools/pack_bundle.gd" -- "{{.ROOT_DIR}}/project/bundles/com.fantasim.hud_filemenu" "{{.ROOT_DIR}}/{{.BUNDLE_DIR}}/com.fantasim.hud_filemenu.pck"'
       - '"{{.GODOT_PATH}}" --path {{.CONTENT_PATH}} --headless --script "{{.ROOT_DIR}}/tools/pack_bundle.gd" -- "{{.ROOT_DIR}}/project/bundles/com.fantasim.hud_toolbar" "{{.ROOT_DIR}}/{{.BUNDLE_DIR}}/com.fantasim.hud_toolbar.pck"'
       - '"{{.GODOT_PATH}}" --path {{.CONTENT_PATH}} --headless --script "{{.ROOT_DIR}}/tools/pack_bundle.gd" -- "{{.ROOT_DIR}}/project/bundles/com.fantasim.hud_inspector" "{{.ROOT_DIR}}/{{.BUNDLE_DIR}}/com.fantasim.hud_inspector.pck"'
-      # Copy system bundles to host project for export inclusion
-      - mkdir -p {{.PROJECT_PATH}}/system_bundles
-      - cp {{.BUNDLE_DIR}}/*.pck {{.PROJECT_PATH}}/system_bundles/
+      # PCKs are now at build/_artifacts/{VERSION}/bundles/ next to the exported exe
+      # No need to copy into complete-app — bundles load from filesystem at runtime
 
   pre-commit:install:
     desc: Install pre-commit hooks

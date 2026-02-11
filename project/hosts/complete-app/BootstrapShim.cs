@@ -276,7 +276,9 @@ public partial class BootstrapShim : Node
     {
         if (_bundleHost is null) return;
 
-        const string directory = "res://system_bundles";
+        var directory = OS.HasFeature("editor")
+            ? ProjectSettings.GlobalizePath("res://system_bundles")
+            : OS.GetExecutablePath().GetBaseDir().PathJoin("bundles");
         var dir = DirAccess.Open(directory);
         if (dir is null)
         {
