@@ -19,5 +19,9 @@
 
     <!-- Godot -->
     <PackageVersion Include="Godot.NET.Sdk" Version="4.6.0" />
+
+    <!-- Polyfills for netstandard2.1 -->
+    <PackageVersion Include="PolySharp" Version="1.15.0" />
+    <PackageVersion Include="System.Collections.Immutable" Version="9.0.1" />
   </ItemGroup>
 </Project>
