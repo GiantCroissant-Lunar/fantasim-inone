@@ -69,6 +69,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geosphere.Plate.Reconstruct
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geosphere.Plate.Datasets.Contracts", "contracts\Geosphere.Plate.Datasets.Contracts\Geosphere.Plate.Datasets.Contracts.csproj", "{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "schemas", "schemas", "{0F30E25C-730E-FC1B-A752-E8466D187ADC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantaSim.Schemas.Serialization", "schemas\FantaSim.Schemas.Serialization\FantaSim.Schemas.Serialization.csproj", "{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -757,6 +761,30 @@ Global
 		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.Release|x64.Build.0 = Release|Any CPU
 		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.Release|x86.ActiveCfg = Release|Any CPU
 		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480}.Release|x86.Build.0 = Release|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.Debug|x64.Build.0 = Debug|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.Debug|x86.Build.0 = Debug|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.ExportDebug|x64.ActiveCfg = Debug|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.ExportDebug|x64.Build.0 = Debug|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.ExportDebug|x86.ActiveCfg = Debug|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.ExportDebug|x86.Build.0 = Debug|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.ExportRelease|x64.ActiveCfg = Debug|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.ExportRelease|x64.Build.0 = Debug|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.ExportRelease|x86.ActiveCfg = Debug|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.ExportRelease|x86.Build.0 = Debug|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.Release|x64.ActiveCfg = Release|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.Release|x64.Build.0 = Release|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.Release|x86.ActiveCfg = Release|Any CPU
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -790,5 +818,6 @@ Global
 		{FC426F51-9EAE-4C10-B94C-1633B3489152} = {A1B2C3D4-0001-0001-0001-000000000001}
 		{B0FF2393-12AD-49EE-9FA5-C05749BA2FE2} = {A1B2C3D4-0001-0001-0001-000000000002}
 		{EFE9EEE0-28C6-4840-B8C5-D8ACE85D7480} = {A1B2C3D4-0001-0001-0001-000000000001}
+		{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B} = {0F30E25C-730E-FC1B-A752-E8466D187ADC}
 	EndGlobalSection
 EndGlobal
