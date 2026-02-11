@@ -4,7 +4,6 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <RootNamespace>FantaSim.Geosphere.Plate.Runtime.Des.Tests</RootNamespace>
     <AssemblyName>Runtime.Des.Tests</AssemblyName>
@@ -17,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" />
-    <PackageReference Include="xunit" />
-    <PackageReference Include="xunit.runner.visualstudio" />
-    <PackageReference Include="FluentAssertions" />
     <PackageReference Include="TimeDete.Time.Primitives" />
   </ItemGroup>
 
