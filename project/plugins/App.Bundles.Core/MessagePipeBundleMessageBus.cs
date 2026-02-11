@@ -22,7 +22,7 @@ public sealed class MessagePipeBundleMessageBus : IBundleMessageBus, IDisposable
         _provider = services.BuildServiceProvider();
     }
 
-    public void Publish<T>(T message) where T : class
+    public void Publish<T>(T message)
     {
         var publisher = (IPublisher<T>)_publishers.GetOrAdd(
             typeof(T),
@@ -30,7 +30,7 @@ public sealed class MessagePipeBundleMessageBus : IBundleMessageBus, IDisposable
         publisher.Publish(message);
     }
 
-    public IDisposable Subscribe<T>(Action<T> handler) where T : class
+    public IDisposable Subscribe<T>(Action<T> handler)
     {
         var subscriber = (ISubscriber<T>)_subscribers.GetOrAdd(
             typeof(T),

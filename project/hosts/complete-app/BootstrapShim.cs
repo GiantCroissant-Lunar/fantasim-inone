@@ -66,6 +66,7 @@ public partial class BootstrapShim : Node
         _commandHistory = new CommandHistory(_messageBus);
 
         registry.Register<IBundleMessageBus>(_messageBus);
+        registry.Register<Crosscut.Messaging.IMessageBus>(_messageBus);
         registry.Register<IStatusService>(_statusService);
         registry.Register<IDockService>(_dockManager);
         registry.Register<IMenuService>(_menuService);

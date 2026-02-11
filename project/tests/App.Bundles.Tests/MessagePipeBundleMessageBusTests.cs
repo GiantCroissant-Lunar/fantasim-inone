@@ -50,4 +50,26 @@ public class MessagePipeBundleMessageBusTests
         received1.Should().ContainSingle().Which.Should().Be("shared");
         received2.Should().ContainSingle().Which.Should().Be("shared");
     }
+
+    [Fact]
+    public void Implements_Crosscut_IMessageBus()
+    {
+        using var bus = new MessagePipeBundleMessageBus();
+        Crosscut.Messaging.IMessageBus messageBus = bus;
+        messageBus.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void Crosscut_IMessageBus_round_trip()
+    {
+        using var bus = new MessagePipeBundleMessageBus();
+        Crosscut.Messaging.IMessageBus messageBus = bus;
+        TestMessage? received = null;
+
+        using var sub = messageBus.Subscribe<TestMessage>(msg => received = msg);
+        messageBus.Publish(new TestMessage("crosscut"));
+
+        received.Should().NotBeNull();
+        received!.Value.Should().Be("crosscut");
+    }
 }
