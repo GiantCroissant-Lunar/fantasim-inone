@@ -19,7 +19,7 @@ branches:
     source-branches: ['main']
     is-source-branch-for: ['feature', 'pull-request']
   feature:
-    regex: ^features?[/-]
+    regex: ^feat(ures?)?[/-]
     mode: ContinuousDelivery
     tag: 'feature'
     increment: Inherit
@@ -68,9 +68,7 @@ ignore:
   sha: []
   commits-before: ''
 
-commit-message-incrementing:
-  enabled: true
-  mode: Mainline
+commit-message-incrementing: MergeMessageOnly
 
 major-version-bump-message: '\+semver:\s?(breaking|major)'
 minor-version-bump-message: '\+semver:\s?(feature|minor)'
@@ -78,21 +76,14 @@ patch-version-bump-message: '\+semver:\s?(fix|patch)'
 
 merge-message-formats: {}
 
-version-in-branch-name:
-  enabled: false
-  regex: ''
-
 assembly-versioning-scheme: MajorMinorPatch
 assembly-file-versioning-scheme: MajorMinorPatch
 assembly-informational-format: '{InformationalVersion}'
-assembly-versioning-format: '{Major}.{Minor}.{Patch}.{BuildNumber}'
+assembly-versioning-format: '{Major}.{Minor}.{Patch}.0'
 
 tag-prefix: '[vV]?'
-version-strategy: MergeMessage
 continuous-delivery-fallback-tag: 'ci'
 next-version: ''
 legacy-semver-padding: 4
 build-metadata-padding: 4
 commit-date-format: 'yyyy-MM-dd'
-tagged-branches:
-  - 'release[/-]'

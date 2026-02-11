@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>FantaSim.Geosphere.Plates.Contracts</AssemblyName>
+    <RootNamespace>FantaSim.Geosphere.Plates.Contracts</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Collections.Immutable" />
+  </ItemGroup>
+</Project>

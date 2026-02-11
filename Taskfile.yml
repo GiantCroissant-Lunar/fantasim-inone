@@ -1,9 +1,12 @@
 version: '3'
 
 vars:
-  GODOT_PATH: godot4
+  GODOT_PATH: C:/lunar-horse/tools/Godot_v4.6-stable_mono_win64/Godot_v4.6-stable_mono_win64_console.exe
   PROJECT_PATH: project/hosts/complete-app
-  BUILD_DIR: .godot/export
+  CONTENT_PATH: project/hosts/content-authoring
+  SLN_PATH: project/fantasim-inone.sln
+  GITVERSION_CMD: 'dotnet-gitversion /output json 2>nul | python -c "import sys,json;print(json.load(sys.stdin)[''SemVer''])"'
+  UNIFY: dotnet tool run unify-build --
 
 tasks:
   default:
@@ -11,39 +14,168 @@ tasks:
     cmds:
       - task --list
 
-  build:
-    desc: Build the Godot project
+  setup:
+    desc: Restore dotnet tools (unify-build, gitversion)
     cmds:
-      - '{{.GODOT_PATH}} --path {{.PROJECT_PATH}} --headless --build-solutions'
+      - dotnet tool restore
+
+  build:
+    desc: Build the entire solution via unify-build
+    deps: [setup]
+    cmds:
+      - '{{.UNIFY}} Compile --configuration Debug'
+
+  pack:
+    desc: Pack contracts as NuGet packages
+    deps: [setup]
+    vars:
+      CONFIGURATION: '{{default "Release" .CONFIGURATION}}'
+    cmds:
+      - '{{.UNIFY}} PackProjects --configuration {{.CONFIGURATION}}'
+    env:
+      GITVERSION_MAJORMINORPATCH:
+        sh: 'dotnet-gitversion /output json 2>nul | python -c "import sys,json;print(json.load(sys.stdin)[''MajorMinorPatch''])"'
+
+  publish:
+    desc: Publish plugins and bundles
+    deps: [setup]
+    vars:
+      CONFIGURATION: '{{default "Release" .CONFIGURATION}}'
+    cmds:
+      - '{{.UNIFY}} PublishProjects --configuration {{.CONFIGURATION}}'
+    env:
+      GITVERSION_MAJORMINORPATCH:
+        sh: 'dotnet-gitversion /output json 2>nul | python -c "import sys,json;print(json.load(sys.stdin)[''MajorMinorPatch''])"'
+
+  test:
+    desc: Run all xunit tests
+    cmds:
+      - dotnet test {{.SLN_PATH}}
+
+  verify:
+    desc: Run Godot headless to verify bootstrap
+    cmds:
+      - '"{{.GODOT_PATH}}" --path {{.PROJECT_PATH}} --headless --quit-after 3000'
 
   clean:
     desc: Clean build artifacts
     cmds:
-      - rm -rf .godot/
-      - rm -rf {{.BUILD_DIR}}/
+      - dotnet clean {{.SLN_PATH}}
+      - rm -rf .bundle-temp/
+      - rm -rf build/_artifacts/
+      - rm -rf build/_gen/
     ignore_error: true
 
   format:
     desc: Format GDScript and C# code
     cmds:
-      - echo "Formatting GDScript..."
-      - gdformat --verbose project/ || echo "gdformat not found, install with: pip install gdtoolkit"
-      - echo "Formatting C#..."
-      - dotnet format project/hosts/complete-app/ || echo "dotnet format failed"
+      - gdformat --verbose project/ || echo "gdformat not found"
+      - dotnet format {{.SLN_PATH}}
 
   format:check:
     desc: Check if code is properly formatted
     cmds:
-      - echo "Checking GDScript formatting..."
-      - gdformat --check-only --verbose project/ || echo "gdformat not found, install with: pip install gdtoolkit"
-      - echo "Checking C# formatting..."
-      - dotnet format --verify-no-changes --verbosity minimal project/hosts/complete-app/
+      - gdformat --check-only --verbose project/ || echo "gdformat not found"
+      - dotnet format {{.SLN_PATH}} --verify-no-changes --verbosity minimal
 
-  test:
-    desc: Run tests
+  gate:
+    desc: Full gate check — build + test + format
     cmds:
-      - echo "Running tests..."
-      - dotnet test project/hosts/complete-app/ || echo "No tests found or test failed"
+      - task build
+      - task test
+      - task format:check
+
+  run:
+    desc: Run the Godot project
+    cmds:
+      - '"{{.GODOT_PATH}}" --path {{.PROJECT_PATH}}'
+
+  run:headless:
+    desc: Run the project in headless mode
+    cmds:
+      - '"{{.GODOT_PATH}}" --path {{.PROJECT_PATH}} --headless'
+
+  export:
+    desc: Export debug build for Windows to build/_artifacts/{version}
+    deps: [build]
+    vars:
+      VERSION:
+        sh: '{{.GITVERSION_CMD}}'
+    cmds:
+      - mkdir -p build/_artifacts/{{.VERSION}}
+      - '"{{.GODOT_PATH}}" --path {{.PROJECT_PATH}} --headless --export-debug "Windows Desktop" ../../../build/_artifacts/{{.VERSION}}/complete-app.exe'
+
+  export:run:
+    desc: Export and run the app with 8s timeout for smoke testing
+    deps: [export]
+    vars:
+      VERSION:
+        sh: '{{.GITVERSION_CMD}}'
+    cmds:
+      - 'timeout 8 "build/_artifacts/{{.VERSION}}/complete-app.exe" -- --verbose || true'
+
+  verify:visual:
+    desc: Build, pack, export, and run visual verification
+    deps: [bundle:pack, export]
+    vars:
+      VERSION:
+        sh: '{{.GITVERSION_CMD}}'
+      VERIFY_DIR: 'build/_artifacts/{{.VERSION}}/_verify'
+    cmds:
+      - 'timeout 15 "build/_artifacts/{{.VERSION}}/complete-app.exe" -- --verify || true'
+      - python tools/check_verify.py {{.VERIFY_DIR}}
+
+  version:
+    desc: Show computed version via GitVersion
+    deps: [setup]
+    cmds:
+      - 'dotnet-gitversion /output json 2>nul | python -c "import sys,json;d=json.load(sys.stdin);print(d[''FullSemVer''])"'
+
+  bundle:gen:
+    desc: Generate bundle .tscn from Figma design files via boom-hud
+    vars:
+      BOOMHUD_CLI: C:/lunar-horse/plate-projects/boom-hud/dotnet/src/BoomHud.Cli/BoomHud.Cli.csproj
+    cmds:
+      - mkdir -p build/_gen/toolbar build/_gen/inspector
+      # Generate toolbar .tscn
+      - >-
+        dotnet run --project {{.BOOMHUD_CLI}} -c Release -- generate
+        project/bundles/com.fantasim.hud_toolbar/design/toolbar.figma.json
+        --annotations project/bundles/com.fantasim.hud_toolbar/design/toolbar.annotations.json
+        --target godot --tscn-no-script --output build/_gen/toolbar
+      - cp build/_gen/toolbar/ToolbarView.tscn project/bundles/com.fantasim.hud_toolbar/scenes/toolbar.tscn
+      - >-
+        python tools/attach_gdscript.py
+        project/bundles/com.fantasim.hud_toolbar/scenes/toolbar.tscn
+        "res://bundles/com.fantasim.hud_toolbar/scripts/toolbar.gd"
+      # Generate inspector .tscn
+      - >-
+        dotnet run --project {{.BOOMHUD_CLI}} -c Release -- generate
+        project/bundles/com.fantasim.hud_inspector/design/inspector.figma.json
+        --target godot --tscn-no-script --output build/_gen/inspector
+      - cp build/_gen/inspector/InspectorView.tscn project/bundles/com.fantasim.hud_inspector/scenes/inspector.tscn
+      - >-
+        python tools/attach_gdscript.py
+        project/bundles/com.fantasim.hud_inspector/scenes/inspector.tscn
+        "res://bundles/com.fantasim.hud_inspector/scripts/inspector.gd"
+
+  bundle:pack:
+    desc: Pack GDScript bundles into versioned PCK files
+    deps: [bundle:gen]
+    vars:
+      VERSION:
+        sh: '{{.GITVERSION_CMD}}'
+      BUNDLE_DIR: 'build/_artifacts/{{.VERSION}}/bundles'
+    cmds:
+      - mkdir -p {{.BUNDLE_DIR}}
+      # Shell bundle first (loaded before control bundles)
+      # --path changes Godot's cwd, so all paths must be absolute
+      - '"{{.GODOT_PATH}}" --path {{.CONTENT_PATH}} --headless --script "{{.ROOT_DIR}}/tools/pack_bundle.gd" -- "{{.ROOT_DIR}}/project/bundles/com.fantasim.hud_shell" "{{.ROOT_DIR}}/{{.BUNDLE_DIR}}/com.fantasim.hud_shell.pck"'
+      - '"{{.GODOT_PATH}}" --path {{.CONTENT_PATH}} --headless --script "{{.ROOT_DIR}}/tools/pack_bundle.gd" -- "{{.ROOT_DIR}}/project/bundles/com.fantasim.hud_filemenu" "{{.ROOT_DIR}}/{{.BUNDLE_DIR}}/com.fantasim.hud_filemenu.pck"'
+      - '"{{.GODOT_PATH}}" --path {{.CONTENT_PATH}} --headless --script "{{.ROOT_DIR}}/tools/pack_bundle.gd" -- "{{.ROOT_DIR}}/project/bundles/com.fantasim.hud_toolbar" "{{.ROOT_DIR}}/{{.BUNDLE_DIR}}/com.fantasim.hud_toolbar.pck"'
+      - '"{{.GODOT_PATH}}" --path {{.CONTENT_PATH}} --headless --script "{{.ROOT_DIR}}/tools/pack_bundle.gd" -- "{{.ROOT_DIR}}/project/bundles/com.fantasim.hud_inspector" "{{.ROOT_DIR}}/{{.BUNDLE_DIR}}/com.fantasim.hud_inspector.pck"'
+      # PCKs are now at build/_artifacts/{VERSION}/bundles/ next to the exported exe
+      # No need to copy into complete-app — bundles load from filesystem at runtime
 
   pre-commit:install:
     desc: Install pre-commit hooks
@@ -54,52 +186,3 @@ tasks:
     desc: Run all pre-commit hooks
     cmds:
       - pre-commit run --all-files
-
-  pre-commit:update:
-    desc: Update pre-commit hooks
-    cmds:
-      - pre-commit autoupdate
-
-  secrets:scan:
-    desc: Scan for secrets in the codebase
-    cmds:
-      - detect-secrets scan --baseline .secrets.baseline
-
-  secrets:update:
-    desc: Update secrets baseline
-    cmds:
-      - detect-secrets scan --update .secrets.baseline
-
-  version:
-    desc: Show git version
-    cmds:
-      - gitversion || echo "GitVersion not installed"
-
-  version:showconfig:
-    desc: Show GitVersion configuration
-    cmds:
-      - gitversion /showconfig || echo "GitVersion not installed"
-
-  run:
-    desc: Run the project
-    cmds:
-      - '{{.GODOT_PATH}} --path {{.PROJECT_PATH}}'
-
-  run:headless:
-    desc: Run the project in headless mode
-    cmds:
-      - '{{.GODOT_PATH}} --path {{.PROJECT_PATH}} --headless'
-
-  lint:
-    desc: Run linting checks
-    cmds:
-      - task format:check
-      - task pre-commit:run
-
-  setup:
-    desc: Set up the development environment
-    cmds:
-      - echo "Setting up development environment..."
-      - task pre-commit:install
-      - echo "Install gdtoolkit for GDScript: pip install gdtoolkit"
-      - echo "Ensure Godot 4.x is installed and in PATH"

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>FantaSim.App.Bundles.Tests</AssemblyName>
+    <RootNamespace>FantaSim.App.Bundles.Tests</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GiantCroissant.Plate.ServiceArchi.Contracts" />
+    <PackageReference Include="GiantCroissant.Plate.ServiceArchi.Core" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="MessagePipe" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\contracts\App.Bundles.Contracts\App.Bundles.Contracts.csproj" />
+    <ProjectReference Include="..\..\plugins\App.Bundles.Core\App.Bundles.Core.csproj" />
+  </ItemGroup>
+</Project>

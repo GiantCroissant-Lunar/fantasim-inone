@@ -1,0 +1,15 @@
+<Project Sdk="Godot.NET.Sdk/4.6.0">
+  <PropertyGroup>
+    <RootNamespace>FantaSim.App</RootNamespace>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GiantCroissant.Plate.ServiceArchi.Core" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\plugins\App.Bundles.Core\App.Bundles.Core.csproj" />
+  </ItemGroup>
+</Project>

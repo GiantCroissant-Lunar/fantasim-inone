@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>FantaSim.App.Bundles.Core</AssemblyName>
+    <RootNamespace>FantaSim.App.Bundles.Core</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GiantCroissant.Plate.ServiceArchi.Core" />
+    <PackageReference Include="MessagePipe" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\contracts\App.Bundles.Contracts\App.Bundles.Contracts.csproj" />
+  </ItemGroup>
+</Project>

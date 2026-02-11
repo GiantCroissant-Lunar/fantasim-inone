@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>FantaSim.Bundles.PlateViewer</AssemblyName>
+    <RootNamespace>FantaSim.Bundles.PlateViewer</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\contracts\App.Bundles.Contracts\App.Bundles.Contracts.csproj" />
+    <ProjectReference Include="..\..\contracts\Geosphere.Plates.Contracts\Geosphere.Plates.Contracts.csproj" />
+  </ItemGroup>
+</Project>

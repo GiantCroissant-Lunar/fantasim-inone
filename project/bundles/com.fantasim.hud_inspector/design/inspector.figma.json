@@ -1,0 +1,45 @@
+{
+  "name": "Inspector HUD",
+  "version": "1.0.0",
+  "document": {
+    "id": "0:0",
+    "name": "Document",
+    "type": "DOCUMENT",
+    "children": [
+      {
+        "id": "0:1",
+        "name": "Main Page",
+        "type": "CANVAS",
+        "children": [
+          {
+            "id": "2:1",
+            "name": "Inspector",
+            "type": "FRAME",
+            "layoutMode": "VERTICAL",
+            "itemSpacing": 4,
+            "paddingLeft": 0,
+            "paddingRight": 0,
+            "paddingTop": 0,
+            "paddingBottom": 0,
+            "layoutSizingVertical": "FILL",
+            "children": [
+              {
+                "id": "2:2",
+                "name": "Title",
+                "type": "TEXT",
+                "characters": "Inspector Bundle"
+              },
+              {
+                "id": "2:3",
+                "name": "Tree Container",
+                "type": "FRAME",
+                "layoutSizingVertical": "FILL",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

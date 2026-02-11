@@ -1,0 +1,83 @@
+{
+  "name": "Toolbar HUD",
+  "version": "1.0.0",
+  "document": {
+    "id": "0:0",
+    "name": "Document",
+    "type": "DOCUMENT",
+    "children": [
+      {
+        "id": "0:1",
+        "name": "Main Page",
+        "type": "CANVAS",
+        "children": [
+          {
+            "id": "1:1",
+            "name": "Toolbar",
+            "type": "FRAME",
+            "layoutMode": "HORIZONTAL",
+            "itemSpacing": 8,
+            "paddingLeft": 0,
+            "paddingRight": 0,
+            "paddingTop": 0,
+            "paddingBottom": 0,
+            "children": [
+              {
+                "id": "1:2",
+                "name": "Load PCK",
+                "type": "FRAME",
+                "children": [
+                  {
+                    "id": "1:2:1",
+                    "name": "Load PCK Label",
+                    "type": "TEXT",
+                    "characters": "Load PCK"
+                  }
+                ]
+              },
+              {
+                "id": "1:3",
+                "name": "Unload",
+                "type": "FRAME",
+                "children": [
+                  {
+                    "id": "1:3:1",
+                    "name": "Unload Label",
+                    "type": "TEXT",
+                    "characters": "Unload"
+                  }
+                ]
+              },
+              {
+                "id": "1:4",
+                "name": "Reload",
+                "type": "FRAME",
+                "children": [
+                  {
+                    "id": "1:4:1",
+                    "name": "Reload Label",
+                    "type": "TEXT",
+                    "characters": "Reload"
+                  }
+                ]
+              },
+              {
+                "id": "1:5",
+                "name": "Snapshot",
+                "type": "FRAME",
+                "children": [
+                  {
+                    "id": "1:5:1",
+                    "name": "Snapshot Label",
+                    "type": "TEXT",
+                    "characters": "Snapshot"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

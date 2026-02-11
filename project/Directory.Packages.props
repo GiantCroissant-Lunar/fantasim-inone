@@ -1,0 +1,36 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Testing -->
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageVersion Include="xunit" Version="2.9.3" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.2" />
+    <PackageVersion Include="FluentAssertions" Version="8.2.0" />
+
+    <!-- Serialization -->
+    <PackageVersion Include="MessagePack" Version="3.1.3" />
+
+    <!-- Messaging & DI -->
+    <PackageVersion Include="MessagePipe" Version="1.8.1" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+
+    <!-- ServiceArchi -->
+    <PackageVersion Include="GiantCroissant.Plate.ServiceArchi.Contracts" Version="0.1.0" />
+    <PackageVersion Include="GiantCroissant.Plate.ServiceArchi.Core" Version="0.1.0" />
+    <PackageVersion Include="GiantCroissant.Plate.ServiceArchi.SourceGen" Version="0.1.0" />
+
+    <!-- Crosscut Messaging -->
+    <PackageVersion Include="GiantCroissant.Crosscut.Messaging.Contracts" Version="0.1.0" />
+    <PackageVersion Include="GiantCroissant.Crosscut.Messaging.MessagePipe" Version="0.1.0" />
+
+    <!-- Godot -->
+    <PackageVersion Include="Godot.NET.Sdk" Version="4.6.0" />
+
+    <!-- Polyfills for netstandard2.1 -->
+    <PackageVersion Include="PolySharp" Version="1.15.0" />
+    <PackageVersion Include="System.Collections.Immutable" Version="9.0.1" />
+  </ItemGroup>
+</Project>
