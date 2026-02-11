@@ -55,6 +55,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnifySerialization.Generato
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnifySerialization.Abstractions", "..\..\..\plate-projects\unify-serialization\dotnet\src\UnifySerialization.Abstractions\UnifySerialization.Abstractions.csproj", "{EC5B198A-A6B4-4D7A-B4C3-65ED21AD8F04}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geosphere.Plate.Polygonization.Contracts", "contracts\Geosphere.Plate.Polygonization.Contracts\Geosphere.Plate.Polygonization.Contracts.csproj", "{69C9F61C-5644-47F8-9024-173E329CF381}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -575,6 +577,30 @@ Global
 		{EC5B198A-A6B4-4D7A-B4C3-65ED21AD8F04}.Release|x64.Build.0 = Release|Any CPU
 		{EC5B198A-A6B4-4D7A-B4C3-65ED21AD8F04}.Release|x86.ActiveCfg = Release|Any CPU
 		{EC5B198A-A6B4-4D7A-B4C3-65ED21AD8F04}.Release|x86.Build.0 = Release|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.Debug|x64.Build.0 = Debug|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.Debug|x86.Build.0 = Debug|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.ExportDebug|x64.ActiveCfg = Debug|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.ExportDebug|x64.Build.0 = Debug|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.ExportDebug|x86.ActiveCfg = Debug|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.ExportDebug|x86.Build.0 = Debug|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.ExportRelease|x64.ActiveCfg = Debug|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.ExportRelease|x64.Build.0 = Debug|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.ExportRelease|x86.ActiveCfg = Debug|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.ExportRelease|x86.Build.0 = Debug|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.Release|x64.ActiveCfg = Release|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.Release|x64.Build.0 = Release|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.Release|x86.ActiveCfg = Release|Any CPU
+		{69C9F61C-5644-47F8-9024-173E329CF381}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -601,5 +627,6 @@ Global
 		{1CAC4196-BF6E-4ADC-A397-741BE2322A9C} = {A1B2C3D4-0001-0001-0001-000000000001}
 		{65A26A22-3DEB-4F88-AEAE-B6AF910D746E} = {A1B2C3D4-0001-0001-0001-000000000001}
 		{EC5B198A-A6B4-4D7A-B4C3-65ED21AD8F04} = {A1B2C3D4-0001-0001-0001-000000000001}
+		{69C9F61C-5644-47F8-9024-173E329CF381} = {A1B2C3D4-0001-0001-0001-000000000001}
 	EndGlobalSection
 EndGlobal
