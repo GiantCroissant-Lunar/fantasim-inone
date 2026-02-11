@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runtime.Des.Tests", "tests\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geosphere.Plate.Kinematics.Contracts", "contracts\Geosphere.Plate.Kinematics.Contracts\Geosphere.Plate.Kinematics.Contracts.csproj", "{713F0ABE-284E-410B-B61C-13449BE43531}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geosphere.Plate.Kinematics.Materializer", "plugins\Geosphere.Plate.Kinematics.Materializer\Geosphere.Plate.Kinematics.Materializer.csproj", "{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -419,6 +421,30 @@ Global
 		{713F0ABE-284E-410B-B61C-13449BE43531}.Release|x64.Build.0 = Release|Any CPU
 		{713F0ABE-284E-410B-B61C-13449BE43531}.Release|x86.ActiveCfg = Release|Any CPU
 		{713F0ABE-284E-410B-B61C-13449BE43531}.Release|x86.Build.0 = Release|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.Debug|x64.Build.0 = Debug|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.Debug|x86.Build.0 = Debug|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.ExportDebug|x64.ActiveCfg = Debug|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.ExportDebug|x64.Build.0 = Debug|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.ExportDebug|x86.ActiveCfg = Debug|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.ExportDebug|x86.Build.0 = Debug|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.ExportRelease|x64.ActiveCfg = Debug|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.ExportRelease|x64.Build.0 = Debug|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.ExportRelease|x86.ActiveCfg = Debug|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.ExportRelease|x86.Build.0 = Debug|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.Release|x64.ActiveCfg = Release|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.Release|x64.Build.0 = Release|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.Release|x86.ActiveCfg = Release|Any CPU
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -439,5 +465,6 @@ Global
 		{47F55626-6FDB-46FF-B94D-10B7B5AAF14B} = {A1B2C3D4-0001-0001-0001-000000000002}
 		{B7768550-7F0F-4A8B-B880-3F85379C06F1} = {A1B2C3D4-0001-0001-0001-000000000004}
 		{713F0ABE-284E-410B-B61C-13449BE43531} = {A1B2C3D4-0001-0001-0001-000000000001}
+		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875} = {A1B2C3D4-0001-0001-0001-000000000002}
 	EndGlobalSection
 EndGlobal
