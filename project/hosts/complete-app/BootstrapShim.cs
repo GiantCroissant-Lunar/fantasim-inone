@@ -1,9 +1,11 @@
+using Crosscut.Logging;
 using FantaSim.App.Bundles.Contracts;
 using FantaSim.App.Bundles.Contracts.Interaction.Commands;
 using FantaSim.App.Bundles.Contracts.Interaction.Events;
 using FantaSim.App.Bundles.Contracts.Interaction.Selection;
 using FantaSim.App.Bundles.Core;
 using Godot;
+using Microsoft.Extensions.Logging;
 using ServiceArchi.Contracts;
 
 namespace FantaSim.App;
@@ -17,7 +19,7 @@ public partial class BootstrapShim : Node
 {
     private BundleHost? _bundleHost;
     private MessagePipeBundleMessageBus? _messageBus;
-    private IFantaSimLog? _log;
+    private ILogger? _log;
     private DockManager? _dockManager;
     private MenuService? _menuService;
     private StatusService? _statusService;
@@ -45,21 +47,26 @@ public partial class BootstrapShim : Node
 
     public override void _Ready()
     {
-        _log = new GodotLog();
-
         var vfs = new GodotBundleVfs();
         var extractor = new DllExtractor();
         var bundleRegistry = new BundleRegistry();
         var registry = bundleRegistry.Registry;
         _messageBus = new MessagePipeBundleMessageBus();
 
+        // Set up Crosscut.Logging with Godot provider
+        registry.Register<ILoggingBuilderConfigurator>(new GodotLoggingBuilderConfigurator());
+        registry.RegisterLoggingService();
+        var logging = new ServiceProxy(registry);
+
+        _log = logging.CreateLogger("Bootstrap");
+
         // Create services
-        _dockManager = new DockManager(_log);
+        _dockManager = new DockManager(logging.CreateLogger("DockManager"));
         _menuService = new MenuService();
         _statusService = new StatusService();
 
         var mainNode = GetTree().Root.GetNode("Main");
-        var sceneHost = new GodotBundleSceneHost(this, _log, _dockManager, shellTarget: mainNode);
+        var sceneHost = new GodotBundleSceneHost(this, logging.CreateLogger("SceneHost"), _dockManager, shellTarget: mainNode);
 
         _bundleHost = new BundleHost(vfs, extractor, registry, sceneHost, _messageBus, bundleRegistry);
         Registry = registry;
@@ -68,7 +75,6 @@ public partial class BootstrapShim : Node
         _selectionService = new SelectionService(_messageBus);
         _commandHistory = new CommandHistory(_messageBus);
 
-        registry.Register<IFantaSimLog>(_log);
         registry.Register<IBundleMessageBus>(_messageBus);
         registry.Register<Crosscut.Messaging.IMessageBus>(_messageBus);
         registry.Register<IStatusService>(_statusService);
@@ -78,7 +84,7 @@ public partial class BootstrapShim : Node
         registry.Register<ICommandHistory>(_commandHistory);
 
         // Command router (subscribes to GdScriptCommand on the bus)
-        _commandRouter = new GdScriptCommandRouter(_messageBus, _log, _selectionService, _bundleHost);
+        _commandRouter = new GdScriptCommandRouter(_messageBus, logging.CreateLogger("CommandRouter"), _selectionService, _bundleHost);
 
         // Bridge bundle lifecycle events to Godot signals for GDScript consumers
         _bundleLoadedSub = _messageBus.Subscribe<BundleLoadedEvent>(e =>
@@ -86,13 +92,13 @@ public partial class BootstrapShim : Node
         _bundleUnloadedSub = _messageBus.Subscribe<BundleUnloadedEvent>(e =>
             CallDeferred("emit_signal", SignalName.BundleChanged, e.BundleId));
 
-        _log.Info("Bootstrap", "BundleHost created");
+        _log.LogInformation("BundleHost created");
 
         // Start verification service if --verify flag is present
         var args = OS.GetCmdlineUserArgs();
         if (args.Contains("--verify"))
         {
-            _verificationService = new VerificationService(this, _log);
+            _verificationService = new VerificationService(this, logging.CreateLogger("Verify"));
             _verificationService.Start();
         }
 
@@ -114,7 +120,7 @@ public partial class BootstrapShim : Node
         if (_bundleHost is not null)
         {
             _bundleHost.UnloadAllAsync().GetAwaiter().GetResult();
-            _log?.Info("Bootstrap", "BundleHost shut down");
+            _log?.LogInformation("BundleHost shut down");
         }
 
         _messageBus?.Dispose();
@@ -125,7 +131,7 @@ public partial class BootstrapShim : Node
     public void RegisterDockSlot(string name, TabContainer container)
     {
         _dockManager?.RegisterSlot(name, container);
-        _log?.Info("Bootstrap", $"Dock slot registered: {name}");
+        _log?.LogInformation("Dock slot registered: {Name}", name);
     }
 
     public void SetMenuBar(MenuBar menuBar)
@@ -197,7 +203,7 @@ public partial class BootstrapShim : Node
         catch (System.Exception ex)
         {
             _statusService?.ShowStatus($"Error: {ex.Message}");
-            _log?.Error("Bootstrap", "Load failed", ex);
+            _log?.LogError(ex, "Load failed");
         }
     }
 
@@ -213,7 +219,7 @@ public partial class BootstrapShim : Node
         catch (System.Exception ex)
         {
             _statusService?.ShowStatus($"Error: {ex.Message}");
-            _log?.Error("Bootstrap", "Unload failed", ex);
+            _log?.LogError(ex, "Unload failed");
         }
     }
 
@@ -229,7 +235,7 @@ public partial class BootstrapShim : Node
         catch (System.Exception ex)
         {
             _statusService?.ShowStatus($"Error: {ex.Message}");
-            _log?.Error("Bootstrap", "Reload failed", ex);
+            _log?.LogError(ex, "Reload failed");
         }
     }
 
@@ -289,7 +295,7 @@ public partial class BootstrapShim : Node
         var dir = DirAccess.Open(directory);
         if (dir is null)
         {
-            _log?.Info("Bootstrap", $"No system bundles directory at {directory}");
+            _log?.LogInformation("No system bundles directory at {Directory}", directory);
             return;
         }
 
@@ -318,11 +324,11 @@ public partial class BootstrapShim : Node
             try
             {
                 await _bundleHost.LoadAsync(pck);
-                _log?.Info("Bootstrap", $"Shell loaded: {pck.GetFile()}");
+                _log?.LogInformation("Shell loaded: {File}", pck.GetFile());
             }
             catch (System.Exception ex)
             {
-                _log?.Error("Bootstrap", $"Failed to load shell {pck.GetFile()}: {ex.Message}");
+                _log?.LogError(ex, "Failed to load shell {File}", pck.GetFile());
             }
         }
 
@@ -336,15 +342,15 @@ public partial class BootstrapShim : Node
             try
             {
                 await _bundleHost.LoadAsync(pck);
-                _log?.Info("Bootstrap", $"Auto-loaded: {pck.GetFile()}");
+                _log?.LogInformation("Auto-loaded: {File}", pck.GetFile());
             }
             catch (System.Exception ex)
             {
-                _log?.Error("Bootstrap", $"Failed to auto-load {pck.GetFile()}: {ex.Message}");
+                _log?.LogError(ex, "Failed to auto-load {File}", pck.GetFile());
             }
         }
 
-        _log?.Info("Bootstrap", "All bundles loaded");
+        _log?.LogInformation("All bundles loaded");
         EmitSignal(SignalName.AllBundlesLoaded);
     }
 }

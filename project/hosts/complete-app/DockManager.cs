@@ -1,5 +1,6 @@
 using FantaSim.App.Bundles.Contracts;
 using Godot;
+using Microsoft.Extensions.Logging;
 
 namespace FantaSim.App;
 
@@ -15,11 +16,11 @@ public sealed class DockManager : IDockService
         public const string Bottom = "bottom";
     }
 
-    private readonly IFantaSimLog _log;
+    private readonly ILogger _log;
     private readonly Dictionary<string, TabContainer> _slots = new();
     private readonly Dictionary<string, List<(string SlotName, Control Panel)>> _dockedPanels = new();
 
-    public DockManager(IFantaSimLog log)
+    public DockManager(ILogger log)
     {
         _log = log;
     }
@@ -35,7 +36,7 @@ public sealed class DockManager : IDockService
     {
         if (!_slots.TryGetValue(slotName, out var container))
         {
-            _log.Error("DockManager", $"Unknown slot: {slotName}");
+            _log.LogError("Unknown slot: {SlotName}", slotName);
             return false;
         }
 
@@ -49,7 +50,7 @@ public sealed class DockManager : IDockService
         }
 
         panels.Add((slotName, panel));
-        _log.Info("DockManager", $"'{bundleId}' docked into '{slotName}'");
+        _log.LogInformation("'{BundleId}' docked into '{SlotName}'", bundleId, slotName);
         return true;
     }
 
@@ -65,6 +66,6 @@ public sealed class DockManager : IDockService
             panel.QueueFree();
         }
 
-        _log.Info("DockManager", $"'{bundleId}' undocked ({panels.Count} panels)");
+        _log.LogInformation("'{BundleId}' undocked ({Count} panels)", bundleId, panels.Count);
     }
 }

@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="GiantCroissant.Crosscut.Logging.Core" />
     <PackageReference Include="GiantCroissant.Plate.ServiceArchi.Core" />
   </ItemGroup>
 

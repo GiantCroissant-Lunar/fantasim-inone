@@ -1,6 +1,7 @@
 using FantaSim.App.Bundles.Contracts;
 using FantaSim.App.Bundles.Contracts.Interaction.Commands;
 using FantaSim.App.Bundles.Contracts.Interaction.Selection;
+using Microsoft.Extensions.Logging;
 
 namespace FantaSim.App;
 
@@ -12,13 +13,13 @@ namespace FantaSim.App;
 public sealed class GdScriptCommandRouter : IDisposable
 {
     private readonly IDisposable _subscription;
-    private readonly IFantaSimLog _log;
+    private readonly ILogger _log;
     private readonly ISelectionService _selection;
     private readonly IBundleHost _bundleHost;
 
     public GdScriptCommandRouter(
         IBundleMessageBus bus,
-        IFantaSimLog log,
+        ILogger log,
         ISelectionService selection,
         IBundleHost bundleHost)
     {
@@ -49,7 +50,7 @@ public sealed class GdScriptCommandRouter : IDisposable
                 break;
 
             default:
-                _log.Error("CommandRouter", $"Unknown action: {cmd.Action}");
+                _log.LogError("Unknown action: {Action}", cmd.Action);
                 break;
         }
     }
@@ -61,7 +62,7 @@ public sealed class GdScriptCommandRouter : IDisposable
             kindObj is not string kind ||
             idObj is not string id)
         {
-            _log.Error("CommandRouter", "select requires 'kind' and 'id' string params");
+            _log.LogError("select requires 'kind' and 'id' string params");
             return;
         }
 
@@ -72,7 +73,7 @@ public sealed class GdScriptCommandRouter : IDisposable
     {
         if (!cmd.Params.TryGetValue("path", out var pathObj) || pathObj is not string path)
         {
-            _log.Error("CommandRouter", "load_bundle requires 'path' string param");
+            _log.LogError("load_bundle requires 'path' string param");
             return;
         }
 
@@ -82,7 +83,7 @@ public sealed class GdScriptCommandRouter : IDisposable
         }
         catch (Exception ex)
         {
-            _log.Error("CommandRouter", $"load_bundle failed: {ex.Message}");
+            _log.LogError(ex, "load_bundle failed");
         }
     }
 
@@ -90,7 +91,7 @@ public sealed class GdScriptCommandRouter : IDisposable
     {
         if (!cmd.Params.TryGetValue("id", out var idObj) || idObj is not string bundleId)
         {
-            _log.Error("CommandRouter", "unload_bundle requires 'id' string param");
+            _log.LogError("unload_bundle requires 'id' string param");
             return;
         }
 
@@ -100,7 +101,7 @@ public sealed class GdScriptCommandRouter : IDisposable
         }
         catch (Exception ex)
         {
-            _log.Error("CommandRouter", $"unload_bundle failed: {ex.Message}");
+            _log.LogError(ex, "unload_bundle failed");
         }
     }
 
