@@ -35,7 +35,7 @@ EndProject
 # Tests
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Bundles.Tests", "project\tests\App.Bundles.Tests\App.Bundles.Tests.csproj", "{B4000001-0001-0001-0001-000000000001}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "World.Plates.Tests", "project\tests\World.Plates.Tests\World.Plates.Tests.csproj", "{B4000001-0001-0001-0001-000000000002}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geosphere.Plates.Tests", "project\tests\Geosphere.Plates.Tests\Geosphere.Plates.Tests.csproj", "{B4000001-0001-0001-0001-000000000002}"
 EndProject
 
 # Bundles

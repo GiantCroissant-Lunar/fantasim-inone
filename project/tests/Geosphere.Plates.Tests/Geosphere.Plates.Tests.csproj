@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AssemblyName>FantaSim.World.Plates.Tests</AssemblyName>
-    <RootNamespace>FantaSim.World.Plates.Tests</RootNamespace>
+    <AssemblyName>FantaSim.Geosphere.Plates.Tests</AssemblyName>
+    <RootNamespace>FantaSim.Geosphere.Plates.Tests</RootNamespace>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
