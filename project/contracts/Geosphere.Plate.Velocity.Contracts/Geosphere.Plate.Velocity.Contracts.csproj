@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;netstandard2.1</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>FantaSim.Geosphere.Plate.Velocity.Contracts</RootNamespace>
+    <PackageId>GiantCroissant.FantaSim.Geosphere.Plate.Velocity.Contracts</PackageId>
+    <AssemblyName>Geosphere.Plate.Velocity.Contracts</AssemblyName>
+    <Version>$(Version)</Version>
+    <Authors>Lunar Horse</Authors>
+    <Description>Velocity contracts for FantaSim plate geosphere</Description>
+    <PackageTags>fantasim;contracts;plate;velocity;geosphere</PackageTags>
+    <UnifySerializationTargets>MessagePack</UnifySerializationTargets>
+    <NoWarn>MsgPack014</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <CompilerVisibleProperty Include="UnifySerializationTargets" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Geosphere.Plate.Topology.Contracts\Geosphere.Plate.Topology.Contracts.csproj" />
+    <ProjectReference Include="..\Geosphere.Plate.Kinematics.Contracts\Geosphere.Plate.Kinematics.Contracts.csproj" />
+    <ProjectReference Include="..\Space.Stellar.Contracts\Space.Stellar.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MessagePack" />
+    <PackageReference Include="TimeDete.Time.Primitives" />
+    <PackageReference Include="UnifySerialization.Abstractions" />
+    <ProjectReference Include="..\..\..\..\..\plate-projects\unify-serialization\dotnet\src\UnifySerialization.Generators\UnifySerialization.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+</Project>
