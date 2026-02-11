@@ -2,6 +2,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\contracts\Geosphere.Plate.Topology.Contracts\Geosphere.Plate.Topology.Contracts.csproj" />
+    <ProjectReference Include="..\..\schemas\FantaSim.Schemas.Serialization\FantaSim.Schemas.Serialization.csproj" />
+    <ProjectReference Include="..\..\..\..\..\plate-projects\unify-serialization\dotnet\src\UnifySerialization.MessagePack.Runtime\UnifySerialization.MessagePack.Runtime.csproj" />
   </ItemGroup>
 
   <ItemGroup>
