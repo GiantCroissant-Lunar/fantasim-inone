@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geosphere.Plate.Kinematics.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geosphere.Plate.Kinematics.Tests", "tests\Geosphere.Plate.Kinematics.Tests\Geosphere.Plate.Kinematics.Tests.csproj", "{2607B314-AA56-492C-920E-9D2361EFECDF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geosphere.Plate.Kinematics.Serializers", "plugins\Geosphere.Plate.Kinematics.Serializers\Geosphere.Plate.Kinematics.Serializers.csproj", "{1E1433A4-886C-43F2-900A-64210E5DC001}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -471,6 +473,30 @@ Global
 		{2607B314-AA56-492C-920E-9D2361EFECDF}.Release|x64.Build.0 = Release|Any CPU
 		{2607B314-AA56-492C-920E-9D2361EFECDF}.Release|x86.ActiveCfg = Release|Any CPU
 		{2607B314-AA56-492C-920E-9D2361EFECDF}.Release|x86.Build.0 = Release|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.Debug|x64.Build.0 = Debug|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.Debug|x86.Build.0 = Debug|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.ExportDebug|x64.ActiveCfg = Debug|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.ExportDebug|x64.Build.0 = Debug|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.ExportDebug|x86.ActiveCfg = Debug|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.ExportDebug|x86.Build.0 = Debug|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.ExportRelease|x64.ActiveCfg = Debug|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.ExportRelease|x64.Build.0 = Debug|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.ExportRelease|x86.ActiveCfg = Debug|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.ExportRelease|x86.Build.0 = Debug|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.Release|x64.ActiveCfg = Release|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.Release|x64.Build.0 = Release|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.Release|x86.ActiveCfg = Release|Any CPU
+		{1E1433A4-886C-43F2-900A-64210E5DC001}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -493,5 +519,6 @@ Global
 		{713F0ABE-284E-410B-B61C-13449BE43531} = {A1B2C3D4-0001-0001-0001-000000000001}
 		{85C7E753-C0F6-43A4-98F8-97EA0ADA9875} = {A1B2C3D4-0001-0001-0001-000000000002}
 		{2607B314-AA56-492C-920E-9D2361EFECDF} = {A1B2C3D4-0001-0001-0001-000000000004}
+		{1E1433A4-886C-43F2-900A-64210E5DC001} = {A1B2C3D4-0001-0001-0001-000000000002}
 	EndGlobalSection
 EndGlobal
