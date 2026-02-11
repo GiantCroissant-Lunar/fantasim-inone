@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="GiantCroissant.Plate.ServiceArchi.Core" />
     <PackageReference Include="MessagePipe" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>

@@ -1,44 +1,63 @@
 using FantaSim.App.Bundles.Core;
 using FluentAssertions;
+using ServiceArchi.Contracts;
 using Xunit;
 
 namespace FantaSim.App.Bundles.Tests;
 
-public class BundleServiceRegistryTests
+public class BundleRegistryTests
 {
-    private readonly BundleServiceRegistry _registry = new();
+    private readonly BundleRegistry _bundleRegistry = new();
+    private IRegistry Registry => _bundleRegistry.Registry;
 
     [Fact]
-    public void Register_and_Resolve_returns_service()
+    public void Register_and_TryGet_returns_service()
     {
         var service = new TestService("hello");
-        _registry.Register<ITestService>(service);
+        _bundleRegistry.Register<ITestService>(service);
 
-        _registry.Resolve<ITestService>().Should().BeSameAs(service);
+        Registry.TryGet<ITestService>().Should().BeSameAs(service);
     }
 
     [Fact]
-    public void Resolve_unregistered_returns_null()
+    public void TryGet_unregistered_returns_null()
     {
-        _registry.Resolve<ITestService>().Should().BeNull();
+        Registry.TryGet<ITestService>().Should().BeNull();
     }
 
     [Fact]
-    public void Deregister_removes_service()
+    public void UnregisterAll_removes_service()
     {
-        _registry.Register<ITestService>(new TestService("x"));
-        _registry.Deregister<ITestService>();
+        _bundleRegistry.Register<ITestService>(new TestService("x"));
+        _bundleRegistry.UnregisterAll<ITestService>();
 
-        _registry.Resolve<ITestService>().Should().BeNull();
+        Registry.TryGet<ITestService>().Should().BeNull();
     }
 
     [Fact]
-    public void Duplicate_register_throws()
+    public void Multiple_registrations_allowed()
     {
-        _registry.Register<ITestService>(new TestService("a"));
+        _bundleRegistry.Register<ITestService>(new TestService("a"));
+        _bundleRegistry.Register<ITestService>(new TestService("b"));
 
-        var act = () => _registry.Register<ITestService>(new TestService("b"));
-        act.Should().Throw<InvalidOperationException>();
+        Registry.GetAll<ITestService>().Should().HaveCount(2);
+    }
+
+    [Fact]
+    public void RegisteredTypeNames_tracks_registered_types()
+    {
+        _bundleRegistry.Register<ITestService>(new TestService("a"));
+
+        _bundleRegistry.RegisteredTypeNames.Should().Contain(typeof(ITestService).FullName!);
+    }
+
+    [Fact]
+    public void RegisteredTypeNames_cleared_after_UnregisterAll()
+    {
+        _bundleRegistry.Register<ITestService>(new TestService("a"));
+        _bundleRegistry.UnregisterAll<ITestService>();
+
+        _bundleRegistry.RegisteredTypeNames.Should().NotContain(typeof(ITestService).FullName!);
     }
 
     [Fact]
@@ -46,12 +65,11 @@ public class BundleServiceRegistryTests
     {
         const int count = 100;
 
-        // Each iteration creates its own registry to test concurrent access
         Parallel.For(0, count, i =>
         {
-            var registry = new BundleServiceRegistry();
-            registry.Register<ITestService>(new TestService($"svc-{i}"));
-            var resolved = registry.Resolve<ITestService>();
+            var reg = new BundleRegistry();
+            reg.Register<ITestService>(new TestService($"svc-{i}"));
+            var resolved = reg.Registry.TryGet<ITestService>();
             resolved.Should().NotBeNull();
             resolved!.Name.Should().Be($"svc-{i}");
         });

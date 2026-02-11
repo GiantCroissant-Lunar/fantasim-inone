@@ -1,3 +1,5 @@
+using ServiceArchi.Contracts;
+
 namespace FantaSim.App.Bundles.Contracts;
 
 /// <summary>
@@ -6,6 +8,6 @@ namespace FantaSim.App.Bundles.Contracts;
 /// </summary>
 public interface IBundleServiceModule
 {
-    void Register(IBundleServiceRegistry registry);
-    void Deregister(IBundleServiceRegistry registry);
+    void Register(IRegistry registry);
+    void Deregister(IRegistry registry);
 }

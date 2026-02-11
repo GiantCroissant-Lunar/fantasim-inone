@@ -4,6 +4,7 @@ using FantaSim.App.Bundles.Contracts.Interaction.Events;
 using FantaSim.App.Bundles.Contracts.Interaction.Selection;
 using FantaSim.App.Bundles.Core;
 using Godot;
+using ServiceArchi.Contracts;
 
 namespace FantaSim.App;
 
@@ -27,7 +28,7 @@ public partial class BootstrapShim : Node
     private IDisposable? _bundleUnloadedSub;
 
     public IBundleHost? BundleHost => _bundleHost;
-    public IBundleServiceRegistry? Registry { get; private set; }
+    public IRegistry? Registry { get; private set; }
     public DockManager? DockManager => _dockManager;
     public MenuService? MenuService => _menuService;
     public StatusService? StatusService => _statusService;
@@ -45,7 +46,8 @@ public partial class BootstrapShim : Node
     {
         var vfs = new GodotBundleVfs();
         var extractor = new DllExtractor();
-        var registry = new BundleServiceRegistry();
+        var bundleRegistry = new BundleRegistry();
+        var registry = bundleRegistry.Registry;
         _messageBus = new MessagePipeBundleMessageBus();
 
         // Create services
@@ -56,7 +58,7 @@ public partial class BootstrapShim : Node
         var mainNode = GetTree().Root.GetNode("Main");
         var sceneHost = new GodotBundleSceneHost(this, _dockManager, shellTarget: mainNode);
 
-        _bundleHost = new BundleHost(vfs, extractor, registry, sceneHost, _messageBus);
+        _bundleHost = new BundleHost(vfs, extractor, registry, sceneHost, _messageBus, bundleRegistry);
         Registry = registry;
 
         // Interaction services

@@ -3,4 +3,8 @@
     <AssemblyName>FantaSim.App.Bundles.Contracts</AssemblyName>
     <RootNamespace>FantaSim.App.Bundles.Contracts</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GiantCroissant.Plate.ServiceArchi.Contracts" />
+  </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 using FantaSim.App.Bundles.Contracts;
+using ServiceArchi.Contracts;
 
 namespace FantaSim.Bundles.PlateViewer;
 
@@ -8,12 +9,12 @@ namespace FantaSim.Bundles.PlateViewer;
 /// </summary>
 public sealed class PlateViewerModule : IBundleServiceModule
 {
-    public void Register(IBundleServiceRegistry registry)
+    public void Register(IRegistry registry)
     {
         // Future: register plate viewer services
     }
 
-    public void Deregister(IBundleServiceRegistry registry)
+    public void Deregister(IRegistry registry)
     {
         // Future: deregister plate viewer services
     }

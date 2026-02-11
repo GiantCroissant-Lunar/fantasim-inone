@@ -11,7 +11,7 @@ namespace FantaSim.App.Bundles.Tests;
 public class BundleHostTests
 {
     private readonly FakeGodotBundleVfs _vfs = new();
-    private readonly BundleServiceRegistry _registry = new();
+    private readonly BundleRegistry _bundleRegistry = new();
     private readonly DllExtractor _extractor;
     private readonly FakeBundleSceneHost _sceneHost = new();
     private readonly MessagePipeBundleMessageBus _bus = new();
@@ -21,7 +21,7 @@ public class BundleHostTests
     {
         var tempDir = Path.Combine(Path.GetTempPath(), $"bundle-test-{Guid.NewGuid():N}");
         _extractor = new DllExtractor(tempDir);
-        _host = new BundleHost(_vfs, _extractor, _registry, _sceneHost, _bus);
+        _host = new BundleHost(_vfs, _extractor, _bundleRegistry.Registry, _sceneHost, _bus, _bundleRegistry);
     }
 
     [Fact]

@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="GiantCroissant.Plate.ServiceArchi.Core" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\plugins\App.Bundles.Core\App.Bundles.Core.csproj" />
   </ItemGroup>
 </Project>

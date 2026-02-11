@@ -3,6 +3,7 @@ using FantaSim.App.Bundles.Contracts;
 using FantaSim.App.Bundles.Core;
 using FantaSim.App.Bundles.Tests.Fakes;
 using FluentAssertions;
+using ServiceArchi.Contracts;
 using Xunit;
 
 namespace FantaSim.App.Bundles.Tests;
@@ -10,24 +11,25 @@ namespace FantaSim.App.Bundles.Tests;
 public class BundleLifecycleIntegrationTests
 {
     private readonly FakeGodotBundleVfs _vfs = new();
-    private readonly BundleServiceRegistry _registry = new();
+    private readonly BundleRegistry _bundleRegistry = new();
     private readonly DllExtractor _extractor;
     private readonly FakeBundleSceneHost _sceneHost = new();
     private readonly MessagePipeBundleMessageBus _messageBus = new();
     private readonly BundleHost _host;
+    private IRegistry Registry => _bundleRegistry.Registry;
 
     public BundleLifecycleIntegrationTests()
     {
         var tempDir = Path.Combine(Path.GetTempPath(), $"bundle-integ-{Guid.NewGuid():N}");
         _extractor = new DllExtractor(tempDir);
-        _host = new BundleHost(_vfs, _extractor, _registry, _sceneHost, _messageBus);
+        _host = new BundleHost(_vfs, _extractor, _bundleRegistry.Registry, _sceneHost, _messageBus, _bundleRegistry);
     }
 
     [Fact]
     public async Task Full_lifecycle_load_snapshot_unload_reload_snapshot()
     {
         // Arrange — register message bus in registry (mirrors BootstrapShim)
-        _registry.Register<IBundleMessageBus>(_messageBus);
+        _bundleRegistry.Register<IBundleMessageBus>(_messageBus);
 
         SetupFakeBundle("dll.bundle", "DllBundle.dll");
         SetupFakeBundleNoDll("asset.bundle");

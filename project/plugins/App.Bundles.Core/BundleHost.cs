@@ -3,6 +3,7 @@ using System.Runtime.Loader;
 using System.Text.Json;
 using FantaSim.App.Bundles.Contracts;
 using FantaSim.App.Bundles.Contracts.Interaction.Events;
+using ServiceArchi.Contracts;
 
 namespace FantaSim.App.Bundles.Core;
 
@@ -15,7 +16,8 @@ public sealed class BundleHost : IBundleHost
 {
     private readonly IGodotBundleVfs _vfs;
     private readonly IDllExtractor _extractor;
-    private readonly IBundleServiceRegistry _registry;
+    private readonly IRegistry _registry;
+    private readonly BundleRegistry? _bundleRegistry;
     private readonly IBundleSceneHost? _sceneHost;
     private readonly IBundleMessageBus? _messageBus;
     private readonly Dictionary<string, LoadedBundle> _bundles = new();
@@ -27,13 +29,15 @@ public sealed class BundleHost : IBundleHost
     public BundleHost(
         IGodotBundleVfs vfs,
         IDllExtractor extractor,
-        IBundleServiceRegistry registry,
+        IRegistry registry,
         IBundleSceneHost? sceneHost = null,
-        IBundleMessageBus? messageBus = null)
+        IBundleMessageBus? messageBus = null,
+        BundleRegistry? bundleRegistry = null)
     {
         _vfs = vfs;
         _extractor = extractor;
         _registry = registry;
+        _bundleRegistry = bundleRegistry;
         _sceneHost = sceneHost;
         _messageBus = messageBus;
 
@@ -42,6 +46,7 @@ public sealed class BundleHost : IBundleHost
         {
             "FantaSim.App.Bundles.Contracts",
             "FantaSim.Geosphere.Plates.Contracts",
+            "ServiceArchi.Contracts",
             "System.Runtime",
             "System.Private.CoreLib",
             "netstandard"
@@ -196,7 +201,7 @@ public sealed class BundleHost : IBundleHost
         return new BundleSystemSnapshot(
             DateTimeOffset.UtcNow,
             bundles,
-            _registry.RegisteredTypeNames,
+            _bundleRegistry?.RegisteredTypeNames ?? [],
             messageBusSnapshot
         );
     }
