@@ -13,6 +13,7 @@
     <Authors>Lunar Horse</Authors>
     <Description>Kinematics contracts for FantaSim plate geosphere</Description>
     <PackageTags>fantasim;contracts;plate;kinematics;geosphere</PackageTags>
+    <NoWarn>$(NoWarn);MsgPack014</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,6 +28,8 @@
     <PackageReference Include="TimeDete.Time.Primitives" />
     <PackageReference Include="TimeDete.Determinism.Abstractions" />
     <PackageReference Include="UnifySerialization.Abstractions" />
+    <!-- Source generator — must remain ProjectReference until nupkg ships analyzers/dotnet/cs layout -->
+    <ProjectReference Include="..\..\..\..\..\plate-projects\unify-serialization\dotnet\src\UnifySerialization.Generators\UnifySerialization.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <PackageReference Include="UnifyGeometry.Primitives" />
     <PackageReference Include="MessagePack" />
   </ItemGroup>
