@@ -1,4 +1,6 @@
 using FantaSim.App.Bundles.Contracts;
+using FantaSim.App.Bundles.Contracts.Interaction.Commands;
+using FantaSim.App.Bundles.Contracts.Interaction.Selection;
 using FantaSim.App.Bundles.Core;
 using Godot;
 
@@ -17,6 +19,9 @@ public partial class BootstrapShim : Node
     private MenuService? _menuService;
     private StatusService? _statusService;
     private VerificationService? _verificationService;
+    private SelectionService? _selectionService;
+    private CommandHistory? _commandHistory;
+    private GdScriptCommandRouter? _commandRouter;
 
     public IBundleHost? BundleHost => _bundleHost;
     public IBundleServiceRegistry? Registry { get; private set; }
@@ -48,10 +53,19 @@ public partial class BootstrapShim : Node
         _bundleHost = new BundleHost(vfs, extractor, registry, sceneHost, _messageBus);
         Registry = registry;
 
+        // Interaction services
+        _selectionService = new SelectionService(_messageBus);
+        _commandHistory = new CommandHistory(_messageBus);
+
         registry.Register<IBundleMessageBus>(_messageBus);
         registry.Register<IStatusService>(_statusService);
         registry.Register<IDockService>(_dockManager);
         registry.Register<IMenuService>(_menuService);
+        registry.Register<ISelectionService>(_selectionService);
+        registry.Register<ICommandHistory>(_commandHistory);
+
+        // Command router (subscribes to GdScriptCommand on the bus)
+        _commandRouter = new GdScriptCommandRouter(_messageBus, _selectionService, _bundleHost);
 
         GD.Print("[Bootstrap] BundleHost created");
 
@@ -74,6 +88,8 @@ public partial class BootstrapShim : Node
 
     public override void _ExitTree()
     {
+        _commandRouter?.Dispose();
+
         if (_bundleHost is not null)
         {
             _bundleHost.UnloadAllAsync().GetAwaiter().GetResult();
@@ -104,6 +120,26 @@ public partial class BootstrapShim : Node
     public void SetFileDialog(FileDialog dialog)
     {
         _statusService?.SetFileDialog(dialog);
+    }
+
+    // -- GDScript-callable command entry point --
+
+    public void SendCommand(string action, Godot.Collections.Dictionary? @params = null)
+    {
+        if (_messageBus is null) return;
+
+        var dict = new Dictionary<string, object?>();
+        if (@params is not null)
+        {
+            foreach (var kv in @params)
+            {
+                if (kv.Key.Obj is string key)
+                    dict[key] = kv.Value.Obj;
+            }
+        }
+
+        var cmd = new GdScriptCommand(Guid.NewGuid(), action, dict);
+        _messageBus.Publish(cmd);
     }
 
     // -- GDScript-callable methods --
