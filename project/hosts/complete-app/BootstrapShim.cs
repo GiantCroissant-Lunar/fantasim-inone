@@ -17,6 +17,7 @@ public partial class BootstrapShim : Node
 {
     private BundleHost? _bundleHost;
     private MessagePipeBundleMessageBus? _messageBus;
+    private IFantaSimLog? _log;
     private DockManager? _dockManager;
     private MenuService? _menuService;
     private StatusService? _statusService;
@@ -44,6 +45,8 @@ public partial class BootstrapShim : Node
 
     public override void _Ready()
     {
+        _log = new GodotLog();
+
         var vfs = new GodotBundleVfs();
         var extractor = new DllExtractor();
         var bundleRegistry = new BundleRegistry();
@@ -51,12 +54,12 @@ public partial class BootstrapShim : Node
         _messageBus = new MessagePipeBundleMessageBus();
 
         // Create services
-        _dockManager = new DockManager();
+        _dockManager = new DockManager(_log);
         _menuService = new MenuService();
         _statusService = new StatusService();
 
         var mainNode = GetTree().Root.GetNode("Main");
-        var sceneHost = new GodotBundleSceneHost(this, _dockManager, shellTarget: mainNode);
+        var sceneHost = new GodotBundleSceneHost(this, _log, _dockManager, shellTarget: mainNode);
 
         _bundleHost = new BundleHost(vfs, extractor, registry, sceneHost, _messageBus, bundleRegistry);
         Registry = registry;
@@ -65,6 +68,7 @@ public partial class BootstrapShim : Node
         _selectionService = new SelectionService(_messageBus);
         _commandHistory = new CommandHistory(_messageBus);
 
+        registry.Register<IFantaSimLog>(_log);
         registry.Register<IBundleMessageBus>(_messageBus);
         registry.Register<Crosscut.Messaging.IMessageBus>(_messageBus);
         registry.Register<IStatusService>(_statusService);
@@ -74,7 +78,7 @@ public partial class BootstrapShim : Node
         registry.Register<ICommandHistory>(_commandHistory);
 
         // Command router (subscribes to GdScriptCommand on the bus)
-        _commandRouter = new GdScriptCommandRouter(_messageBus, _selectionService, _bundleHost);
+        _commandRouter = new GdScriptCommandRouter(_messageBus, _log, _selectionService, _bundleHost);
 
         // Bridge bundle lifecycle events to Godot signals for GDScript consumers
         _bundleLoadedSub = _messageBus.Subscribe<BundleLoadedEvent>(e =>
@@ -82,13 +86,13 @@ public partial class BootstrapShim : Node
         _bundleUnloadedSub = _messageBus.Subscribe<BundleUnloadedEvent>(e =>
             CallDeferred("emit_signal", SignalName.BundleChanged, e.BundleId));
 
-        GD.Print("[Bootstrap] BundleHost created");
+        _log.Info("Bootstrap", "BundleHost created");
 
         // Start verification service if --verify flag is present
         var args = OS.GetCmdlineUserArgs();
         if (args.Contains("--verify"))
         {
-            _verificationService = new VerificationService(this);
+            _verificationService = new VerificationService(this, _log);
             _verificationService.Start();
         }
 
@@ -110,7 +114,7 @@ public partial class BootstrapShim : Node
         if (_bundleHost is not null)
         {
             _bundleHost.UnloadAllAsync().GetAwaiter().GetResult();
-            GD.Print("[Bootstrap] BundleHost shut down");
+            _log?.Info("Bootstrap", "BundleHost shut down");
         }
 
         _messageBus?.Dispose();
@@ -121,7 +125,7 @@ public partial class BootstrapShim : Node
     public void RegisterDockSlot(string name, TabContainer container)
     {
         _dockManager?.RegisterSlot(name, container);
-        GD.Print($"[Bootstrap] Dock slot registered: {name}");
+        _log?.Info("Bootstrap", $"Dock slot registered: {name}");
     }
 
     public void SetMenuBar(MenuBar menuBar)
@@ -193,7 +197,7 @@ public partial class BootstrapShim : Node
         catch (System.Exception ex)
         {
             _statusService?.ShowStatus($"Error: {ex.Message}");
-            GD.PrintErr($"[Bootstrap] Load failed: {ex}");
+            _log?.Error("Bootstrap", "Load failed", ex);
         }
     }
 
@@ -209,7 +213,7 @@ public partial class BootstrapShim : Node
         catch (System.Exception ex)
         {
             _statusService?.ShowStatus($"Error: {ex.Message}");
-            GD.PrintErr($"[Bootstrap] Unload failed: {ex}");
+            _log?.Error("Bootstrap", "Unload failed", ex);
         }
     }
 
@@ -225,7 +229,7 @@ public partial class BootstrapShim : Node
         catch (System.Exception ex)
         {
             _statusService?.ShowStatus($"Error: {ex.Message}");
-            GD.PrintErr($"[Bootstrap] Reload failed: {ex}");
+            _log?.Error("Bootstrap", "Reload failed", ex);
         }
     }
 
@@ -285,7 +289,7 @@ public partial class BootstrapShim : Node
         var dir = DirAccess.Open(directory);
         if (dir is null)
         {
-            GD.Print($"[Bootstrap] No system bundles directory at {directory}");
+            _log?.Info("Bootstrap", $"No system bundles directory at {directory}");
             return;
         }
 
@@ -314,11 +318,11 @@ public partial class BootstrapShim : Node
             try
             {
                 await _bundleHost.LoadAsync(pck);
-                GD.Print($"[Bootstrap] Shell loaded: {pck.GetFile()}");
+                _log?.Info("Bootstrap", $"Shell loaded: {pck.GetFile()}");
             }
             catch (System.Exception ex)
             {
-                GD.PrintErr($"[Bootstrap] Failed to load shell {pck.GetFile()}: {ex.Message}");
+                _log?.Error("Bootstrap", $"Failed to load shell {pck.GetFile()}: {ex.Message}");
             }
         }
 
@@ -332,15 +336,15 @@ public partial class BootstrapShim : Node
             try
             {
                 await _bundleHost.LoadAsync(pck);
-                GD.Print($"[Bootstrap] Auto-loaded: {pck.GetFile()}");
+                _log?.Info("Bootstrap", $"Auto-loaded: {pck.GetFile()}");
             }
             catch (System.Exception ex)
             {
-                GD.PrintErr($"[Bootstrap] Failed to auto-load {pck.GetFile()}: {ex.Message}");
+                _log?.Error("Bootstrap", $"Failed to auto-load {pck.GetFile()}: {ex.Message}");
             }
         }
 
-        GD.Print("[Bootstrap] All bundles loaded");
+        _log?.Info("Bootstrap", "All bundles loaded");
         EmitSignal(SignalName.AllBundlesLoaded);
     }
 }

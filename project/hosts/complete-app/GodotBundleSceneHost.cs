@@ -11,13 +11,15 @@ namespace FantaSim.App;
 public sealed class GodotBundleSceneHost : IBundleSceneHost
 {
     private readonly Node _container;
+    private readonly IFantaSimLog _log;
     private readonly DockManager? _dockManager;
     private readonly Node? _shellTarget;
     private readonly Dictionary<string, List<Node>> _tracked = new();
 
-    public GodotBundleSceneHost(Node container, DockManager? dockManager = null, Node? shellTarget = null)
+    public GodotBundleSceneHost(Node container, IFantaSimLog log, DockManager? dockManager = null, Node? shellTarget = null)
     {
         _container = container;
+        _log = log;
         _dockManager = dockManager;
         _shellTarget = shellTarget;
     }
@@ -35,7 +37,7 @@ public sealed class GodotBundleSceneHost : IBundleSceneHost
 
         if (scene is null)
         {
-            GD.PrintErr($"[SceneHost] Failed to load root scene: {manifest.RootScene}");
+            _log.Error("SceneHost", $"Failed to load root scene: {manifest.RootScene}");
             return;
         }
 
@@ -63,7 +65,7 @@ public sealed class GodotBundleSceneHost : IBundleSceneHost
         }
 
         nodes.Add(instance);
-        GD.Print($"[SceneHost] Bundle '{bundleId}' root scene instantiated");
+        _log.Info("SceneHost", $"Bundle '{bundleId}' root scene instantiated");
     }
 
     public void OnBundleUnloading(string bundleId)
@@ -84,7 +86,7 @@ public sealed class GodotBundleSceneHost : IBundleSceneHost
             }
         }
 
-        GD.Print($"[SceneHost] Bundle '{bundleId}' nodes removed ({nodes.Count})");
+        _log.Info("SceneHost", $"Bundle '{bundleId}' nodes removed ({nodes.Count})");
     }
 
     public IReadOnlyList<string> GetTrackedNodes(string bundleId)

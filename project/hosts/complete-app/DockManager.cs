@@ -15,8 +15,14 @@ public sealed class DockManager : IDockService
         public const string Bottom = "bottom";
     }
 
+    private readonly IFantaSimLog _log;
     private readonly Dictionary<string, TabContainer> _slots = new();
     private readonly Dictionary<string, List<(string SlotName, Control Panel)>> _dockedPanels = new();
+
+    public DockManager(IFantaSimLog log)
+    {
+        _log = log;
+    }
 
     public bool HasSlot(string name) => _slots.ContainsKey(name);
 
@@ -29,7 +35,7 @@ public sealed class DockManager : IDockService
     {
         if (!_slots.TryGetValue(slotName, out var container))
         {
-            GD.PrintErr($"[DockManager] Unknown slot: {slotName}");
+            _log.Error("DockManager", $"Unknown slot: {slotName}");
             return false;
         }
 
@@ -43,7 +49,7 @@ public sealed class DockManager : IDockService
         }
 
         panels.Add((slotName, panel));
-        GD.Print($"[DockManager] '{bundleId}' docked into '{slotName}'");
+        _log.Info("DockManager", $"'{bundleId}' docked into '{slotName}'");
         return true;
     }
 
@@ -59,6 +65,6 @@ public sealed class DockManager : IDockService
             panel.QueueFree();
         }
 
-        GD.Print($"[DockManager] '{bundleId}' undocked ({panels.Count} panels)");
+        _log.Info("DockManager", $"'{bundleId}' undocked ({panels.Count} panels)");
     }
 }

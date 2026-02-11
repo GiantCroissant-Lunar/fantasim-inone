@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using FantaSim.App.Bundles.Contracts;
 using Godot;
 
 namespace FantaSim.App;
@@ -13,13 +14,15 @@ public sealed class VerificationService
     private const int SettleFrames = 90;
 
     private readonly BootstrapShim _bootstrap;
+    private readonly IFantaSimLog _log;
     private readonly string _outputDir;
     private int _frameCount;
     private bool _capturing;
 
-    public VerificationService(BootstrapShim bootstrap)
+    public VerificationService(BootstrapShim bootstrap, IFantaSimLog log)
     {
         _bootstrap = bootstrap;
+        _log = log;
         var exeDir = System.IO.Path.GetDirectoryName(OS.GetExecutablePath()) ?? ".";
         _outputDir = System.IO.Path.Combine(exeDir, "_verify");
     }
@@ -27,14 +30,14 @@ public sealed class VerificationService
     public void Start()
     {
         _bootstrap.AllBundlesLoaded += OnAllBundlesLoaded;
-        GD.Print("[Verify] Waiting for AllBundlesLoaded signal...");
+        _log.Info("Verify", "Waiting for AllBundlesLoaded signal...");
     }
 
     private void OnAllBundlesLoaded()
     {
         _capturing = true;
         _frameCount = 0;
-        GD.Print($"[Verify] Settling for {SettleFrames} frames...");
+        _log.Info("Verify", $"Settling for {SettleFrames} frames...");
     }
 
     public void ProcessFrame()
@@ -60,12 +63,12 @@ public sealed class VerificationService
 
         if (ok)
         {
-            GD.Print($"[Verify] All artifacts written to {_outputDir}");
+            _log.Info("Verify", $"All artifacts written to {_outputDir}");
             _bootstrap.GetTree().Quit(0);
         }
         else
         {
-            GD.PrintErr("[Verify] Some captures failed");
+            _log.Error("Verify", "Some captures failed");
             _bootstrap.GetTree().Quit(1);
         }
     }
@@ -79,15 +82,15 @@ public sealed class VerificationService
             var err = image.SavePng(path);
             if (err != Error.Ok)
             {
-                GD.PrintErr($"[Verify] Screenshot save failed: {err}");
+                _log.Error("Verify", $"Screenshot save failed: {err}");
                 return false;
             }
-            GD.Print($"[Verify] Screenshot: {path} ({image.GetWidth()}x{image.GetHeight()})");
+            _log.Info("Verify", $"Screenshot: {path} ({image.GetWidth()}x{image.GetHeight()})");
             return true;
         }
         catch (System.Exception ex)
         {
-            GD.PrintErr($"[Verify] Screenshot error: {ex.Message}");
+            _log.Error("Verify", "Screenshot error", ex);
             return false;
         }
     }
@@ -105,12 +108,12 @@ public sealed class VerificationService
             });
             var path = System.IO.Path.Combine(_outputDir, "scene_tree.json");
             System.IO.File.WriteAllText(path, json);
-            GD.Print($"[Verify] Scene tree: {path}");
+            _log.Info("Verify", $"Scene tree: {path}");
             return true;
         }
         catch (System.Exception ex)
         {
-            GD.PrintErr($"[Verify] Scene tree error: {ex.Message}");
+            _log.Error("Verify", "Scene tree error", ex);
             return false;
         }
     }
@@ -121,7 +124,7 @@ public sealed class VerificationService
         {
             if (_bootstrap.BundleHost is null)
             {
-                GD.PrintErr("[Verify] BundleHost is null");
+                _log.Error("Verify", "BundleHost is null");
                 return false;
             }
 
@@ -133,12 +136,12 @@ public sealed class VerificationService
             });
             var path = System.IO.Path.Combine(_outputDir, "snapshot.json");
             System.IO.File.WriteAllText(path, json);
-            GD.Print($"[Verify] Bundle snapshot: {path}");
+            _log.Info("Verify", $"Bundle snapshot: {path}");
             return true;
         }
         catch (System.Exception ex)
         {
-            GD.PrintErr($"[Verify] Snapshot error: {ex.Message}");
+            _log.Error("Verify", "Snapshot error", ex);
             return false;
         }
     }
