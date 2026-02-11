@@ -16,6 +16,7 @@
     <!-- Messaging & DI -->
     <PackageVersion Include="MessagePipe" Version="1.8.1" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
 
     <!-- ServiceArchi -->
     <PackageVersion Include="GiantCroissant.Plate.ServiceArchi.Contracts" Version="0.1.0" />
@@ -25,6 +26,34 @@
     <!-- Crosscut Messaging -->
     <PackageVersion Include="GiantCroissant.Crosscut.Messaging.Contracts" Version="0.1.0" />
     <PackageVersion Include="GiantCroissant.Crosscut.Messaging.MessagePipe" Version="0.1.0" />
+
+    <!-- Infrastructure: time-dete -->
+    <PackageVersion Include="TimeDete.Determinism.Abstractions" Version="0.1.0" />
+    <PackageVersion Include="TimeDete.Time.Primitives" Version="0.1.0" />
+
+    <!-- Infrastructure: unify-topology -->
+    <PackageVersion Include="UnifyTopology.Graph.Abstractions" Version="0.1.0" />
+    <PackageVersion Include="UnifyTopology.Graph.InMemory" Version="0.1.0" />
+
+    <!-- Infrastructure: unify-maths -->
+    <PackageVersion Include="UnifyGeometry.Primitives" Version="0.1.0" />
+
+    <!-- Infrastructure: unify-serialization -->
+    <PackageVersion Include="UnifySerialization.Abstractions" Version="0.1.0" />
+    <PackageVersion Include="UnifySerialization.Generators" Version="0.1.0" />
+
+    <!-- Infrastructure: unify-storage -->
+    <PackageVersion Include="UnifyStorage.Abstractions" Version="0.1.0" />
+    <PackageVersion Include="UnifyStorage.Attributes" Version="0.1.0" />
+
+    <!-- Infrastructure: plate-shared source generators -->
+    <PackageVersion Include="GiantCroissant.Plate.SCG.General.AutoToString.Attributes" Version="0.1.0" />
+    <PackageVersion Include="GiantCroissant.Plate.SCG.General.DisposePattern.Attributes" Version="0.1.0" />
+    <PackageVersion Include="GiantCroissant.Plate.General.AutoProperties.Attributes" Version="0.1.0" />
+
+    <!-- Infrastructure: plugin-archi -->
+    <PackageVersion Include="GiantCroissant.Plate.PluginArchi.Contracts" Version="0.1.0" />
+    <PackageVersion Include="GiantCroissant.Plate.PluginArchi.Extensibility.Abstractions" Version="0.1.0" />
 
     <!-- Godot -->
     <PackageVersion Include="Godot.NET.Sdk" Version="4.6.0" />

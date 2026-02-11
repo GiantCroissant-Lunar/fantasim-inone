@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;netstandard2.1</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>FantaSim.Geosphere.Plate.Topology.Contracts</RootNamespace>
+    <PackageId>GiantCroissant.FantaSim.Geosphere.Plate.Topology.Contracts</PackageId>
+    <AssemblyName>Geosphere.Plate.Topology.Contracts</AssemblyName>
+    <UnifySerializationTargets>MessagePack</UnifySerializationTargets>
+    <Version>$(Version)</Version>
+    <Authors>Lunar Horse</Authors>
+    <Description>Topology contracts for FantaSim plate geosphere</Description>
+    <PackageTags>fantasim;contracts;plate;topology;geosphere</PackageTags>
+    <NoWarn>$(NoWarn);CS8604</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <CompilerVisibleProperty Include="UnifySerializationTargets" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TimeDete.Determinism.Abstractions" />
+    <PackageReference Include="TimeDete.Time.Primitives" />
+    <PackageReference Include="UnifyTopology.Graph.Abstractions" />
+    <PackageReference Include="UnifyGeometry.Primitives" />
+    <PackageReference Include="UnifySerialization.Abstractions" />
+    <!-- Source generator — must remain ProjectReference until nupkg ships analyzers/dotnet/cs layout -->
+    <ProjectReference Include="..\..\..\..\..\plate-projects\unify-serialization\dotnet\src\UnifySerialization.Generators\UnifySerialization.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <PackageReference Include="UnifyStorage.Abstractions" />
+    <PackageReference Include="UnifyStorage.Attributes" />
+    <PackageReference Include="GiantCroissant.Plate.SCG.General.AutoToString.Attributes" />
+    <PackageReference Include="GiantCroissant.Plate.SCG.General.DisposePattern.Attributes" />
+    <PackageReference Include="GiantCroissant.Plate.General.AutoProperties.Attributes" />
+    <PackageReference Include="MessagePack" />
+  </ItemGroup>
+
+</Project>
