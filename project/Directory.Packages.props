@@ -38,6 +38,10 @@
 
     <!-- Infrastructure: unify-maths -->
     <PackageVersion Include="UnifyGeometry.Primitives" Version="0.1.0" />
+    <PackageVersion Include="UnifyGeometry.Operations" Version="0.1.0" />
+
+    <!-- Mapping -->
+    <PackageVersion Include="Riok.Mapperly" Version="4.1.0" />
 
     <!-- Infrastructure: unify-serialization -->
     <PackageVersion Include="UnifySerialization.Abstractions" Version="0.1.0" />
