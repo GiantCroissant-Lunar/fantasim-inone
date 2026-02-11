@@ -193,50 +193,29 @@ public partial class BootstrapShim : Node
 
     public async void LoadBundle(string pckPath)
     {
-        if (_bundleHost is null) return;
-        try
-        {
-            _statusService?.ShowStatus($"Loading {pckPath}...");
-            await _bundleHost.LoadAsync(pckPath);
-            _statusService?.ShowStatus("Bundle loaded");
-        }
-        catch (System.Exception ex)
-        {
-            _statusService?.ShowStatus($"Error: {ex.Message}");
-            _log?.LogError(ex, "Load failed");
-        }
+        await ExecuteBundleHostOperationAsync(
+            $"Loading {pckPath}...",
+            "Bundle loaded",
+            "Load failed",
+            host => host.LoadAsync(pckPath));
     }
 
     public async void UnloadBundle(string bundleId)
     {
-        if (_bundleHost is null) return;
-        try
-        {
-            _statusService?.ShowStatus($"Unloading {bundleId}...");
-            await _bundleHost.UnloadAsync(bundleId);
-            _statusService?.ShowStatus("Bundle unloaded");
-        }
-        catch (System.Exception ex)
-        {
-            _statusService?.ShowStatus($"Error: {ex.Message}");
-            _log?.LogError(ex, "Unload failed");
-        }
+        await ExecuteBundleHostOperationAsync(
+            $"Unloading {bundleId}...",
+            "Bundle unloaded",
+            "Unload failed",
+            host => host.UnloadAsync(bundleId));
     }
 
     public async void ReloadBundle(string bundleId)
     {
-        if (_bundleHost is null) return;
-        try
-        {
-            _statusService?.ShowStatus($"Reloading {bundleId}...");
-            await _bundleHost.ReloadAsync(bundleId);
-            _statusService?.ShowStatus("Bundle reloaded");
-        }
-        catch (System.Exception ex)
-        {
-            _statusService?.ShowStatus($"Error: {ex.Message}");
-            _log?.LogError(ex, "Reload failed");
-        }
+        await ExecuteBundleHostOperationAsync(
+            $"Reloading {bundleId}...",
+            "Bundle reloaded",
+            "Reload failed",
+            host => host.ReloadAsync(bundleId));
     }
 
     public Godot.Collections.Dictionary CaptureSnapshotDict()
@@ -319,38 +298,60 @@ public partial class BootstrapShim : Node
         }
 
         // Phase 1: Load shell bundle(s) first
-        foreach (var pck in shellPcks)
-        {
-            try
-            {
-                await _bundleHost.LoadAsync(pck);
-                _log?.LogInformation("Shell loaded: {File}", pck.GetFile());
-            }
-            catch (System.Exception ex)
-            {
-                _log?.LogError(ex, "Failed to load shell {File}", pck.GetFile());
-            }
-        }
+        await LoadPcksAsync(shellPcks, "Shell loaded: {File}", "Failed to load shell {File}");
 
         // Wait one frame for shell's _ready() to wire dock slots
         await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
         EmitSignal(SignalName.ShellReady);
 
         // Phase 2: Load remaining control bundles
-        foreach (var pck in controlPcks)
+        await LoadPcksAsync(controlPcks, "Auto-loaded: {File}", "Failed to auto-load {File}");
+
+        _log?.LogInformation("All bundles loaded");
+        EmitSignal(SignalName.AllBundlesLoaded);
+    }
+
+    private async Task ExecuteBundleHostOperationAsync(
+        string inProgressStatus,
+        string successStatus,
+        string errorLogMessage,
+        Func<BundleHost, Task> operation)
+    {
+        if (_bundleHost is null)
+            return;
+
+        try
+        {
+            _statusService?.ShowStatus(inProgressStatus);
+            await operation(_bundleHost);
+            _statusService?.ShowStatus(successStatus);
+        }
+        catch (System.Exception ex)
+        {
+            _statusService?.ShowStatus($"Error: {ex.Message}");
+            _log?.LogError(ex, errorLogMessage);
+        }
+    }
+
+    private async Task LoadPcksAsync(
+        IEnumerable<string> pcks,
+        string successMessageTemplate,
+        string errorMessageTemplate)
+    {
+        if (_bundleHost is null)
+            return;
+
+        foreach (var pck in pcks)
         {
             try
             {
                 await _bundleHost.LoadAsync(pck);
-                _log?.LogInformation("Auto-loaded: {File}", pck.GetFile());
+                _log?.LogInformation(successMessageTemplate, pck.GetFile());
             }
             catch (System.Exception ex)
             {
-                _log?.LogError(ex, "Failed to auto-load {File}", pck.GetFile());
+                _log?.LogError(ex, errorMessageTemplate, pck.GetFile());
             }
         }
-
-        _log?.LogInformation("All bundles loaded");
-        EmitSignal(SignalName.AllBundlesLoaded);
     }
 }
