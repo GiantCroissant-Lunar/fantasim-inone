@@ -19,7 +19,7 @@ namespace FantaSim.Geosphere.Plate.Topology.Materializer;
 /// - Event key: "{prefix}E:{seq}" where seq is big-endian uint64 (8 bytes fixed-width)
 /// - Last sequence key: "{prefix}Head"
 /// - Snapshot key: "{prefix}Snap:{tick}" where tick is big-endian uint64
-/// - Capabilities key: "{prefix}Meta:Caps" ??9-byte bitset
+/// - Capabilities key: "{prefix}Meta:Caps" 9-byte bitset
 /// - Event value: MessagePack envelope [eventType:string, payload:binary]
 ///
 /// Features:
