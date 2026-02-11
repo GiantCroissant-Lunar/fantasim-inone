@@ -61,6 +61,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geosphere.Plate.Velocity.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geosphere.Plate.Partition.Contracts", "contracts\Geosphere.Plate.Partition.Contracts\Geosphere.Plate.Partition.Contracts.csproj", "{B98613A8-7E53-4D43-93B6-68BB40A1C5AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geosphere.Plate.Motion.Contracts", "contracts\Geosphere.Plate.Motion.Contracts\Geosphere.Plate.Motion.Contracts.csproj", "{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -653,6 +655,30 @@ Global
 		{B98613A8-7E53-4D43-93B6-68BB40A1C5AE}.Release|x64.Build.0 = Release|Any CPU
 		{B98613A8-7E53-4D43-93B6-68BB40A1C5AE}.Release|x86.ActiveCfg = Release|Any CPU
 		{B98613A8-7E53-4D43-93B6-68BB40A1C5AE}.Release|x86.Build.0 = Release|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.Debug|x64.Build.0 = Debug|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.Debug|x86.Build.0 = Debug|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.ExportDebug|x64.ActiveCfg = Debug|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.ExportDebug|x64.Build.0 = Debug|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.ExportDebug|x86.ActiveCfg = Debug|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.ExportDebug|x86.Build.0 = Debug|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.ExportRelease|x64.ActiveCfg = Debug|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.ExportRelease|x64.Build.0 = Debug|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.ExportRelease|x86.ActiveCfg = Debug|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.ExportRelease|x86.Build.0 = Debug|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.Release|x64.ActiveCfg = Release|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.Release|x64.Build.0 = Release|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.Release|x86.ActiveCfg = Release|Any CPU
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -682,5 +708,6 @@ Global
 		{69C9F61C-5644-47F8-9024-173E329CF381} = {A1B2C3D4-0001-0001-0001-000000000001}
 		{3CF05FCE-F9DE-4480-BF2B-C131119532A9} = {A1B2C3D4-0001-0001-0001-000000000001}
 		{B98613A8-7E53-4D43-93B6-68BB40A1C5AE} = {A1B2C3D4-0001-0001-0001-000000000001}
+		{E9D10B34-33F3-41FB-BE0A-E1B5BE3D5024} = {A1B2C3D4-0001-0001-0001-000000000001}
 	EndGlobalSection
 EndGlobal
