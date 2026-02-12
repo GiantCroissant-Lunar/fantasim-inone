@@ -7,6 +7,7 @@ vars:
   SLN_PATH: project/fantasim-inone.sln
   GITVERSION_CMD: 'dotnet-gitversion /output json 2>nul | python -c "import sys,json;print(json.load(sys.stdin)[''SemVer''])"'
   UNIFY: dotnet tool run unify-build --
+  NATIVE_STORAGE_DLL: C:/lunar-horse/plate-projects/unify-storage/native/build/bin/Release/unify_storage_native.dll
 
 tasks:
   default:
@@ -104,6 +105,8 @@ tasks:
     cmds:
       - mkdir -p build/_artifacts/{{.VERSION}}
       - '"{{.GODOT_PATH}}" --path {{.PROJECT_PATH}} --headless --export-debug "Windows Desktop" ../../../build/_artifacts/{{.VERSION}}/complete-app.exe'
+      # Copy native DLLs required by P/Invoke (RocksDB)
+      - cp "{{.NATIVE_STORAGE_DLL}}" build/_artifacts/{{.VERSION}}/
 
   export:run:
     desc: Export and run the app with 8s timeout for smoke testing
