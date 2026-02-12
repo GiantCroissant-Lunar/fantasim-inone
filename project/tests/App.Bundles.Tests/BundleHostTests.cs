@@ -10,7 +10,7 @@ namespace FantaSim.App.Bundles.Tests;
 
 public class BundleHostTests
 {
-    private readonly FakeGodotBundleVfs _vfs = new();
+    private readonly FakeBundleVfs _vfs = new();
     private readonly BundleRegistry _bundleRegistry = new();
     private readonly DllExtractor _extractor;
     private readonly FakeBundleSceneHost _sceneHost = new();
@@ -179,7 +179,7 @@ public class BundleHostTests
     [Fact]
     public async Task LoadAsync_extracts_all_runtime_files_in_bin_root()
     {
-        var vfs = new FakeGodotBundleVfs();
+        var vfs = new FakeBundleVfs();
         var registry = new BundleRegistry();
         var sceneHost = new FakeBundleSceneHost();
         var bus = new MessagePipeBundleMessageBus();
@@ -247,7 +247,7 @@ public class BundleHostTests
         public IReadOnlyList<string> Paths => _paths;
         private readonly List<string> _paths = [];
 
-        public string ExtractDlls(string bundleId, IReadOnlyList<string> dllResPaths, IGodotBundleVfs vfs)
+        public string ExtractDlls(string bundleId, IReadOnlyList<string> dllResPaths, IBundleVfs vfs)
         {
             _paths.Clear();
             _paths.AddRange(dllResPaths);

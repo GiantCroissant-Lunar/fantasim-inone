@@ -8,7 +8,7 @@ namespace FantaSim.App;
 /// Thin adapter wrapping Godot's VFS for PCK bundle operations.
 /// This is the ONLY Godot-dependent file in the bundle system.
 /// </summary>
-public sealed class GodotBundleVfs : IGodotBundleVfs
+public sealed class GodotBundleVfs : IBundleVfs
 {
     public bool MountPck(string pckPath)
     {
