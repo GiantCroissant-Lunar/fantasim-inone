@@ -67,6 +67,7 @@
     <!-- Infrastructure: unify-storage -->
     <PackageVersion Include="UnifyStorage.Abstractions" Version="0.1.0" />
     <PackageVersion Include="UnifyStorage.Attributes" Version="0.1.0" />
+    <PackageVersion Include="UnifyStorage.Runtime.RocksDb" Version="0.1.0" />
 
     <!-- Infrastructure: plate-shared source generators -->
     <PackageVersion Include="GiantCroissant.Plate.SCG.General.AutoToString.Attributes" Version="0.1.0" />

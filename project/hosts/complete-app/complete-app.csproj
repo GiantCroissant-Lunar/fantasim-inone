@@ -11,6 +11,7 @@
     <PackageReference Include="GiantCroissant.Crosscut.Config.Json" />
     <PackageReference Include="GiantCroissant.Crosscut.Hosting.Core" />
     <PackageReference Include="GiantCroissant.Crosscut.Diagnostics.Core" />
+    <PackageReference Include="UnifyStorage.Runtime.RocksDb" />
     <PackageReference Include="GiantCroissant.Plate.ServiceArchi.Core" />
   </ItemGroup>
 
