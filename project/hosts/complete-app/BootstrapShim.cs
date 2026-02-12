@@ -1,4 +1,9 @@
+using Crosscut.Config;
+using Crosscut.Diagnostics;
+using Crosscut.Hosting;
 using Crosscut.Logging;
+using UnifyStorage.Abstractions;
+using UnifyStorage.Runtime.RocksDb;
 using FantaSim.App.Bundles.Contracts;
 using FantaSim.App.Bundles.Contracts.Interaction.Commands;
 using FantaSim.App.Bundles.Contracts.Interaction.Events;
@@ -19,6 +24,7 @@ public partial class BootstrapShim : Node
 {
     private BundleHost? _bundleHost;
     private MessagePipeBundleMessageBus? _messageBus;
+    private RocksDbKeyValueStore? _kvStore;
     private ILogger? _log;
     private DockManager? _dockManager;
     private MenuService? _menuService;
@@ -65,12 +71,44 @@ public partial class BootstrapShim : Node
         var registry = bundleRegistry.Registry;
         _messageBus = new MessagePipeBundleMessageBus();
 
+        // Set up Crosscut.Config — JSON file + in-memory defaults
+        var configDir = OS.HasFeature("editor")
+            ? ProjectSettings.GlobalizePath("res://")
+            : OS.GetExecutablePath().GetBaseDir();
+        registry.RegisterJsonConfig(System.IO.Path.Combine(configDir, "config.json"), optional: true);
+        registry.RegisterMemoryConfig(new Dictionary<string, string>
+        {
+            ["Storage:RocksDbPath"] = System.IO.Path.Combine(configDir, "data", "rocksdb"),
+            ["Logging:MinLevel"] = "Debug",
+        });
+        registry.RegisterConfigService();
+
         // Set up Crosscut.Logging with Godot provider
         registry.Register<ILoggingBuilderConfigurator>(new GodotLoggingBuilderConfigurator());
         registry.RegisterLoggingService();
-        var logging = new ServiceProxy(registry);
+        var logging = new Crosscut.Logging.ServiceProxy(registry);
 
         _log = logging.CreateLogger("Bootstrap");
+
+        // Set up Crosscut.Diagnostics (null tracer/metrics, health checks)
+        registry.RegisterDiagnosticsService();
+
+        // Set up Crosscut.Hosting for lifecycle management
+        registry.RegisterHostingService();
+
+        // Set up RocksDB persistent key-value store
+        var rocksDbPath = System.IO.Path.Combine(configDir, "data", "rocksdb");
+        try
+        {
+            System.IO.Directory.CreateDirectory(rocksDbPath);
+            _kvStore = new RocksDbKeyValueStore(rocksDbPath, createIfMissing: true);
+            registry.Register<IKeyValueStore>(_kvStore);
+            _log?.LogInformation("RocksDB opened at {Path}", rocksDbPath);
+        }
+        catch (System.Exception ex)
+        {
+            _log?.LogWarning(ex, "RocksDB unavailable at {Path}, storage features disabled", rocksDbPath);
+        }
 
         // Create services
         _dockManager = new DockManager(logging.CreateLogger("DockManager"));
@@ -110,7 +148,7 @@ public partial class BootstrapShim : Node
         _hudDataChangedSub = _messageBus.Subscribe<HudDataChangedEvent>(e =>
             CallDeferred("emit_signal", SignalName.HudDataChanged, e.Channel, e.PayloadJson));
 
-        _log.LogInformation("BundleHost created");
+        _log?.LogInformation("BundleHost created");
 
         // Start verification service if --verify flag is present
         var args = OS.GetCmdlineUserArgs();
@@ -145,6 +183,7 @@ public partial class BootstrapShim : Node
         }
 
         _messageBus?.Dispose();
+        _kvStore?.Dispose();
     }
 
     // -- GDScript-callable service wiring (called by shell bundle) --

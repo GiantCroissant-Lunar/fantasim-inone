@@ -35,11 +35,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bundles.PlateViewer", "bund
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "World.Shared.Contracts", "contracts\World.Shared.Contracts\World.Shared.Contracts.csproj", "{ACBB5B7B-48A5-4CB4-8482-EA621A0E9852}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runtime.Des.Contracts", "contracts\Runtime.Des.Contracts\Runtime.Des.Contracts.csproj", "{128F58BC-7B69-47DB-9DC6-8F175DE23179}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulation.Des.Contracts", "contracts\Simulation.Des.Contracts\Simulation.Des.Contracts.csproj", "{128F58BC-7B69-47DB-9DC6-8F175DE23179}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runtime.Des", "plugins\Runtime.Des\Runtime.Des.csproj", "{47F55626-6FDB-46FF-B94D-10B7B5AAF14B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulation.Des", "plugins\Simulation.Des\Simulation.Des.csproj", "{47F55626-6FDB-46FF-B94D-10B7B5AAF14B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runtime.Des.Tests", "tests\Runtime.Des.Tests\Runtime.Des.Tests.csproj", "{B7768550-7F0F-4A8B-B880-3F85379C06F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulation.Des.Tests", "tests\Simulation.Des.Tests\Simulation.Des.Tests.csproj", "{B7768550-7F0F-4A8B-B880-3F85379C06F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geosphere.Plate.Kinematics.Contracts", "contracts\Geosphere.Plate.Kinematics.Contracts\Geosphere.Plate.Kinematics.Contracts.csproj", "{713F0ABE-284E-410B-B61C-13449BE43531}"
 EndProject
@@ -73,7 +73,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "schemas", "schemas", "{0F30
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantaSim.Schemas.Serialization", "schemas\FantaSim.Schemas.Serialization\FantaSim.Schemas.Serialization.csproj", "{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantaSim.Schemas.Serialization.Tests", "tests\FantaSim.Schemas.Serialization.Tests\FantaSim.Schemas.Serialization.Tests.csproj", "{66384AFC-9DA7-4E37-80E1-7C41AFEE1CDC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schemas.Serialization.Tests", "tests\Schemas.Serialization.Tests\Schemas.Serialization.Tests.csproj", "{66384AFC-9DA7-4E37-80E1-7C41AFEE1CDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

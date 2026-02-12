@@ -3,115 +3,125 @@
 // DO NOT EDIT - Regenerate using: task generate-dtos
 
 #nullable enable
-
-namespace FantaSim.Geosphere.Plate.Datasets.Contracts.Generated;
-
-using System.Text.Json.Serialization;
-
-/// <summary>
-/// DTO for PlatesDatasetManifest - matches dataset-manifest.schema.json
-/// </summary>
-public partial class PlatesDatasetManifestDto
+#pragma warning disable CS8618 // Non-nullable property uninitialized
+namespace FantaSim.Geosphere.Plate.Datasets.Contracts.Generated
 {
-    [JsonPropertyName("datasetId")]
-    public string DatasetId { get; set; } = string.Empty;
+    using System;
+    using System.Collections.Generic;
 
-    [JsonPropertyName("bodyId")]
-    public string BodyId { get; set; } = string.Empty;
+    using System.Text.Json;
+    using System.Text.Json.Serialization;
+    using System.Globalization;
 
-    [JsonPropertyName("bodyFrame")]
-    public BodyFrameDto BodyFrame { get; set; } = new();
+    /// <summary>
+    /// Manifest describing a plates dataset: body frame, time mapping, assets, and
+    /// canonicalization rules.
+    /// </summary>
+    public partial class PlatesDatasetManifestDto
+    {
+        [JsonPropertyName("bodyFrame")]
+        public BodyFrameDto BodyFrame { get; set; }
 
-    [JsonPropertyName("timeMapping")]
-    public TimeMappingDto TimeMapping { get; set; } = new();
+        [JsonPropertyName("bodyId")]
+        public string BodyId { get; set; }
 
-    [JsonPropertyName("featureSets")]
-    public FeatureSetAssetDto[] FeatureSets { get; set; } = Array.Empty<FeatureSetAssetDto>();
+        [JsonPropertyName("canonicalizationRules")]
+        public CanonicalizationRulesDto CanonicalizationRules { get; set; }
 
-    [JsonPropertyName("rasterSequences")]
-    public RasterSequenceAssetDto[] RasterSequences { get; set; } = Array.Empty<RasterSequenceAssetDto>();
+        [JsonPropertyName("datasetId")]
+        public string DatasetId { get; set; }
 
-    [JsonPropertyName("motionModels")]
-    public MotionModelAssetDto[] MotionModels { get; set; } = Array.Empty<MotionModelAssetDto>();
+        [JsonPropertyName("featureSets")]
+        public FeatureSetAssetDto[] FeatureSets { get; set; }
 
-    [JsonPropertyName("canonicalizationRules")]
-    public CanonicalizationRulesDto CanonicalizationRules { get; set; } = new();
-}
+        [JsonPropertyName("motionModels")]
+        public MotionModelAssetDto[] MotionModels { get; set; }
 
-public partial class BodyFrameDto
-{
-    [JsonPropertyName("shape")]
-    public string Shape { get; set; } = string.Empty;
+        [JsonPropertyName("rasterSequences")]
+        public RasterSequenceAssetDto[] RasterSequences { get; set; }
 
-    [JsonPropertyName("radius")]
-    public double? Radius { get; set; }
+        [JsonPropertyName("timeMapping")]
+        public TimeMappingDto TimeMapping { get; set; }
+    }
 
-    [JsonPropertyName("semiMajor")]
-    public double? SemiMajor { get; set; }
+    public partial class BodyFrameDto
+    {
+        [JsonPropertyName("angularConvention")]
+        public string AngularConvention { get; set; }
 
-    [JsonPropertyName("semiMinor")]
-    public double? SemiMinor { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("radius")]
+        public double? Radius { get; set; }
 
-    [JsonPropertyName("unit")]
-    public string Unit { get; set; } = string.Empty;
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("semiMajor")]
+        public double? SemiMajor { get; set; }
 
-    [JsonPropertyName("angularConvention")]
-    public string AngularConvention { get; set; } = string.Empty;
-}
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("semiMinor")]
+        public double? SemiMinor { get; set; }
 
-public partial class TimeMappingDto
-{
-    [JsonPropertyName("tickUnit")]
-    public string TickUnit { get; set; } = string.Empty;
-}
+        [JsonPropertyName("shape")]
+        public string Shape { get; set; }
 
-public partial class FeatureSetAssetDto
-{
-    [JsonPropertyName("assetId")]
-    public string AssetId { get; set; } = string.Empty;
+        [JsonPropertyName("unit")]
+        public string Unit { get; set; }
+    }
 
-    [JsonPropertyName("relativePath")]
-    public string RelativePath { get; set; } = string.Empty;
+    public partial class CanonicalizationRulesDto
+    {
+        [JsonPropertyName("assetOrderingPolicyId")]
+        public string AssetOrderingPolicyId { get; set; }
 
-    [JsonPropertyName("format")]
-    public string Format { get; set; } = string.Empty;
-}
+        [JsonPropertyName("quantizationPolicyId")]
+        public string QuantizationPolicyId { get; set; }
 
-public partial class RasterSequenceAssetDto
-{
-    [JsonPropertyName("assetId")]
-    public string AssetId { get; set; } = string.Empty;
+        [JsonPropertyName("stableIdPolicyId")]
+        public string StableIdPolicyId { get; set; }
 
-    [JsonPropertyName("relativePath")]
-    public string RelativePath { get; set; } = string.Empty;
+        [JsonPropertyName("version")]
+        public long Version { get; set; }
+    }
 
-    [JsonPropertyName("format")]
-    public string Format { get; set; } = string.Empty;
-}
+    public partial class FeatureSetAssetDto
+    {
+        [JsonPropertyName("assetId")]
+        public string AssetId { get; set; }
 
-public partial class MotionModelAssetDto
-{
-    [JsonPropertyName("assetId")]
-    public string AssetId { get; set; } = string.Empty;
+        [JsonPropertyName("format")]
+        public string Format { get; set; }
 
-    [JsonPropertyName("relativePath")]
-    public string RelativePath { get; set; } = string.Empty;
+        [JsonPropertyName("relativePath")]
+        public string RelativePath { get; set; }
+    }
 
-    [JsonPropertyName("format")]
-    public string Format { get; set; } = string.Empty;
-}
+    public partial class MotionModelAssetDto
+    {
+        [JsonPropertyName("assetId")]
+        public string AssetId { get; set; }
 
-public partial class CanonicalizationRulesDto
-{
-    [JsonPropertyName("version")]
-    public int Version { get; set; }
+        [JsonPropertyName("format")]
+        public string Format { get; set; }
 
-    [JsonPropertyName("stableIdPolicyId")]
-    public string StableIdPolicyId { get; set; } = string.Empty;
+        [JsonPropertyName("relativePath")]
+        public string RelativePath { get; set; }
+    }
 
-    [JsonPropertyName("assetOrderingPolicyId")]
-    public string AssetOrderingPolicyId { get; set; } = string.Empty;
+    public partial class RasterSequenceAssetDto
+    {
+        [JsonPropertyName("assetId")]
+        public string AssetId { get; set; }
 
-    [JsonPropertyName("quantizationPolicyId")]
-    public string QuantizationPolicyId { get; set; } = string.Empty;
+        [JsonPropertyName("format")]
+        public string Format { get; set; }
+
+        [JsonPropertyName("relativePath")]
+        public string RelativePath { get; set; }
+    }
+
+    public partial class TimeMappingDto
+    {
+        [JsonPropertyName("tickUnit")]
+        public string TickUnit { get; set; }
+    }
 }

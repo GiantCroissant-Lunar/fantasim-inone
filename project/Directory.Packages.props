@@ -31,6 +31,19 @@
     <PackageVersion Include="GiantCroissant.Crosscut.Messaging.Contracts" Version="0.1.0" />
     <PackageVersion Include="GiantCroissant.Crosscut.Messaging.MessagePipe" Version="0.1.0" />
 
+    <!-- Crosscut Config -->
+    <PackageVersion Include="GiantCroissant.Crosscut.Config.Contracts" Version="0.1.0" />
+    <PackageVersion Include="GiantCroissant.Crosscut.Config.Core" Version="0.1.0" />
+    <PackageVersion Include="GiantCroissant.Crosscut.Config.Json" Version="0.1.0" />
+
+    <!-- Crosscut Hosting -->
+    <PackageVersion Include="GiantCroissant.Crosscut.Hosting.Contracts" Version="0.1.0" />
+    <PackageVersion Include="GiantCroissant.Crosscut.Hosting.Core" Version="0.1.0" />
+
+    <!-- Crosscut Diagnostics -->
+    <PackageVersion Include="GiantCroissant.Crosscut.Diagnostics.Contracts" Version="0.1.0" />
+    <PackageVersion Include="GiantCroissant.Crosscut.Diagnostics.Core" Version="0.1.0" />
+
     <!-- Infrastructure: time-dete -->
     <PackageVersion Include="TimeDete.Determinism.Abstractions" Version="0.1.0" />
     <PackageVersion Include="TimeDete.Determinism.Pcg" Version="0.1.0" />
@@ -54,6 +67,7 @@
     <!-- Infrastructure: unify-storage -->
     <PackageVersion Include="UnifyStorage.Abstractions" Version="0.1.0" />
     <PackageVersion Include="UnifyStorage.Attributes" Version="0.1.0" />
+    <PackageVersion Include="UnifyStorage.Runtime.RocksDb" Version="0.1.0" />
 
     <!-- Infrastructure: plate-shared source generators -->
     <PackageVersion Include="GiantCroissant.Plate.SCG.General.AutoToString.Attributes" Version="0.1.0" />

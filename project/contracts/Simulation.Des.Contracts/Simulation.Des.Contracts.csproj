@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;netstandard2.1</TargetFrameworks>
+    <LangVersion>12.0</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>FantaSim.Geosphere.Plate.Simulation.Des</RootNamespace>
+    <PackageId>GiantCroissant.FantaSim.Geosphere.Plate.Simulation.Des.Contracts</PackageId>
+    <AssemblyName>Geosphere.Plate.Simulation.Des.Contracts</AssemblyName>
+    <Version>$(Version)</Version>
+    <Authors>Lunar Horse</Authors>
+    <Description>DES simulation contracts for FantaSim plate geosphere</Description>
+    <PackageTags>fantasim;contracts;plate;simulation;des;geosphere</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\World.Shared.Contracts\World.Shared.Contracts.csproj" />
+    <ProjectReference Include="..\Geosphere.Plate.Topology.Contracts\Geosphere.Plate.Topology.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TimeDete.Time.Primitives" />
+    <PackageReference Include="TimeDete.Determinism.Abstractions" />
+  </ItemGroup>
+
+</Project>

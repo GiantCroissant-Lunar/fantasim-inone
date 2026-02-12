@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "dataset-ingest-audit.schema.json",
+  "title": "PlatesDatasetIngestAudit",
+  "description": "Audit trail for a plates dataset ingest operation.",
+  "type": "object",
+  "required": ["datasetId", "bodyId", "manifestFileName", "manifestFileSha256", "manifestCanonicalSha256", "stableIdPolicyId", "assetOrderingPolicyId", "quantizationPolicyId", "assets", "targets", "streams", "auditSha256"],
+  "properties": {
+    "datasetId": { "type": "string" },
+    "bodyId": { "type": "string" },
+    "manifestFileName": { "type": "string" },
+    "manifestFileSha256": { "type": "string" },
+    "manifestCanonicalSha256": { "type": "string" },
+    "stableIdPolicyId": { "type": "string" },
+    "assetOrderingPolicyId": { "type": "string" },
+    "quantizationPolicyId": { "type": "string" },
+    "assets": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/PlatesDatasetIngestAssetAuditDto" }
+    },
+    "targets": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/PlatesDatasetIngestTargetAuditDto" }
+    },
+    "streams": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/PlatesDatasetIngestStreamAuditDto" }
+    },
+    "auditSha256": { "type": "string" }
+  },
+  "definitions": {
+    "PlatesDatasetIngestAssetAuditDto": {
+      "type": "object",
+      "required": ["assetId", "kind", "relativePath", "format", "fileSha256"],
+      "properties": {
+        "assetId": { "type": "string" },
+        "kind": { "type": "string" },
+        "relativePath": { "type": "string" },
+        "format": { "type": "string" },
+        "fileSha256": { "type": "string" }
+      }
+    },
+    "PlatesDatasetIngestTargetAuditDto": {
+      "type": "object",
+      "required": ["assetId", "kind", "streamKey"],
+      "properties": {
+        "assetId": { "type": "string" },
+        "kind": { "type": "string" },
+        "streamKey": { "type": "string" }
+      }
+    },
+    "PlatesDatasetIngestStreamAuditDto": {
+      "type": "object",
+      "required": ["streamKey", "eventCount", "firstSequence", "lastSequence", "eventIdDigestSha256"],
+      "properties": {
+        "streamKey": { "type": "string" },
+        "eventCount": { "type": "integer" },
+        "firstSequence": { "type": "integer" },
+        "lastSequence": { "type": "integer" },
+        "eventIdDigestSha256": { "type": "string" }
+      }
+    }
+  }
+}

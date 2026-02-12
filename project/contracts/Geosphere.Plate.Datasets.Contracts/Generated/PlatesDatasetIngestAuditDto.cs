@@ -3,97 +3,103 @@
 // DO NOT EDIT - Regenerate using: task generate-dtos
 
 #nullable enable
-
-namespace FantaSim.Geosphere.Plate.Datasets.Contracts.Generated;
-
-using System.Text.Json.Serialization;
-
-/// <summary>
-/// DTO for PlatesDatasetIngestAudit - matches dataset-ingest-audit.schema.json
-/// </summary>
-public partial class PlatesDatasetIngestAuditDto
+#pragma warning disable CS8618 // Non-nullable property uninitialized
+namespace FantaSim.Geosphere.Plate.Datasets.Contracts.Generated
 {
-    [JsonPropertyName("datasetId")]
-    public string DatasetId { get; set; } = string.Empty;
+    using System;
+    using System.Collections.Generic;
 
-    [JsonPropertyName("bodyId")]
-    public string BodyId { get; set; } = string.Empty;
+    using System.Text.Json;
+    using System.Text.Json.Serialization;
+    using System.Globalization;
 
-    [JsonPropertyName("manifestFileName")]
-    public string ManifestFileName { get; set; } = string.Empty;
+    /// <summary>
+    /// Audit trail for a plates dataset ingest operation.
+    /// </summary>
+    public partial class PlatesDatasetIngestAuditDto
+    {
+        [JsonPropertyName("assetOrderingPolicyId")]
+        public string AssetOrderingPolicyId { get; set; }
 
-    [JsonPropertyName("manifestFileSha256")]
-    public string ManifestFileSha256 { get; set; } = string.Empty;
+        [JsonPropertyName("assets")]
+        public PlatesDatasetIngestAssetAuditDto[] Assets { get; set; }
 
-    [JsonPropertyName("manifestCanonicalSha256")]
-    public string ManifestCanonicalSha256 { get; set; } = string.Empty;
+        [JsonPropertyName("auditSha256")]
+        public string AuditSha256 { get; set; }
 
-    [JsonPropertyName("stableIdPolicyId")]
-    public string StableIdPolicyId { get; set; } = string.Empty;
+        [JsonPropertyName("bodyId")]
+        public string BodyId { get; set; }
 
-    [JsonPropertyName("assetOrderingPolicyId")]
-    public string AssetOrderingPolicyId { get; set; } = string.Empty;
+        [JsonPropertyName("datasetId")]
+        public string DatasetId { get; set; }
 
-    [JsonPropertyName("quantizationPolicyId")]
-    public string QuantizationPolicyId { get; set; } = string.Empty;
+        [JsonPropertyName("manifestCanonicalSha256")]
+        public string ManifestCanonicalSha256 { get; set; }
 
-    [JsonPropertyName("assets")]
-    public PlatesDatasetIngestAssetAuditDto[] Assets { get; set; } = Array.Empty<PlatesDatasetIngestAssetAuditDto>();
+        [JsonPropertyName("manifestFileName")]
+        public string ManifestFileName { get; set; }
 
-    [JsonPropertyName("targets")]
-    public PlatesDatasetIngestTargetAuditDto[] Targets { get; set; } = Array.Empty<PlatesDatasetIngestTargetAuditDto>();
+        [JsonPropertyName("manifestFileSha256")]
+        public string ManifestFileSha256 { get; set; }
 
-    [JsonPropertyName("streams")]
-    public PlatesDatasetIngestStreamAuditDto[] Streams { get; set; } = Array.Empty<PlatesDatasetIngestStreamAuditDto>();
+        [JsonPropertyName("quantizationPolicyId")]
+        public string QuantizationPolicyId { get; set; }
 
-    [JsonPropertyName("auditSha256")]
-    public string AuditSha256 { get; set; } = string.Empty;
-}
+        [JsonPropertyName("stableIdPolicyId")]
+        public string StableIdPolicyId { get; set; }
 
-public partial class PlatesDatasetIngestAssetAuditDto
-{
-    [JsonPropertyName("assetId")]
-    public string AssetId { get; set; } = string.Empty;
+        [JsonPropertyName("streams")]
+        public PlatesDatasetIngestStreamAuditDto[] Streams { get; set; }
 
-    [JsonPropertyName("kind")]
-    public string Kind { get; set; } = string.Empty;
+        [JsonPropertyName("targets")]
+        public PlatesDatasetIngestTargetAuditDto[] Targets { get; set; }
+    }
 
-    [JsonPropertyName("relativePath")]
-    public string RelativePath { get; set; } = string.Empty;
+    public partial class PlatesDatasetIngestAssetAuditDto
+    {
+        [JsonPropertyName("assetId")]
+        public string AssetId { get; set; }
 
-    [JsonPropertyName("format")]
-    public string Format { get; set; } = string.Empty;
+        [JsonPropertyName("fileSha256")]
+        public string FileSha256 { get; set; }
 
-    [JsonPropertyName("fileSha256")]
-    public string FileSha256 { get; set; } = string.Empty;
-}
+        [JsonPropertyName("format")]
+        public string Format { get; set; }
 
-public partial class PlatesDatasetIngestTargetAuditDto
-{
-    [JsonPropertyName("assetId")]
-    public string AssetId { get; set; } = string.Empty;
+        [JsonPropertyName("kind")]
+        public string Kind { get; set; }
 
-    [JsonPropertyName("kind")]
-    public string Kind { get; set; } = string.Empty;
+        [JsonPropertyName("relativePath")]
+        public string RelativePath { get; set; }
+    }
 
-    [JsonPropertyName("streamKey")]
-    public string StreamKey { get; set; } = string.Empty;
-}
+    public partial class PlatesDatasetIngestStreamAuditDto
+    {
+        [JsonPropertyName("eventCount")]
+        public long EventCount { get; set; }
 
-public partial class PlatesDatasetIngestStreamAuditDto
-{
-    [JsonPropertyName("streamKey")]
-    public string StreamKey { get; set; } = string.Empty;
+        [JsonPropertyName("eventIdDigestSha256")]
+        public string EventIdDigestSha256 { get; set; }
 
-    [JsonPropertyName("eventCount")]
-    public int EventCount { get; set; }
+        [JsonPropertyName("firstSequence")]
+        public long FirstSequence { get; set; }
 
-    [JsonPropertyName("firstSequence")]
-    public long FirstSequence { get; set; }
+        [JsonPropertyName("lastSequence")]
+        public long LastSequence { get; set; }
 
-    [JsonPropertyName("lastSequence")]
-    public long LastSequence { get; set; }
+        [JsonPropertyName("streamKey")]
+        public string StreamKey { get; set; }
+    }
 
-    [JsonPropertyName("eventIdDigestSha256")]
-    public string EventIdDigestSha256 { get; set; } = string.Empty;
+    public partial class PlatesDatasetIngestTargetAuditDto
+    {
+        [JsonPropertyName("assetId")]
+        public string AssetId { get; set; }
+
+        [JsonPropertyName("kind")]
+        public string Kind { get; set; }
+
+        [JsonPropertyName("streamKey")]
+        public string StreamKey { get; set; }
+    }
 }

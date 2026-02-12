@@ -1,0 +1,8 @@
+{
+  "Storage": {
+    "RocksDbPath": "data/rocksdb"
+  },
+  "Logging": {
+    "MinLevel": "Debug"
+  }
+}
