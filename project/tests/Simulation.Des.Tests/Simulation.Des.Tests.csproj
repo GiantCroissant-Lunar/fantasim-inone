@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsTestProject>true</IsTestProject>
+    <RootNamespace>FantaSim.Geosphere.Plate.Simulation.Des.Tests</RootNamespace>
+    <AssemblyName>Simulation.Des.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\plugins\Simulation.Des\Simulation.Des.csproj" />
+    <ProjectReference Include="..\..\contracts\Simulation.Des.Contracts\Simulation.Des.Contracts.csproj" />
+    <ProjectReference Include="..\..\contracts\World.Shared.Contracts\World.Shared.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TimeDete.Time.Primitives" />
+  </ItemGroup>
+
+</Project>
