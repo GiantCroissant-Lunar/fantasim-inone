@@ -234,16 +234,29 @@ public sealed class BundleHost : IBundleHost
             return [];
         }
 
-        // Convention: DLLs are at res://bundles/{bundleId}/bin/{dllName}
-        var basePath = $"res://bundles/{manifest.Id}/bin/";
-        var entryPath = basePath + manifest.EntryAssembly;
+        // Convention: runtime files are at res://bundles/{bundleId}/bin/
+        var basePath = $"res://bundles/{manifest.Id}/bin";
+        var entryPath = $"{basePath}/{manifest.EntryAssembly}";
 
         if (!_vfs.FileExists(entryPath))
         {
             throw new InvalidOperationException($"Entry assembly not found at {entryPath}");
         }
 
-        return [entryPath];
+        // Extract all runtime files needed by AssemblyDependencyResolver (dll/json).
+        var runtimeFiles = _vfs.ListFiles(basePath)
+            .Where(path =>
+                path.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ||
+                path.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
+        if (!runtimeFiles.Contains(entryPath, StringComparer.OrdinalIgnoreCase))
+        {
+            runtimeFiles.Add(entryPath);
+        }
+
+        return runtimeFiles;
     }
 
     private void InvokeServiceModules(Assembly assembly, bool register)

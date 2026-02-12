@@ -176,6 +176,46 @@ public class BundleHostTests
         received.Select(e => e.BundleId).Should().BeEquivalentTo(["bundle.a", "bundle.b"]);
     }
 
+    [Fact]
+    public async Task LoadAsync_extracts_all_runtime_files_in_bin_root()
+    {
+        var vfs = new FakeGodotBundleVfs();
+        var registry = new BundleRegistry();
+        var sceneHost = new FakeBundleSceneHost();
+        var bus = new MessagePipeBundleMessageBus();
+        var extractor = new RecordingExtractor();
+        var host = new BundleHost(vfs, extractor, registry.Registry, sceneHost, bus, registry);
+
+        var bundleId = "runtime.bundle";
+        var entryAssembly = "RuntimeBundle.dll";
+        var manifest = new BundleManifest(bundleId, "1.0.0", bundleId, entryAssembly, null, []);
+        var manifestJson = JsonSerializer.SerializeToUtf8Bytes(manifest, new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        });
+        vfs.AddFile($"res://bundles/{bundleId}/manifest.json", manifestJson);
+
+        var assemblyBytes = File.ReadAllBytes(typeof(BundleHostTests).Assembly.Location);
+        vfs.AddFile($"res://bundles/{bundleId}/bin/{entryAssembly}", assemblyBytes);
+        vfs.AddFile($"res://bundles/{bundleId}/bin/Dependency.dll", assemblyBytes);
+
+        var depsFileName = $"{Path.GetFileNameWithoutExtension(entryAssembly)}.deps.json";
+        var sourceDepsPath = Path.ChangeExtension(typeof(BundleHostTests).Assembly.Location, ".deps.json");
+        if (File.Exists(sourceDepsPath))
+        {
+            vfs.AddFile($"res://bundles/{bundleId}/bin/{depsFileName}", File.ReadAllBytes(sourceDepsPath));
+        }
+
+        await host.LoadAsync($"{bundleId}.pck");
+
+        extractor.Paths.Should().Contain($"res://bundles/{bundleId}/bin/{entryAssembly}");
+        extractor.Paths.Should().Contain($"res://bundles/{bundleId}/bin/Dependency.dll");
+        if (File.Exists(sourceDepsPath))
+        {
+            extractor.Paths.Should().Contain($"res://bundles/{bundleId}/bin/{depsFileName}");
+        }
+    }
+
     private void SetupFakeBundle(string bundleId, string entryAssembly)
     {
         var manifest = new BundleManifest(bundleId, "1.0.0", bundleId, entryAssembly, null, []);
@@ -200,5 +240,33 @@ public class BundleHostTests
         });
 
         _vfs.AddFile($"res://bundles/{bundleId}/manifest.json", manifestJson);
+    }
+
+    private sealed class RecordingExtractor : IDllExtractor
+    {
+        public IReadOnlyList<string> Paths => _paths;
+        private readonly List<string> _paths = [];
+
+        public string ExtractDlls(string bundleId, IReadOnlyList<string> dllResPaths, IGodotBundleVfs vfs)
+        {
+            _paths.Clear();
+            _paths.AddRange(dllResPaths);
+
+            var dir = Path.Combine(Path.GetTempPath(), $"recording-extract-{bundleId}-{Guid.NewGuid():N}");
+            Directory.CreateDirectory(dir);
+
+            foreach (var resPath in dllResPaths)
+            {
+                var bytes = vfs.ReadFile(resPath);
+                var fileName = Path.GetFileName(resPath);
+                File.WriteAllBytes(Path.Combine(dir, fileName), bytes);
+            }
+
+            return dir;
+        }
+
+        public void Cleanup(string bundleId)
+        {
+        }
     }
 }

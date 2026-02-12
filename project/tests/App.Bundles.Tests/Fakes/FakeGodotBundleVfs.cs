@@ -35,5 +35,14 @@ public sealed class FakeGodotBundleVfs : IGodotBundleVfs
         return _files.ContainsKey(resPath);
     }
 
+    public IReadOnlyList<string> ListFiles(string resDir)
+    {
+        var prefix = resDir.EndsWith('/') ? resDir : $"{resDir}/";
+        return _files.Keys
+            .Where(path => path.StartsWith(prefix, StringComparison.Ordinal))
+            .OrderBy(path => path, StringComparer.Ordinal)
+            .ToList();
+    }
+
     public bool WasMounted(string pckPath) => _mountedPcks.Contains(pckPath);
 }
