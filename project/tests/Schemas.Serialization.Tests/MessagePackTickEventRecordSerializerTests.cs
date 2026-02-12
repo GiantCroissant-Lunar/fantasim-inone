@@ -1,9 +1,10 @@
 using System.Buffers;
 using FluentAssertions;
+using FantaSim.Schemas.Serialization;
 using MessagePack;
 using Xunit;
 
-namespace FantaSim.Schemas.Serialization.Tests;
+namespace Schemas.Serialization.Tests;
 
 public sealed class MessagePackTickEventRecordSerializerTests
 {

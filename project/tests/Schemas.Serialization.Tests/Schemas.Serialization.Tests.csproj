@@ -2,8 +2,8 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <IsTestProject>true</IsTestProject>
-    <AssemblyName>FantaSim.Schemas.Serialization.Tests</AssemblyName>
-    <RootNamespace>FantaSim.Schemas.Serialization.Tests</RootNamespace>
+    <AssemblyName>Schemas.Serialization.Tests</AssemblyName>
+    <RootNamespace>Schemas.Serialization.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

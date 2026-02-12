@@ -73,7 +73,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "schemas", "schemas", "{0F30
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantaSim.Schemas.Serialization", "schemas\FantaSim.Schemas.Serialization\FantaSim.Schemas.Serialization.csproj", "{A9CB3EBA-C1A2-4A61-B415-6423AEFFE85B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantaSim.Schemas.Serialization.Tests", "tests\FantaSim.Schemas.Serialization.Tests\FantaSim.Schemas.Serialization.Tests.csproj", "{66384AFC-9DA7-4E37-80E1-7C41AFEE1CDC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schemas.Serialization.Tests", "tests\Schemas.Serialization.Tests\Schemas.Serialization.Tests.csproj", "{66384AFC-9DA7-4E37-80E1-7C41AFEE1CDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
