@@ -2,14 +2,14 @@ using FantaSim.App.Bundles.Contracts;
 using Godot;
 using Microsoft.Extensions.Logging;
 
-namespace FantaSim.App;
+namespace FantaSim.App.Godot;
 
 /// <summary>
 /// Godot implementation of IBundleSceneHost.
 /// Instantiates root scenes when bundles load, removes nodes when bundles unload.
 /// If a bundle declares a DockTarget, the scene is docked via DockManager instead.
 /// </summary>
-public sealed class GodotBundleSceneHost : IBundleSceneHost
+public sealed class BundleSceneHost : IBundleSceneHost
 {
     private readonly Node _container;
     private readonly ILogger _log;
@@ -17,7 +17,7 @@ public sealed class GodotBundleSceneHost : IBundleSceneHost
     private readonly Node? _shellTarget;
     private readonly Dictionary<string, List<Node>> _tracked = new();
 
-    public GodotBundleSceneHost(Node container, ILogger log, DockManager? dockManager = null, Node? shellTarget = null)
+    public BundleSceneHost(Node container, ILogger log, DockManager? dockManager = null, Node? shellTarget = null)
     {
         _container = container;
         _log = log;

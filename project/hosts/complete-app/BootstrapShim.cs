@@ -9,6 +9,7 @@ using FantaSim.App.Bundles.Contracts.Interaction.Commands;
 using FantaSim.App.Bundles.Contracts.Interaction.Events;
 using FantaSim.App.Bundles.Contracts.Interaction.Selection;
 using FantaSim.App.Bundles.Core;
+using FantaSim.App.Godot;
 using Godot;
 using Microsoft.Extensions.Logging;
 using ServiceArchi.Contracts;
@@ -32,7 +33,7 @@ public partial class BootstrapShim : Node
     private VerificationService? _verificationService;
     private SelectionService? _selectionService;
     private CommandHistory? _commandHistory;
-    private GdScriptCommandRouter? _commandRouter;
+    private CommandRouter? _commandRouter;
     private IDisposable? _bundleLoadedSub;
     private IDisposable? _bundleUnloadedSub;
     private IDisposable? _tickScrubSub;
@@ -65,7 +66,7 @@ public partial class BootstrapShim : Node
 
     public override void _Ready()
     {
-        var vfs = new GodotBundleVfs();
+        var vfs = new BundleVfs();
         var extractor = new DllExtractor();
         var bundleRegistry = new BundleRegistry();
         var registry = bundleRegistry.Registry;
@@ -84,7 +85,7 @@ public partial class BootstrapShim : Node
         registry.RegisterConfigService();
 
         // Set up Crosscut.Logging with Godot provider
-        registry.Register<ILoggingBuilderConfigurator>(new GodotLoggingBuilderConfigurator());
+        registry.Register<ILoggingBuilderConfigurator>(new LoggingBuilderConfigurator());
         registry.RegisterLoggingService();
         var logging = new Crosscut.Logging.ServiceProxy(registry);
 
@@ -116,7 +117,7 @@ public partial class BootstrapShim : Node
         _statusService = new StatusService();
 
         var mainNode = GetTree().Root.GetNode("Main");
-        var sceneHost = new GodotBundleSceneHost(this, logging.CreateLogger("SceneHost"), _dockManager, shellTarget: mainNode);
+        var sceneHost = new BundleSceneHost(this, logging.CreateLogger("SceneHost"), _dockManager, shellTarget: mainNode);
 
         _bundleHost = new BundleHost(vfs, extractor, registry, sceneHost, _messageBus, bundleRegistry);
         Registry = registry;
@@ -134,7 +135,7 @@ public partial class BootstrapShim : Node
         registry.Register<ICommandHistory>(_commandHistory);
 
         // Command router (subscribes to GdScriptCommand on the bus)
-        _commandRouter = new GdScriptCommandRouter(_messageBus, logging.CreateLogger("CommandRouter"), _selectionService, _bundleHost);
+        _commandRouter = new CommandRouter(_messageBus, logging.CreateLogger("CommandRouter"), _selectionService, _bundleHost);
 
         // Bridge bundle lifecycle events to Godot signals for GDScript consumers
         _bundleLoadedSub = _messageBus.Subscribe<BundleLoadedEvent>(e =>
@@ -211,7 +212,7 @@ public partial class BootstrapShim : Node
 
     // -- GDScript-callable command entry point --
 
-    public void SendCommand(string action, Godot.Collections.Dictionary? @params = null)
+    public void SendCommand(string action, global::Godot.Collections.Dictionary? @params = null)
     {
         if (_messageBus is null) return;
 
@@ -278,17 +279,17 @@ public partial class BootstrapShim : Node
             host => host.ReloadAsync(bundleId));
     }
 
-    public Godot.Collections.Dictionary CaptureSnapshotDict()
+    public global::Godot.Collections.Dictionary CaptureSnapshotDict()
     {
         if (_bundleHost is null) return [];
 
         var snapshot = _bundleHost.CaptureSnapshot();
-        var result = new Godot.Collections.Dictionary();
+        var result = new global::Godot.Collections.Dictionary();
 
-        var bundlesArray = new Godot.Collections.Array();
+        var bundlesArray = new global::Godot.Collections.Array();
         foreach (var bundle in snapshot.Bundles)
         {
-            var b = new Godot.Collections.Dictionary
+            var b = new global::Godot.Collections.Dictionary
             {
                 ["id"] = bundle.Id,
                 ["status"] = bundle.Status.ToString(),
@@ -298,7 +299,7 @@ public partial class BootstrapShim : Node
                 ["hasALC"] = bundle.HasAssemblyLoadContext,
             };
 
-            var nodesArray = new Godot.Collections.Array();
+            var nodesArray = new global::Godot.Collections.Array();
             foreach (var node in bundle.TrackedSceneNodes)
             {
                 nodesArray.Add(node);
@@ -311,7 +312,7 @@ public partial class BootstrapShim : Node
         result["capturedAt"] = snapshot.CapturedAt.ToString("HH:mm:ss.fff");
         result["bundles"] = bundlesArray;
 
-        var servicesArray = new Godot.Collections.Array();
+        var servicesArray = new global::Godot.Collections.Array();
         foreach (var t in snapshot.RegisteredServiceTypes)
         {
             servicesArray.Add(t);

@@ -1,21 +1,21 @@
 using Godot;
 using Microsoft.Extensions.Logging;
 
-namespace FantaSim.App;
+namespace FantaSim.App.Godot;
 
-public sealed class GodotLoggerProvider : ILoggerProvider
+public sealed class LoggerProvider : ILoggerProvider
 {
-    public ILogger CreateLogger(string categoryName) => new GodotLogger(categoryName);
+    public ILogger CreateLogger(string categoryName) => new Logger(categoryName);
     public void Dispose() { }
 }
 
-public sealed class GodotLogger : ILogger
+public sealed class Logger : ILogger
 {
     private readonly string _category;
 
-    public GodotLogger(string categoryName)
+    public Logger(string categoryName)
     {
-        // Use short name: "FantaSim.App.DockManager" → "DockManager"
+        // Use short name: "FantaSim.App.DockManager" -> "DockManager"
         var lastDot = categoryName.LastIndexOf('.');
         _category = lastDot >= 0 ? categoryName[(lastDot + 1)..] : categoryName;
     }
