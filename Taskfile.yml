@@ -160,8 +160,8 @@ tasks:
         "res://bundles/com.fantasim.hud_inspector/scripts/inspector.gd"
 
   bundle:pack:
-    desc: Pack GDScript bundles into versioned PCK files
-    deps: [bundle:gen]
+    desc: Pack HUD and C# service bundles into versioned PCK files
+    deps: [bundle:gen, bundle:stage-csharp]
     vars:
       VERSION:
         sh: '{{.GITVERSION_CMD}}'
@@ -174,8 +174,15 @@ tasks:
       - '"{{.GODOT_PATH}}" --path {{.CONTENT_PATH}} --headless --script "{{.ROOT_DIR}}/tools/pack_bundle.gd" -- "{{.ROOT_DIR}}/project/bundles/com.fantasim.hud_filemenu" "{{.ROOT_DIR}}/{{.BUNDLE_DIR}}/com.fantasim.hud_filemenu.pck"'
       - '"{{.GODOT_PATH}}" --path {{.CONTENT_PATH}} --headless --script "{{.ROOT_DIR}}/tools/pack_bundle.gd" -- "{{.ROOT_DIR}}/project/bundles/com.fantasim.hud_toolbar" "{{.ROOT_DIR}}/{{.BUNDLE_DIR}}/com.fantasim.hud_toolbar.pck"'
       - '"{{.GODOT_PATH}}" --path {{.CONTENT_PATH}} --headless --script "{{.ROOT_DIR}}/tools/pack_bundle.gd" -- "{{.ROOT_DIR}}/project/bundles/com.fantasim.hud_inspector" "{{.ROOT_DIR}}/{{.BUNDLE_DIR}}/com.fantasim.hud_inspector.pck"'
+      - '"{{.GODOT_PATH}}" --path {{.CONTENT_PATH}} --headless --script "{{.ROOT_DIR}}/tools/pack_bundle.gd" -- "{{.ROOT_DIR}}/project/bundles/com.fantasim.hud_geosphere" "{{.ROOT_DIR}}/{{.BUNDLE_DIR}}/com.fantasim.hud_geosphere.pck"'
+      - '"{{.GODOT_PATH}}" --path {{.CONTENT_PATH}} --headless --script "{{.ROOT_DIR}}/tools/pack_bundle.gd" -- "{{.ROOT_DIR}}/project/bundles/com.fantasim.plate_viewer" "{{.ROOT_DIR}}/{{.BUNDLE_DIR}}/com.fantasim.plate_viewer.pck"'
       # PCKs are now at build/_artifacts/{VERSION}/bundles/ next to the exported exe
       # No need to copy into complete-app — bundles load from filesystem at runtime
+
+  bundle:stage-csharp:
+    desc: Build and stage C# bundle runtime files into bundle/bin
+    cmds:
+      - python tools/stage_csharp_bundles.py project/bundles --configuration Debug --framework net8.0
 
   pre-commit:install:
     desc: Install pre-commit hooks
