@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "dataset-manifest.schema.json",
+  "title": "PlatesDatasetManifest",
+  "description": "Manifest describing a plates dataset: body frame, time mapping, assets, and canonicalization rules.",
+  "type": "object",
+  "required": ["datasetId", "bodyId", "bodyFrame", "timeMapping", "featureSets", "rasterSequences", "motionModels", "canonicalizationRules"],
+  "properties": {
+    "datasetId": { "type": "string" },
+    "bodyId": { "type": "string" },
+    "bodyFrame": { "$ref": "#/definitions/BodyFrameDto" },
+    "timeMapping": { "$ref": "#/definitions/TimeMappingDto" },
+    "featureSets": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/FeatureSetAssetDto" }
+    },
+    "rasterSequences": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/RasterSequenceAssetDto" }
+    },
+    "motionModels": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/MotionModelAssetDto" }
+    },
+    "canonicalizationRules": { "$ref": "#/definitions/CanonicalizationRulesDto" }
+  },
+  "definitions": {
+    "BodyFrameDto": {
+      "type": "object",
+      "required": ["shape", "unit", "angularConvention"],
+      "properties": {
+        "shape": { "type": "string" },
+        "radius": { "type": "number" },
+        "semiMajor": { "type": "number" },
+        "semiMinor": { "type": "number" },
+        "unit": { "type": "string" },
+        "angularConvention": { "type": "string" }
+      }
+    },
+    "TimeMappingDto": {
+      "type": "object",
+      "required": ["tickUnit"],
+      "properties": {
+        "tickUnit": { "type": "string" }
+      }
+    },
+    "FeatureSetAssetDto": {
+      "type": "object",
+      "required": ["assetId", "relativePath", "format"],
+      "properties": {
+        "assetId": { "type": "string" },
+        "relativePath": { "type": "string" },
+        "format": { "type": "string" }
+      }
+    },
+    "RasterSequenceAssetDto": {
+      "type": "object",
+      "required": ["assetId", "relativePath", "format"],
+      "properties": {
+        "assetId": { "type": "string" },
+        "relativePath": { "type": "string" },
+        "format": { "type": "string" }
+      }
+    },
+    "MotionModelAssetDto": {
+      "type": "object",
+      "required": ["assetId", "relativePath", "format"],
+      "properties": {
+        "assetId": { "type": "string" },
+        "relativePath": { "type": "string" },
+        "format": { "type": "string" }
+      }
+    },
+    "CanonicalizationRulesDto": {
+      "type": "object",
+      "required": ["version", "stableIdPolicyId", "assetOrderingPolicyId", "quantizationPolicyId"],
+      "properties": {
+        "version": { "type": "integer" },
+        "stableIdPolicyId": { "type": "string" },
+        "assetOrderingPolicyId": { "type": "string" },
+        "quantizationPolicyId": { "type": "string" }
+      }
+    }
+  }
+}
