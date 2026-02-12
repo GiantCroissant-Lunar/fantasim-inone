@@ -95,10 +95,10 @@ public partial class BootstrapShim : Node
         _eventBridge?.Dispose();
         _commandRouter?.Dispose();
 
-        if (_bundleHost is not null)
+        if (Registry is not null)
         {
-            _bundleHost.UnloadAllAsync().GetAwaiter().GetResult();
-            _log?.LogInformation("BundleHost shut down");
+            new Crosscut.Hosting.ServiceProxy(Registry).StopAsync().GetAwaiter().GetResult();
+            _log?.LogInformation("Hosted components shut down");
         }
 
         _messageBus?.Dispose();

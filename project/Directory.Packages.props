@@ -47,7 +47,9 @@
     <!-- Infrastructure: time-dete -->
     <PackageVersion Include="TimeDete.Determinism.Abstractions" Version="0.1.0" />
     <PackageVersion Include="TimeDete.Determinism.Pcg" Version="0.1.0" />
+    <PackageVersion Include="TimeDete.Time" Version="0.1.0" />
     <PackageVersion Include="TimeDete.Time.Primitives" Version="0.1.0" />
+    <PackageVersion Include="TimeDete.Time.Runtime" Version="0.1.0" />
 
     <!-- Infrastructure: unify-topology -->
     <PackageVersion Include="UnifyTopology.Graph.Abstractions" Version="0.1.0" />

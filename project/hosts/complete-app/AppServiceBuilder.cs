@@ -7,6 +7,8 @@ using UnifyStorage.Runtime.RocksDb;
 using FantaSim.App.Bundles.Contracts;
 using FantaSim.App.Bundles.Contracts.Interaction.Commands;
 using FantaSim.App.Bundles.Contracts.Interaction.Selection;
+using Plate.TimeDete.Time;
+using Plate.TimeDete.Time.Runtime;
 using FantaSim.App.Bundles.Core;
 using FantaSim.App.Godot;
 using Godot;
@@ -99,6 +101,13 @@ public sealed class AppServiceBuilder
         registry.Register<IMenuService>(menuService);
         registry.Register<ISelectionService>(selectionService);
         registry.Register<ICommandHistory>(commandHistory);
+
+        // Time-dete services: canonical clock
+        var clock = new CanonicalClock();
+        registry.Register<ICanonicalClock>(clock);
+
+        // Hosted component for graceful bundle shutdown
+        registry.RegisterHostedComponent(new BundleHostedComponent(bundleHost), priority: 100);
 
         return new BuildResult(
             registry, messageBus, bundleHost, dockManager, menuService,
