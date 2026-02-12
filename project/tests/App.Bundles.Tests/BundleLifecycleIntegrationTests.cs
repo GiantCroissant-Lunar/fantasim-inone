@@ -10,7 +10,7 @@ namespace FantaSim.App.Bundles.Tests;
 
 public class BundleLifecycleIntegrationTests
 {
-    private readonly FakeGodotBundleVfs _vfs = new();
+    private readonly FakeBundleVfs _vfs = new();
     private readonly BundleRegistry _bundleRegistry = new();
     private readonly DllExtractor _extractor;
     private readonly FakeBundleSceneHost _sceneHost = new();

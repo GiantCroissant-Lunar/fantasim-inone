@@ -14,7 +14,7 @@ namespace FantaSim.App.Bundles.Core;
 /// </summary>
 public sealed class BundleHost : IBundleHost
 {
-    private readonly IGodotBundleVfs _vfs;
+    private readonly IBundleVfs _vfs;
     private readonly IDllExtractor _extractor;
     private readonly IRegistry _registry;
     private readonly BundleRegistry? _bundleRegistry;
@@ -27,7 +27,7 @@ public sealed class BundleHost : IBundleHost
         _bundles.ToDictionary(kv => kv.Key, kv => kv.Value.Info);
 
     public BundleHost(
-        IGodotBundleVfs vfs,
+        IBundleVfs vfs,
         IDllExtractor extractor,
         IRegistry registry,
         IBundleSceneHost? sceneHost = null,

@@ -1,10 +1,10 @@
 namespace FantaSim.App.Bundles.Contracts;
 
 /// <summary>
-/// Abstraction over Godot's VFS for PCK mounting and file access.
+/// Abstraction over the host VFS for PCK mounting and file access.
 /// Enables testing without Godot engine.
 /// </summary>
-public interface IGodotBundleVfs
+public interface IBundleVfs
 {
     bool MountPck(string pckPath);
     byte[] ReadFile(string resPath);

@@ -3,21 +3,21 @@ using FantaSim.App.Bundles.Contracts.Interaction.Commands;
 using FantaSim.App.Bundles.Contracts.Interaction.Selection;
 using Microsoft.Extensions.Logging;
 
-namespace FantaSim.App;
+namespace FantaSim.App.Godot;
 
 /// <summary>
 /// Subscribes to <see cref="GdScriptCommand"/> on the message bus and routes
 /// by action name to the appropriate service. New GDScript actions are added here,
 /// NOT to BootstrapShim.
 /// </summary>
-public sealed class GdScriptCommandRouter : IDisposable
+public sealed class CommandRouter : IDisposable
 {
     private readonly IDisposable _subscription;
     private readonly ILogger _log;
     private readonly ISelectionService _selection;
     private readonly IBundleHost _bundleHost;
 
-    public GdScriptCommandRouter(
+    public CommandRouter(
         IBundleMessageBus bus,
         ILogger log,
         ISelectionService selection,

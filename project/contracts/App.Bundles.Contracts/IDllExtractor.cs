@@ -10,7 +10,7 @@ public interface IDllExtractor
     /// Extracts DLLs from the VFS to a temp directory on disk.
     /// Returns the directory path containing the extracted DLLs.
     /// </summary>
-    string ExtractDlls(string bundleId, IReadOnlyList<string> dllResPaths, IGodotBundleVfs vfs);
+    string ExtractDlls(string bundleId, IReadOnlyList<string> dllResPaths, IBundleVfs vfs);
 
     /// <summary>
     /// Cleans up the temp directory for a bundle.

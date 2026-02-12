@@ -16,7 +16,7 @@ public sealed class DllExtractor : IDllExtractor
         _baseTempDir = baseTempDir ?? Path.Combine(Path.GetTempPath(), ".bundle-temp");
     }
 
-    public string ExtractDlls(string bundleId, IReadOnlyList<string> dllResPaths, IGodotBundleVfs vfs)
+    public string ExtractDlls(string bundleId, IReadOnlyList<string> dllResPaths, IBundleVfs vfs)
     {
         var dir = Path.Combine(_baseTempDir, $"{bundleId}-{Guid.NewGuid():N}");
         Directory.CreateDirectory(dir);

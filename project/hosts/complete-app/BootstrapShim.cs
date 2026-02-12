@@ -1,17 +1,11 @@
-using Crosscut.Config;
-using Crosscut.Diagnostics;
-using Crosscut.Hosting;
-using Crosscut.Logging;
-using UnifyStorage.Abstractions;
-using UnifyStorage.Runtime.RocksDb;
 using FantaSim.App.Bundles.Contracts;
 using FantaSim.App.Bundles.Contracts.Interaction.Commands;
-using FantaSim.App.Bundles.Contracts.Interaction.Events;
-using FantaSim.App.Bundles.Contracts.Interaction.Selection;
 using FantaSim.App.Bundles.Core;
+using FantaSim.App.Godot;
 using Godot;
 using Microsoft.Extensions.Logging;
 using ServiceArchi.Contracts;
+using UnifyStorage.Runtime.RocksDb;
 
 namespace FantaSim.App;
 
@@ -23,21 +17,15 @@ namespace FantaSim.App;
 public partial class BootstrapShim : Node
 {
     private BundleHost? _bundleHost;
-    private MessagePipeBundleMessageBus? _messageBus;
-    private RocksDbKeyValueStore? _kvStore;
-    private ILogger? _log;
+    private EventBridge? _eventBridge;
+    private CommandRouter? _commandRouter;
     private DockManager? _dockManager;
     private MenuService? _menuService;
     private StatusService? _statusService;
+    private MessagePipeBundleMessageBus? _messageBus;
+    private RocksDbKeyValueStore? _kvStore;
+    private ILogger? _log;
     private VerificationService? _verificationService;
-    private SelectionService? _selectionService;
-    private CommandHistory? _commandHistory;
-    private GdScriptCommandRouter? _commandRouter;
-    private IDisposable? _bundleLoadedSub;
-    private IDisposable? _bundleUnloadedSub;
-    private IDisposable? _tickScrubSub;
-    private IDisposable? _truthHeadChangedSub;
-    private IDisposable? _hudDataChangedSub;
 
     public IBundleHost? BundleHost => _bundleHost;
     public IRegistry? Registry { get; private set; }
@@ -65,96 +53,31 @@ public partial class BootstrapShim : Node
 
     public override void _Ready()
     {
-        var vfs = new GodotBundleVfs();
-        var extractor = new DllExtractor();
-        var bundleRegistry = new BundleRegistry();
-        var registry = bundleRegistry.Registry;
-        _messageBus = new MessagePipeBundleMessageBus();
+        var builder = new AppServiceBuilder();
+        var result = builder.Build(this, GetTree().Root.GetNode("Main"));
 
-        // Set up Crosscut.Config — JSON file + in-memory defaults
-        var configDir = OS.HasFeature("editor")
-            ? ProjectSettings.GlobalizePath("res://")
-            : OS.GetExecutablePath().GetBaseDir();
-        registry.RegisterJsonConfig(System.IO.Path.Combine(configDir, "config.json"), optional: true);
-        registry.RegisterMemoryConfig(new Dictionary<string, string>
-        {
-            ["Storage:RocksDbPath"] = System.IO.Path.Combine(configDir, "data", "rocksdb"),
-            ["Logging:MinLevel"] = "Debug",
-        });
-        registry.RegisterConfigService();
-
-        // Set up Crosscut.Logging with Godot provider
-        registry.Register<ILoggingBuilderConfigurator>(new GodotLoggingBuilderConfigurator());
-        registry.RegisterLoggingService();
-        var logging = new Crosscut.Logging.ServiceProxy(registry);
-
-        _log = logging.CreateLogger("Bootstrap");
-
-        // Set up Crosscut.Diagnostics (null tracer/metrics, health checks)
-        registry.RegisterDiagnosticsService();
-
-        // Set up Crosscut.Hosting for lifecycle management
-        registry.RegisterHostingService();
-
-        // Set up RocksDB persistent key-value store
-        var rocksDbPath = System.IO.Path.Combine(configDir, "data", "rocksdb");
-        try
-        {
-            System.IO.Directory.CreateDirectory(rocksDbPath);
-            _kvStore = new RocksDbKeyValueStore(rocksDbPath, createIfMissing: true);
-            registry.Register<IKeyValueStore>(_kvStore);
-            _log?.LogInformation("RocksDB opened at {Path}", rocksDbPath);
-        }
-        catch (System.Exception ex)
-        {
-            _log?.LogWarning(ex, "RocksDB unavailable at {Path}, storage features disabled", rocksDbPath);
-        }
-
-        // Create services
-        _dockManager = new DockManager(logging.CreateLogger("DockManager"));
-        _menuService = new MenuService();
-        _statusService = new StatusService();
-
-        var mainNode = GetTree().Root.GetNode("Main");
-        var sceneHost = new GodotBundleSceneHost(this, logging.CreateLogger("SceneHost"), _dockManager, shellTarget: mainNode);
-
-        _bundleHost = new BundleHost(vfs, extractor, registry, sceneHost, _messageBus, bundleRegistry);
-        Registry = registry;
-
-        // Interaction services
-        _selectionService = new SelectionService(_messageBus);
-        _commandHistory = new CommandHistory(_messageBus);
-
-        registry.Register<IBundleMessageBus>(_messageBus);
-        registry.Register<Crosscut.Messaging.IMessageBus>(_messageBus);
-        registry.Register<IStatusService>(_statusService);
-        registry.Register<IDockService>(_dockManager);
-        registry.Register<IMenuService>(_menuService);
-        registry.Register<ISelectionService>(_selectionService);
-        registry.Register<ICommandHistory>(_commandHistory);
+        Registry = result.Registry;
+        _bundleHost = result.BundleHost;
+        _messageBus = result.MessageBus;
+        _dockManager = result.DockManager;
+        _menuService = result.MenuService;
+        _statusService = result.StatusService;
+        _kvStore = result.KvStore;
+        _log = result.Logger;
 
         // Command router (subscribes to GdScriptCommand on the bus)
-        _commandRouter = new GdScriptCommandRouter(_messageBus, logging.CreateLogger("CommandRouter"), _selectionService, _bundleHost);
+        _commandRouter = new CommandRouter(_messageBus, _log, result.SelectionService, _bundleHost);
 
-        // Bridge bundle lifecycle events to Godot signals for GDScript consumers
-        _bundleLoadedSub = _messageBus.Subscribe<BundleLoadedEvent>(e =>
-            CallDeferred("emit_signal", SignalName.BundleChanged, e.BundleId));
-        _bundleUnloadedSub = _messageBus.Subscribe<BundleUnloadedEvent>(e =>
-            CallDeferred("emit_signal", SignalName.BundleChanged, e.BundleId));
-        _tickScrubSub = _messageBus.Subscribe<TickScrubEvent>(e =>
-            CallDeferred("emit_signal", SignalName.TickScrubbed, e.Tick, e.IsScrubbing));
-        _truthHeadChangedSub = _messageBus.Subscribe<TruthStreamHeadChangedEvent>(e =>
-            CallDeferred("emit_signal", SignalName.TruthStreamHeadChanged, e.StreamIdentity, e.Sequence, e.LastTick));
-        _hudDataChangedSub = _messageBus.Subscribe<HudDataChangedEvent>(e =>
-            CallDeferred("emit_signal", SignalName.HudDataChanged, e.Channel, e.PayloadJson));
+        // Bridge C# events to Godot signals for GDScript consumers
+        _eventBridge = new EventBridge(_messageBus, this);
 
-        _log?.LogInformation("BundleHost created");
+        _log.LogInformation("BundleHost created");
 
         // Start verification service if --verify flag is present
         var args = OS.GetCmdlineUserArgs();
         if (args.Contains("--verify"))
         {
-            _verificationService = new VerificationService(this, logging.CreateLogger("Verify"));
+            _verificationService = new VerificationService(this, result.Logger);
             _verificationService.Start();
         }
 
@@ -169,17 +92,13 @@ public partial class BootstrapShim : Node
 
     public override void _ExitTree()
     {
-        _bundleLoadedSub?.Dispose();
-        _bundleUnloadedSub?.Dispose();
-        _tickScrubSub?.Dispose();
-        _truthHeadChangedSub?.Dispose();
-        _hudDataChangedSub?.Dispose();
+        _eventBridge?.Dispose();
         _commandRouter?.Dispose();
 
-        if (_bundleHost is not null)
+        if (Registry is not null)
         {
-            _bundleHost.UnloadAllAsync().GetAwaiter().GetResult();
-            _log?.LogInformation("BundleHost shut down");
+            new Crosscut.Hosting.ServiceProxy(Registry).StopAsync().GetAwaiter().GetResult();
+            _log?.LogInformation("Hosted components shut down");
         }
 
         _messageBus?.Dispose();
@@ -211,7 +130,7 @@ public partial class BootstrapShim : Node
 
     // -- GDScript-callable command entry point --
 
-    public void SendCommand(string action, Godot.Collections.Dictionary? @params = null)
+    public void SendCommand(string action, global::Godot.Collections.Dictionary? @params = null)
     {
         if (_messageBus is null) return;
 
@@ -278,17 +197,17 @@ public partial class BootstrapShim : Node
             host => host.ReloadAsync(bundleId));
     }
 
-    public Godot.Collections.Dictionary CaptureSnapshotDict()
+    public global::Godot.Collections.Dictionary CaptureSnapshotDict()
     {
         if (_bundleHost is null) return [];
 
         var snapshot = _bundleHost.CaptureSnapshot();
-        var result = new Godot.Collections.Dictionary();
+        var result = new global::Godot.Collections.Dictionary();
 
-        var bundlesArray = new Godot.Collections.Array();
+        var bundlesArray = new global::Godot.Collections.Array();
         foreach (var bundle in snapshot.Bundles)
         {
-            var b = new Godot.Collections.Dictionary
+            var b = new global::Godot.Collections.Dictionary
             {
                 ["id"] = bundle.Id,
                 ["status"] = bundle.Status.ToString(),
@@ -298,7 +217,7 @@ public partial class BootstrapShim : Node
                 ["hasALC"] = bundle.HasAssemblyLoadContext,
             };
 
-            var nodesArray = new Godot.Collections.Array();
+            var nodesArray = new global::Godot.Collections.Array();
             foreach (var node in bundle.TrackedSceneNodes)
             {
                 nodesArray.Add(node);
@@ -311,7 +230,7 @@ public partial class BootstrapShim : Node
         result["capturedAt"] = snapshot.CapturedAt.ToString("HH:mm:ss.fff");
         result["bundles"] = bundlesArray;
 
-        var servicesArray = new Godot.Collections.Array();
+        var servicesArray = new global::Godot.Collections.Array();
         foreach (var t in snapshot.RegisteredServiceTypes)
         {
             servicesArray.Add(t);

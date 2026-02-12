@@ -13,6 +13,8 @@
     <PackageReference Include="GiantCroissant.Crosscut.Diagnostics.Core" />
     <PackageReference Include="UnifyStorage.Runtime.RocksDb" />
     <PackageReference Include="GiantCroissant.Plate.ServiceArchi.Core" />
+    <PackageReference Include="TimeDete.Time" />
+    <PackageReference Include="TimeDete.Time.Runtime" />
   </ItemGroup>
 
   <ItemGroup>

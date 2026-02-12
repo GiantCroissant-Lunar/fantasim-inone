@@ -5,7 +5,7 @@ namespace FantaSim.App.Bundles.Tests.Fakes;
 /// <summary>
 /// In-memory VFS for testing. No Godot engine needed.
 /// </summary>
-public sealed class FakeGodotBundleVfs : IGodotBundleVfs
+public sealed class FakeBundleVfs : IBundleVfs
 {
     private readonly Dictionary<string, byte[]> _files = new();
     private readonly HashSet<string> _mountedPcks = new();
