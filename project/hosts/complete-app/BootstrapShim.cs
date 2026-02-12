@@ -1,3 +1,6 @@
+using Crosscut.Config;
+using Crosscut.Diagnostics;
+using Crosscut.Hosting;
 using Crosscut.Logging;
 using FantaSim.App.Bundles.Contracts;
 using FantaSim.App.Bundles.Contracts.Interaction.Commands;
@@ -65,12 +68,30 @@ public partial class BootstrapShim : Node
         var registry = bundleRegistry.Registry;
         _messageBus = new MessagePipeBundleMessageBus();
 
+        // Set up Crosscut.Config — JSON file + in-memory defaults
+        var configDir = OS.HasFeature("editor")
+            ? ProjectSettings.GlobalizePath("res://")
+            : OS.GetExecutablePath().GetBaseDir();
+        registry.RegisterJsonConfig(System.IO.Path.Combine(configDir, "config.json"), optional: true);
+        registry.RegisterMemoryConfig(new Dictionary<string, string>
+        {
+            ["Storage:RocksDbPath"] = System.IO.Path.Combine(configDir, "data", "rocksdb"),
+            ["Logging:MinLevel"] = "Debug",
+        });
+        registry.RegisterConfigService();
+
         // Set up Crosscut.Logging with Godot provider
         registry.Register<ILoggingBuilderConfigurator>(new GodotLoggingBuilderConfigurator());
         registry.RegisterLoggingService();
-        var logging = new ServiceProxy(registry);
+        var logging = new Crosscut.Logging.ServiceProxy(registry);
 
         _log = logging.CreateLogger("Bootstrap");
+
+        // Set up Crosscut.Diagnostics (null tracer/metrics, health checks)
+        registry.RegisterDiagnosticsService();
+
+        // Set up Crosscut.Hosting for lifecycle management
+        registry.RegisterHostingService();
 
         // Create services
         _dockManager = new DockManager(logging.CreateLogger("DockManager"));
