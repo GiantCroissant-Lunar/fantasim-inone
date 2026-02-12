@@ -4,5 +4,7 @@
   "displayName": "File Menu",
   "entryAssembly": null,
   "rootScene": "res://bundles/com.fantasim.hud_filemenu/scenes/filemenu.tscn",
-  "dependencies": []
+  "dependencies": [],
+  "description": "File menu with load/unload bundle actions and project file dialog",
+  "author": "FantaSim"
 }

@@ -6,10 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="GiantCroissant.Crosscut.Logging.Core" />
     <PackageReference Include="GiantCroissant.Plate.ServiceArchi.Core" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\plugins\App.Bundles.Core\App.Bundles.Core.csproj" />
+    <ProjectReference Include="..\..\contracts\Geosphere.Plate.Topology.Contracts\Geosphere.Plate.Topology.Contracts.csproj" />
   </ItemGroup>
 </Project>

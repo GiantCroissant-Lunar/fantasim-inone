@@ -11,5 +11,8 @@ public sealed record BundleManifest(
     string? RootScene,
     IReadOnlyList<string> Dependencies,
     string? DockTarget = null,
-    string? Role = null
+    string? Role = null,
+    string? Description = null,
+    string? Author = null,
+    IReadOnlyList<string>? Tags = null
 );

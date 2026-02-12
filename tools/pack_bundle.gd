@@ -67,8 +67,43 @@ func _add_dir(packer: PCKPacker, os_dir: String, res_dir: String) -> int:
 		var res_path = res_dir + "/" + file_name
 
 		if dir.current_is_dir():
-			count += _add_dir(packer, os_path, res_path)
+			if file_name == "obj":
+				file_name = dir.get_next()
+				continue
+
+			if file_name == "bin":
+				count += _add_bin_root_files(packer, os_path, res_path)
+			else:
+				count += _add_dir(packer, os_path, res_path)
 		else:
+			packer.add_file(res_path, os_path)
+			print("  + %s" % res_path)
+			count += 1
+
+		file_name = dir.get_next()
+
+	dir.list_dir_end()
+	return count
+
+
+func _add_bin_root_files(packer: PCKPacker, os_dir: String, res_dir: String) -> int:
+	var count := 0
+	var dir = DirAccess.open(os_dir)
+	if dir == null:
+		printerr("Cannot open bin directory: %s" % os_dir)
+		return 0
+
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	while file_name != "":
+		if file_name.begins_with("."):
+			file_name = dir.get_next()
+			continue
+
+		var os_path = os_dir.path_join(file_name)
+		var res_path = res_dir + "/" + file_name
+
+		if not dir.current_is_dir():
 			packer.add_file(res_path, os_path)
 			print("  + %s" % res_path)
 			count += 1

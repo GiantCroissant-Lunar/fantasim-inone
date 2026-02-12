@@ -9,4 +9,5 @@ public interface IGodotBundleVfs
     bool MountPck(string pckPath);
     byte[] ReadFile(string resPath);
     bool FileExists(string resPath);
+    IReadOnlyList<string> ListFiles(string resDir);
 }

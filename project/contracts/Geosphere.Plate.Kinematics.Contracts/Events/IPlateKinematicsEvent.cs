@@ -1,25 +1,12 @@
-using System;
-using Plate.TimeDete.Time.Primitives;
-using FantaSim.Geosphere.Plate.Topology.Contracts.Identity;
+using FantaSim.Geosphere.Plate.Topology.Contracts.Events;
 
 namespace FantaSim.Geosphere.Plate.Kinematics.Contracts.Events;
 
 /// <summary>
 /// Base interface for all plate kinematics truth events (RFC-V2-0023).
 /// </summary>
-public interface IPlateKinematicsEvent
+public interface IPlateKinematicsEvent : IPlateTruthEvent
 {
-    Guid EventId { get; }
-
+    // Keep explicit interface implementations in existing event records source-compatible.
     string EventType { get; }
-
-    CanonicalTick Tick { get; }
-
-    long Sequence { get; }
-
-    TruthStreamIdentity StreamIdentity { get; }
-
-    ReadOnlyMemory<byte> PreviousHash { get; }
-
-    ReadOnlyMemory<byte> Hash { get; }
 }

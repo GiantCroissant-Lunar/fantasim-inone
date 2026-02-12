@@ -30,4 +30,42 @@ public sealed class GodotBundleVfs : IGodotBundleVfs
     {
         return GdFileAccess.FileExists(resPath);
     }
+
+    public IReadOnlyList<string> ListFiles(string resDir)
+    {
+        var files = new List<string>();
+        CollectFiles(resDir, files);
+        return files;
+    }
+
+    private static void CollectFiles(string resDir, List<string> files)
+    {
+        var dir = DirAccess.Open(resDir);
+        if (dir is null)
+        {
+            return;
+        }
+
+        dir.ListDirBegin();
+        var name = dir.GetNext();
+        while (!string.IsNullOrEmpty(name))
+        {
+            if (!name.StartsWith('.'))
+            {
+                var childPath = $"{resDir}/{name}";
+                if (dir.CurrentIsDir())
+                {
+                    CollectFiles(childPath, files);
+                }
+                else
+                {
+                    files.Add(childPath);
+                }
+            }
+
+            name = dir.GetNext();
+        }
+
+        dir.ListDirEnd();
+    }
 }

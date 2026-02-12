@@ -1,9 +1,11 @@
+using Crosscut.Logging;
 using FantaSim.App.Bundles.Contracts;
 using FantaSim.App.Bundles.Contracts.Interaction.Commands;
 using FantaSim.App.Bundles.Contracts.Interaction.Events;
 using FantaSim.App.Bundles.Contracts.Interaction.Selection;
 using FantaSim.App.Bundles.Core;
 using Godot;
+using Microsoft.Extensions.Logging;
 using ServiceArchi.Contracts;
 
 namespace FantaSim.App;
@@ -17,6 +19,7 @@ public partial class BootstrapShim : Node
 {
     private BundleHost? _bundleHost;
     private MessagePipeBundleMessageBus? _messageBus;
+    private ILogger? _log;
     private DockManager? _dockManager;
     private MenuService? _menuService;
     private StatusService? _statusService;
@@ -26,6 +29,9 @@ public partial class BootstrapShim : Node
     private GdScriptCommandRouter? _commandRouter;
     private IDisposable? _bundleLoadedSub;
     private IDisposable? _bundleUnloadedSub;
+    private IDisposable? _tickScrubSub;
+    private IDisposable? _truthHeadChangedSub;
+    private IDisposable? _hudDataChangedSub;
 
     public IBundleHost? BundleHost => _bundleHost;
     public IRegistry? Registry { get; private set; }
@@ -42,6 +48,15 @@ public partial class BootstrapShim : Node
     [Signal]
     public delegate void BundleChangedEventHandler(string bundleId);
 
+    [Signal]
+    public delegate void TickScrubbedEventHandler(long tick, bool isScrubbing);
+
+    [Signal]
+    public delegate void TruthStreamHeadChangedEventHandler(string streamIdentity, long sequence, long lastTick);
+
+    [Signal]
+    public delegate void HudDataChangedEventHandler(string channel, string payloadJson);
+
     public override void _Ready()
     {
         var vfs = new GodotBundleVfs();
@@ -50,13 +65,20 @@ public partial class BootstrapShim : Node
         var registry = bundleRegistry.Registry;
         _messageBus = new MessagePipeBundleMessageBus();
 
+        // Set up Crosscut.Logging with Godot provider
+        registry.Register<ILoggingBuilderConfigurator>(new GodotLoggingBuilderConfigurator());
+        registry.RegisterLoggingService();
+        var logging = new ServiceProxy(registry);
+
+        _log = logging.CreateLogger("Bootstrap");
+
         // Create services
-        _dockManager = new DockManager();
+        _dockManager = new DockManager(logging.CreateLogger("DockManager"));
         _menuService = new MenuService();
         _statusService = new StatusService();
 
         var mainNode = GetTree().Root.GetNode("Main");
-        var sceneHost = new GodotBundleSceneHost(this, _dockManager, shellTarget: mainNode);
+        var sceneHost = new GodotBundleSceneHost(this, logging.CreateLogger("SceneHost"), _dockManager, shellTarget: mainNode);
 
         _bundleHost = new BundleHost(vfs, extractor, registry, sceneHost, _messageBus, bundleRegistry);
         Registry = registry;
@@ -74,21 +96,27 @@ public partial class BootstrapShim : Node
         registry.Register<ICommandHistory>(_commandHistory);
 
         // Command router (subscribes to GdScriptCommand on the bus)
-        _commandRouter = new GdScriptCommandRouter(_messageBus, _selectionService, _bundleHost);
+        _commandRouter = new GdScriptCommandRouter(_messageBus, logging.CreateLogger("CommandRouter"), _selectionService, _bundleHost);
 
         // Bridge bundle lifecycle events to Godot signals for GDScript consumers
         _bundleLoadedSub = _messageBus.Subscribe<BundleLoadedEvent>(e =>
             CallDeferred("emit_signal", SignalName.BundleChanged, e.BundleId));
         _bundleUnloadedSub = _messageBus.Subscribe<BundleUnloadedEvent>(e =>
             CallDeferred("emit_signal", SignalName.BundleChanged, e.BundleId));
+        _tickScrubSub = _messageBus.Subscribe<TickScrubEvent>(e =>
+            CallDeferred("emit_signal", SignalName.TickScrubbed, e.Tick, e.IsScrubbing));
+        _truthHeadChangedSub = _messageBus.Subscribe<TruthStreamHeadChangedEvent>(e =>
+            CallDeferred("emit_signal", SignalName.TruthStreamHeadChanged, e.StreamIdentity, e.Sequence, e.LastTick));
+        _hudDataChangedSub = _messageBus.Subscribe<HudDataChangedEvent>(e =>
+            CallDeferred("emit_signal", SignalName.HudDataChanged, e.Channel, e.PayloadJson));
 
-        GD.Print("[Bootstrap] BundleHost created");
+        _log.LogInformation("BundleHost created");
 
         // Start verification service if --verify flag is present
         var args = OS.GetCmdlineUserArgs();
         if (args.Contains("--verify"))
         {
-            _verificationService = new VerificationService(this);
+            _verificationService = new VerificationService(this, logging.CreateLogger("Verify"));
             _verificationService.Start();
         }
 
@@ -105,12 +133,15 @@ public partial class BootstrapShim : Node
     {
         _bundleLoadedSub?.Dispose();
         _bundleUnloadedSub?.Dispose();
+        _tickScrubSub?.Dispose();
+        _truthHeadChangedSub?.Dispose();
+        _hudDataChangedSub?.Dispose();
         _commandRouter?.Dispose();
 
         if (_bundleHost is not null)
         {
             _bundleHost.UnloadAllAsync().GetAwaiter().GetResult();
-            GD.Print("[Bootstrap] BundleHost shut down");
+            _log?.LogInformation("BundleHost shut down");
         }
 
         _messageBus?.Dispose();
@@ -121,7 +152,7 @@ public partial class BootstrapShim : Node
     public void RegisterDockSlot(string name, TabContainer container)
     {
         _dockManager?.RegisterSlot(name, container);
-        GD.Print($"[Bootstrap] Dock slot registered: {name}");
+        _log?.LogInformation("Dock slot registered: {Name}", name);
     }
 
     public void SetMenuBar(MenuBar menuBar)
@@ -183,50 +214,29 @@ public partial class BootstrapShim : Node
 
     public async void LoadBundle(string pckPath)
     {
-        if (_bundleHost is null) return;
-        try
-        {
-            _statusService?.ShowStatus($"Loading {pckPath}...");
-            await _bundleHost.LoadAsync(pckPath);
-            _statusService?.ShowStatus("Bundle loaded");
-        }
-        catch (System.Exception ex)
-        {
-            _statusService?.ShowStatus($"Error: {ex.Message}");
-            GD.PrintErr($"[Bootstrap] Load failed: {ex}");
-        }
+        await ExecuteBundleHostOperationAsync(
+            $"Loading {pckPath}...",
+            "Bundle loaded",
+            "Load failed",
+            host => host.LoadAsync(pckPath));
     }
 
     public async void UnloadBundle(string bundleId)
     {
-        if (_bundleHost is null) return;
-        try
-        {
-            _statusService?.ShowStatus($"Unloading {bundleId}...");
-            await _bundleHost.UnloadAsync(bundleId);
-            _statusService?.ShowStatus("Bundle unloaded");
-        }
-        catch (System.Exception ex)
-        {
-            _statusService?.ShowStatus($"Error: {ex.Message}");
-            GD.PrintErr($"[Bootstrap] Unload failed: {ex}");
-        }
+        await ExecuteBundleHostOperationAsync(
+            $"Unloading {bundleId}...",
+            "Bundle unloaded",
+            "Unload failed",
+            host => host.UnloadAsync(bundleId));
     }
 
     public async void ReloadBundle(string bundleId)
     {
-        if (_bundleHost is null) return;
-        try
-        {
-            _statusService?.ShowStatus($"Reloading {bundleId}...");
-            await _bundleHost.ReloadAsync(bundleId);
-            _statusService?.ShowStatus("Bundle reloaded");
-        }
-        catch (System.Exception ex)
-        {
-            _statusService?.ShowStatus($"Error: {ex.Message}");
-            GD.PrintErr($"[Bootstrap] Reload failed: {ex}");
-        }
+        await ExecuteBundleHostOperationAsync(
+            $"Reloading {bundleId}...",
+            "Bundle reloaded",
+            "Reload failed",
+            host => host.ReloadAsync(bundleId));
     }
 
     public Godot.Collections.Dictionary CaptureSnapshotDict()
@@ -285,7 +295,7 @@ public partial class BootstrapShim : Node
         var dir = DirAccess.Open(directory);
         if (dir is null)
         {
-            GD.Print($"[Bootstrap] No system bundles directory at {directory}");
+            _log?.LogInformation("No system bundles directory at {Directory}", directory);
             return;
         }
 
@@ -309,38 +319,60 @@ public partial class BootstrapShim : Node
         }
 
         // Phase 1: Load shell bundle(s) first
-        foreach (var pck in shellPcks)
-        {
-            try
-            {
-                await _bundleHost.LoadAsync(pck);
-                GD.Print($"[Bootstrap] Shell loaded: {pck.GetFile()}");
-            }
-            catch (System.Exception ex)
-            {
-                GD.PrintErr($"[Bootstrap] Failed to load shell {pck.GetFile()}: {ex.Message}");
-            }
-        }
+        await LoadPcksAsync(shellPcks, "Shell loaded: {File}", "Failed to load shell {File}");
 
         // Wait one frame for shell's _ready() to wire dock slots
         await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
         EmitSignal(SignalName.ShellReady);
 
         // Phase 2: Load remaining control bundles
-        foreach (var pck in controlPcks)
+        await LoadPcksAsync(controlPcks, "Auto-loaded: {File}", "Failed to auto-load {File}");
+
+        _log?.LogInformation("All bundles loaded");
+        EmitSignal(SignalName.AllBundlesLoaded);
+    }
+
+    private async Task ExecuteBundleHostOperationAsync(
+        string inProgressStatus,
+        string successStatus,
+        string errorLogMessage,
+        Func<BundleHost, Task> operation)
+    {
+        if (_bundleHost is null)
+            return;
+
+        try
+        {
+            _statusService?.ShowStatus(inProgressStatus);
+            await operation(_bundleHost);
+            _statusService?.ShowStatus(successStatus);
+        }
+        catch (System.Exception ex)
+        {
+            _statusService?.ShowStatus($"Error: {ex.Message}");
+            _log?.LogError(ex, errorLogMessage);
+        }
+    }
+
+    private async Task LoadPcksAsync(
+        IEnumerable<string> pcks,
+        string successMessageTemplate,
+        string errorMessageTemplate)
+    {
+        if (_bundleHost is null)
+            return;
+
+        foreach (var pck in pcks)
         {
             try
             {
                 await _bundleHost.LoadAsync(pck);
-                GD.Print($"[Bootstrap] Auto-loaded: {pck.GetFile()}");
+                _log?.LogInformation(successMessageTemplate, pck.GetFile());
             }
             catch (System.Exception ex)
             {
-                GD.PrintErr($"[Bootstrap] Failed to auto-load {pck.GetFile()}: {ex.Message}");
+                _log?.LogError(ex, errorMessageTemplate, pck.GetFile());
             }
         }
-
-        GD.Print("[Bootstrap] All bundles loaded");
-        EmitSignal(SignalName.AllBundlesLoaded);
     }
 }

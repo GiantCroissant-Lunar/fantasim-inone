@@ -23,6 +23,10 @@
     <PackageVersion Include="GiantCroissant.Plate.ServiceArchi.Core" Version="0.1.0" />
     <PackageVersion Include="GiantCroissant.Plate.ServiceArchi.SourceGen" Version="0.1.0" />
 
+    <!-- Crosscut Logging -->
+    <PackageVersion Include="GiantCroissant.Crosscut.Logging.Contracts" Version="0.1.0" />
+    <PackageVersion Include="GiantCroissant.Crosscut.Logging.Core" Version="0.1.0" />
+
     <!-- Crosscut Messaging -->
     <PackageVersion Include="GiantCroissant.Crosscut.Messaging.Contracts" Version="0.1.0" />
     <PackageVersion Include="GiantCroissant.Crosscut.Messaging.MessagePipe" Version="0.1.0" />

@@ -2,16 +2,8 @@
   <PropertyGroup>
     <AssemblyName>FantaSim.Geosphere.Plate.Tests</AssemblyName>
     <RootNamespace>FantaSim.Geosphere.Plate.Tests</RootNamespace>
-    <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" />
-    <PackageReference Include="xunit" />
-    <PackageReference Include="xunit.runner.visualstudio" />
-    <PackageReference Include="FluentAssertions" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\contracts\Geosphere.Plate.Topology.Contracts\Geosphere.Plate.Topology.Contracts.csproj" />

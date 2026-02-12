@@ -4,5 +4,7 @@
   "displayName": "Plate Viewer",
   "entryAssembly": "FantaSim.Bundles.PlateViewer.dll",
   "rootScene": null,
-  "dependencies": []
+  "dependencies": [],
+  "description": "Visualizer for plate topology state and event streams",
+  "author": "FantaSim"
 }

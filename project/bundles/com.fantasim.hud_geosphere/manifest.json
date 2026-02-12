@@ -1,0 +1,11 @@
+{
+  "id": "com.fantasim.hud_geosphere",
+  "version": "0.1.0",
+  "displayName": "Geosphere",
+  "entryAssembly": null,
+  "rootScene": "res://bundles/com.fantasim.hud_geosphere/scenes/geosphere.tscn",
+  "dependencies": [],
+  "dockTarget": "bottom",
+  "description": "Event-driven geosphere topology summary panel",
+  "author": "FantaSim"
+}

@@ -55,6 +55,16 @@ func _verify_pck(pck_path: String):
 		return
 	print("  OK: Manifest parsed — id=%s, displayName=%s" % [json["id"], json.get("displayName", "?")])
 
+	# 4.5 Validate entry assembly layout for C# bundles
+	var entry_assembly = json.get("entryAssembly")
+	if entry_assembly != null:
+		var entry_path = "res://bundles/%s/bin/%s" % [bundle_id, str(entry_assembly)]
+		if not FileAccess.file_exists(entry_path):
+			printerr("  FAIL: Entry assembly not found at %s" % entry_path)
+			_errors += 1
+			return
+		print("  OK: Entry assembly found at %s" % entry_path)
+
 	# 5. Load root scene if specified
 	var root_scene_path = json.get("rootScene")
 	if root_scene_path == null:

@@ -1,8 +1,8 @@
 using System;
-using System.Buffers;
 using MessagePack;
 using FantaSim.Geosphere.Plate.Topology.Contracts;
 using FantaSim.Geosphere.Plate.Topology.Contracts.Events;
+using UnifySerialization.MessagePack.Runtime;
 
 namespace FantaSim.Geosphere.Plate.Topology.Serializers;
 
@@ -24,35 +24,14 @@ public static class MessagePackMetaEventSerializer
 
         var payloadBytes = MessagePackSerializer.Serialize(value.GetType(), value, Options);
         var eventType = MetaEventTypeRegistry.GetId(value.GetType());
-
-        var buffer = new System.Buffers.ArrayBufferWriter<byte>();
-        var writer = new MessagePackWriter(buffer);
-        writer.WriteArrayHeader(2);
-        writer.Write(eventType);
-        writer.Write(payloadBytes);
-        writer.Flush();
-
-        return buffer.WrittenMemory.ToArray();
+        return MessagePackEnvelopeCodec.Serialize(eventType, payloadBytes);
     }
 
     public static IMetaGovernanceEvent Deserialize(byte[] data)
     {
-        var reader = new MessagePackReader(data);
-        var length = reader.ReadArrayHeader();
-        if (length != 2)
-            throw new InvalidOperationException($"Envelope must have 2 elements, got {length}");
-
-        var eventType = reader.ReadString();
-        if (eventType == null)
-            throw new InvalidOperationException("Envelope eventType cannot be null");
-
-        var payloadBytes = reader.ReadBytes();
-        if (!payloadBytes.HasValue)
-            throw new InvalidOperationException("Envelope payload cannot be null");
-
-        var eventTypeType = MetaEventTypeRegistry.Resolve(eventType);
-        var payloadArray = ReadOnlySequenceExtensions.ToByteArray(payloadBytes.Value);
-        var eventObj = MessagePackSerializer.Deserialize(eventTypeType, payloadArray, Options);
+        var envelope = MessagePackEnvelopeCodec.Deserialize(data);
+        var eventTypeType = MetaEventTypeRegistry.Resolve(envelope.TypeId);
+        var eventObj = MessagePackSerializer.Deserialize(eventTypeType, envelope.Payload, Options);
         return (IMetaGovernanceEvent)eventObj!;
     }
 }

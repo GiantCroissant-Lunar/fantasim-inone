@@ -18,6 +18,21 @@ indent_size = 4
 indent_style = space
 indent_size = 4
 
+# File-scoped namespaces (already 100% adopted — enforce via warning)
+csharp_style_namespace_declarations = file_scoped:warning
+
+# Null propagation preferences
+dotnet_style_null_propagation = true:warning
+dotnet_style_coalesce_expression = true:warning
+
+# Expression-bodied members (suggestion only — won't break build)
+csharp_style_expression_bodied_methods = when_on_single_line:suggestion
+csharp_style_expression_bodied_properties = true:suggestion
+csharp_style_expression_bodied_accessors = true:suggestion
+
+# var usage when type is apparent
+csharp_style_var_when_type_is_apparent = true:suggestion
+
 # JSON, TOML, YAML files
 [*.{json,toml,yaml,yml}]
 indent_style = space

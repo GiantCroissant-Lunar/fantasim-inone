@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="GiantCroissant.Crosscut.Logging.Contracts" />
     <PackageReference Include="GiantCroissant.Crosscut.Messaging.Contracts" />
     <PackageReference Include="GiantCroissant.Plate.ServiceArchi.Contracts" />
   </ItemGroup>

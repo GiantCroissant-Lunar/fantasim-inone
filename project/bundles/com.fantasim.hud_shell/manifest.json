@@ -5,5 +5,7 @@
   "entryAssembly": null,
   "rootScene": "res://bundles/com.fantasim.hud_shell/scenes/shell.tscn",
   "dependencies": [],
-  "role": "shell"
+  "role": "shell",
+  "description": "Main editor shell providing the dock layout, menu bar, and status bar",
+  "author": "FantaSim"
 }

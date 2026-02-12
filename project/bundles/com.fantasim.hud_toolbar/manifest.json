@@ -5,5 +5,7 @@
   "entryAssembly": null,
   "rootScene": "res://bundles/com.fantasim.hud_toolbar/scenes/toolbar.tscn",
   "dependencies": [],
-  "dockTarget": "inspector"
+  "dockTarget": "inspector",
+  "description": "Toolbar with quick-access buttons for common editor actions",
+  "author": "FantaSim"
 }

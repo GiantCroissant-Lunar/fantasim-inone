@@ -5,5 +5,7 @@
   "entryAssembly": null,
   "rootScene": "res://bundles/com.fantasim.hud_inspector/scenes/inspector.tscn",
   "dependencies": [],
-  "dockTarget": "inspector"
+  "dockTarget": "inspector",
+  "description": "Inspector panel showing loaded bundles, services, and message bus state",
+  "author": "FantaSim"
 }
