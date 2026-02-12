@@ -29,6 +29,9 @@ public partial class BootstrapShim : Node
     private GdScriptCommandRouter? _commandRouter;
     private IDisposable? _bundleLoadedSub;
     private IDisposable? _bundleUnloadedSub;
+    private IDisposable? _tickScrubSub;
+    private IDisposable? _truthHeadChangedSub;
+    private IDisposable? _hudDataChangedSub;
 
     public IBundleHost? BundleHost => _bundleHost;
     public IRegistry? Registry { get; private set; }
@@ -44,6 +47,15 @@ public partial class BootstrapShim : Node
 
     [Signal]
     public delegate void BundleChangedEventHandler(string bundleId);
+
+    [Signal]
+    public delegate void TickScrubbedEventHandler(long tick, bool isScrubbing);
+
+    [Signal]
+    public delegate void TruthStreamHeadChangedEventHandler(string streamIdentity, long sequence, long lastTick);
+
+    [Signal]
+    public delegate void HudDataChangedEventHandler(string channel, string payloadJson);
 
     public override void _Ready()
     {
@@ -91,6 +103,12 @@ public partial class BootstrapShim : Node
             CallDeferred("emit_signal", SignalName.BundleChanged, e.BundleId));
         _bundleUnloadedSub = _messageBus.Subscribe<BundleUnloadedEvent>(e =>
             CallDeferred("emit_signal", SignalName.BundleChanged, e.BundleId));
+        _tickScrubSub = _messageBus.Subscribe<TickScrubEvent>(e =>
+            CallDeferred("emit_signal", SignalName.TickScrubbed, e.Tick, e.IsScrubbing));
+        _truthHeadChangedSub = _messageBus.Subscribe<TruthStreamHeadChangedEvent>(e =>
+            CallDeferred("emit_signal", SignalName.TruthStreamHeadChanged, e.StreamIdentity, e.Sequence, e.LastTick));
+        _hudDataChangedSub = _messageBus.Subscribe<HudDataChangedEvent>(e =>
+            CallDeferred("emit_signal", SignalName.HudDataChanged, e.Channel, e.PayloadJson));
 
         _log.LogInformation("BundleHost created");
 
@@ -115,6 +133,9 @@ public partial class BootstrapShim : Node
     {
         _bundleLoadedSub?.Dispose();
         _bundleUnloadedSub?.Dispose();
+        _tickScrubSub?.Dispose();
+        _truthHeadChangedSub?.Dispose();
+        _hudDataChangedSub?.Dispose();
         _commandRouter?.Dispose();
 
         if (_bundleHost is not null)
